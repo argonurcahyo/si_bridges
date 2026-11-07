@@ -1,0 +1,43 @@
+export const teks = {
+  appName: "HydroGraph-AI",
+  dashboardTitle: "Dashboard Operasional",
+  modeLatihan: "MODE LATIHAN",
+  modeLatihanDeskripsi: "Data dan simulasi berasal dari mock. Bukan data operasional.",
+  disclaimer: "Sistem ini alat bantu keputusan (DSS). Keputusan akhir ada pada petugas berwenang.",
+  lewatiKeKonten: "Lewati ke konten utama",
+  halamanTidakDitemukan: "Halaman tidak ditemukan",
+  kembaliKeDashboard: "Kembali ke dashboard",
+  gantiTema: "Ganti tema",
+  panel: {
+    simulasi: "Simulasi",
+    jaringan: "Jaringan pemantauan",
+    jaringanDeskripsi: "Node dan TMA terakhir (data mock)",
+    grafik: "Beban debit",
+    rekomendasi: "Rekomendasi taktis",
+    segeraTersedia: "Tersedia pada fase berikutnya.",
+  },
+  tabel: {
+    nama: "Nama",
+    tipe: "Tipe",
+    tma: "TMA (m)",
+    level: "Level",
+    sumber: "Status data",
+    kosong: "Belum ada data node.",
+    caption: "Daftar node pemantauan beserta TMA, level risiko, dan status data",
+  },
+  tipeNode: {
+    pintu_air: "Pintu air",
+    penampungan: "Penampungan",
+    sensor: "Sensor TMA",
+  },
+  level: {
+    aman: "Aman",
+    waspada: "Waspada",
+    siaga: "Siaga",
+  },
+  status: {
+    mock: "Data Mock",
+    sintetis: "Data Sintetis",
+    open_data: "Open Data",
+  },
+} as const;

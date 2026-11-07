@@ -1,0 +1,123 @@
+{
+  "nodes": [
+    {
+      "id": "katulampa",
+      "nama": "Pintu Air Katulampa",
+      "tipe": "pintu_air",
+      "lat": -6.6395,
+      "lng": 106.8478,
+      "tmaMeter": 1.42,
+      "ambangWaspadaMeter": 1.5,
+      "ambangSiagaMeter": 1.8,
+      "sumber": "Mock. Koordinat perkiraan, perlu verifikasi DSDA",
+      "status": "mock"
+    },
+    {
+      "id": "depok",
+      "nama": "Pos TMA Depok",
+      "tipe": "sensor",
+      "lat": -6.4025,
+      "lng": 106.8192,
+      "tmaMeter": 2.1,
+      "ambangWaspadaMeter": 2.0,
+      "ambangSiagaMeter": 2.6,
+      "sumber": "Mock. Koordinat perkiraan, perlu verifikasi DSDA",
+      "status": "mock"
+    },
+    {
+      "id": "manggarai",
+      "nama": "Pintu Air Manggarai",
+      "tipe": "pintu_air",
+      "lat": -6.2085,
+      "lng": 106.8478,
+      "tmaMeter": 4.25,
+      "ambangWaspadaMeter": 3.5,
+      "ambangSiagaMeter": 4.0,
+      "sumber": "Mock. Koordinat perkiraan, perlu verifikasi DSDA",
+      "status": "mock"
+    },
+    {
+      "id": "kampung_melayu",
+      "nama": "Pintu Air Kampung Melayu",
+      "tipe": "pintu_air",
+      "lat": -6.2245,
+      "lng": 106.865,
+      "tmaMeter": 3.1,
+      "ambangWaspadaMeter": 3.2,
+      "ambangSiagaMeter": 3.8,
+      "sumber": "Mock. Koordinat perkiraan, perlu verifikasi DSDA",
+      "status": "mock"
+    },
+    {
+      "id": "bidara_cina",
+      "nama": "Pintu Air Bidara Cina",
+      "tipe": "pintu_air",
+      "lat": -6.2305,
+      "lng": 106.8602,
+      "tmaMeter": 2.6,
+      "ambangWaspadaMeter": 2.8,
+      "ambangSiagaMeter": 3.4,
+      "sumber": "Mock. Koordinat perkiraan, perlu verifikasi DSDA",
+      "status": "mock"
+    },
+    {
+      "id": "cawang",
+      "nama": "Pos TMA Cawang",
+      "tipe": "sensor",
+      "lat": -6.2445,
+      "lng": 106.8672,
+      "tmaMeter": 1.9,
+      "ambangWaspadaMeter": 2.2,
+      "ambangSiagaMeter": 2.8,
+      "sumber": "Mock. Koordinat perkiraan, perlu verifikasi DSDA",
+      "status": "mock"
+    }
+  ],
+  "edges": [
+    {
+      "id": "katulampa-depok",
+      "dari": "katulampa",
+      "ke": "depok",
+      "panjangKm": 15.2,
+      "lagMenit": 90,
+      "sumber": "Mock. Topologi dan lag perkiraan",
+      "status": "mock"
+    },
+    {
+      "id": "depok-manggarai",
+      "dari": "depok",
+      "ke": "manggarai",
+      "panjangKm": 18.6,
+      "lagMenit": 120,
+      "sumber": "Mock. Topologi dan lag perkiraan",
+      "status": "mock"
+    },
+    {
+      "id": "manggarai-kampung-melayu",
+      "dari": "manggarai",
+      "ke": "kampung_melayu",
+      "panjangKm": 4.1,
+      "lagMenit": 45,
+      "sumber": "Mock. Topologi dan lag perkiraan",
+      "status": "mock"
+    },
+    {
+      "id": "kampung-melayu-bidara-cina",
+      "dari": "kampung_melayu",
+      "ke": "bidara_cina",
+      "panjangKm": 1.3,
+      "lagMenit": 20,
+      "sumber": "Mock. Topologi dan lag perkiraan",
+      "status": "mock"
+    },
+    {
+      "id": "bidara-cina-cawang",
+      "dari": "bidara_cina",
+      "ke": "cawang",
+      "panjangKm": 2.4,
+      "lagMenit": 30,
+      "sumber": "Mock. Topologi dan lag perkiraan",
+      "status": "mock"
+    }
+  ]
+}

@@ -14,14 +14,14 @@ pnpm dev
 
 ## Skrip
 
-| Perintah | Fungsi |
-|---|---|
-| `pnpm dev` | Server pengembangan |
-| `pnpm build` | Typecheck lalu build produksi |
-| `pnpm lint` | oxlint |
-| `pnpm typecheck` | `tsc -b` |
-| `pnpm format` | Prettier (termasuk urutan class Tailwind) |
-| `pnpm format:check` | Cek format tanpa mengubah file |
+| Perintah            | Fungsi                                    |
+| ------------------- | ----------------------------------------- |
+| `pnpm dev`          | Server pengembangan                       |
+| `pnpm build`        | Typecheck lalu build produksi             |
+| `pnpm lint`         | oxlint                                    |
+| `pnpm typecheck`    | `tsc -b`                                  |
+| `pnpm format`       | Prettier (termasuk urutan class Tailwind) |
+| `pnpm format:check` | Cek format tanpa mengubah file            |
 
 ## Stack
 
