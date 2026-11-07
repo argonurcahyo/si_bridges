@@ -1,4 +1,4 @@
-# UI Prototipe — Dashboard Operasional
+﻿# UI Prototipe — Dashboard Operasional
 
 Dokumen ini mendeskripsikan prototipe frontend dashboard yang interaktif. Kode prototipe ada di `apps/dashboard/` (belum dibuat).
 
@@ -56,7 +56,71 @@ Detail ada di `wireframes.md`.
 4. **Keputusan tercatat.** Tidak ada aksi yang tidak meninggalkan jejak.
 5. **Ramah kondisi darurat.** Warna, ikon, dan teks membawa informasi yang sama.
 
-## 4. Dokumen Terkait
+## 4. Tangkapan Layar
+
+Semua gambar diambil dari prototipe yang berjalan (mode terang, 1440 px) memakai `apps/dashboard/scripts/screenshots.mjs`.
+
+### Tampilan keseluruhan
+
+![Tampilan keseluruhan dashboard](screenshots/01-overview.png)
+
+Satu layar memuat header dengan status dan waktu WIB, banner mode latihan, KPI risiko, panel simulasi, peta, panel rekomendasi, grafik, dan tabel monitoring.
+
+### Panel simulasi
+
+![Panel simulasi](screenshots/02-panel-simulasi.png)
+
+Slider intensitas hujan, konversi lahan Depok, tiga skenario cepat, serta debit hilir dan skor kepastian. Perubahan input memicu perhitungan ulang dengan debounce 300 ms.
+
+### Peta jaringan (2D)
+
+![Peta 2D](screenshots/03-panel-peta.png)
+
+Ciliwung sebagai centerline, alur simulasi mengikuti sungai, node berwarna sesuai level risiko, batas kecamatan/kabupaten/provinsi, basemap OSM di luar cakupan, dan pilihan koridor Ciliwung/Pesanggrahan/Jabodetabek.
+
+### Grafik debit dan proyeksi
+
+![Grafik](screenshots/04-panel-grafik.png)
+
+Debit per node (baseline vs skenario) dan proyeksi volume 3–6 jam dengan pita keyakinan.
+
+### Rekomendasi taktis
+
+![Rekomendasi](screenshots/05-panel-rekomendasi.png)
+
+Narasi AI atau rule-based, badge sumber, skor kepastian, ringkasan input, tombol keputusan operator, dan toggle paksa gagal LLM.
+
+### Log keputusan
+
+![Log keputusan](screenshots/06-log-keputusan.png)
+
+Setiap keputusan tercatat dengan waktu WIB, ID rekomendasi, sumber narasi, dan ringkasan input. Log tidak menimpa entri lama.
+
+### Detail node
+
+![Detail node](screenshots/07-detail-node.png)
+
+Panel samping berisi TMA, level risiko, debit simulasi, C-value, ambang, koordinat, dan status data.
+
+### Draf peringatan publik
+
+![Draf peringatan](screenshots/08-draf-peringatan.png)
+
+Draf per wilayah dengan level, estimasi waktu tiba, instruksi evakuasi, dan tombol salin. Tidak ada tombol kirim otomatis.
+
+### Status data dan layanan
+
+![Status data](screenshots/09-status-data.png)
+
+Sumber tiap layer, label open data/sintetis/mock, waktu pembaruan, status layanan, dan catatan validasi koordinat.
+
+### Mode 3D
+
+![Mode 3D](screenshots/10-mode-3d.png)
+
+Terrain DEMNAS dengan skala vertikal yang dapat diatur (2× sampai 8×), hillshade dari DEM, dan alur Ciliwung yang mengikuti lembah.
+
+## 5. Dokumen Terkait
 
 | Dokumen | Fungsi |
 |---|---|
@@ -68,3 +132,4 @@ Detail ada di `wireframes.md`.
 | `a11y-checklist.md` | Checklist aksesibilitas |
 | `usability-notes.md` | Catatan uji pengguna |
 | `../analysis/requirements.md` | Requirement |
+

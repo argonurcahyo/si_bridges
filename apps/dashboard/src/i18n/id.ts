@@ -62,6 +62,8 @@ export const teks = {
     normal: "Normal",
     terdegradasi: "Terdegradasi",
     fallbackAktif: "LLM dipaksa gagal. Narasi memakai fallback rule-based.",
+    catatanKoordinat:
+      "Koordinat pintu air masih perkiraan dan belum tervalidasi dengan data DSDA. Alur simulasi pada peta masih skematik, belum mengikuti garis sungai.",
   },
   grafik: {
     debitJudul: "Debit per node",
@@ -95,13 +97,27 @@ export const teks = {
   peta: {
     memuat: "Memuat peta…",
     gagal: "Peta belum dapat ditampilkan. Daftar node tetap tersedia di bawah.",
+    muatUlang: "Muat ulang peta",
     mode2d: "2D",
     mode3d: "3D",
-    mode3dCatatan: "3D sementara: tanpa terrain DEMNAS.",
+    mode3dCatatan:
+      "3D memakai terrain DEMNAS (skala vertikal {skala}×). Relief dibaca dari bentuk permukaan dan hillshade.",
+    skalaVertikal: "Skala vertikal",
     layer: "Layer",
-    layerSungai: "Sungai",
+    layerSungai: "Sungai Ciliwung",
+    layerAlur: "Alur simulasi",
     layerNode: "Node",
     layerKecamatan: "Batas kecamatan",
+    layerBatas: "Kabupaten & provinsi",
+    layerMasker: "Masker basemap",
+    tampilan: "Tampilan peta",
+    tampilanCiliwung: "Ciliwung",
+    tampilanPesanggrahan: "Pesanggrahan",
+    tampilanJabodetabek: "Jabodetabek",
+    catatanOverview:
+      "Tampilan Jabodetabek hanya untuk konteks. Simulasi tersedia untuk koridor Ciliwung.",
+    catatanPesanggrahan:
+      "Koridor Pesanggrahan baru tersedia untuk tampilan peta. Data node dan simulasi belum tersedia.",
     aria: "Peta jaringan pemantauan koridor Ciliwung",
     legenda: "Warna node: level risiko debit simulasi",
   },

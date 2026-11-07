@@ -49,14 +49,16 @@ function TooltipProyeksi({ active, payload }: TooltipContentProps) {
 }
 
 export function ProjectionChart({ hasil }: ProjectionChartProps) {
-  const data: BarisProyeksi[] = (hasil?.proyeksi ?? []).map((titik) => ({
-    label: teks.grafik.jamKe.replace("{jam}", String(titik.jam)),
-    dasar: titik.batasBawahJutaM3,
-    selisih: Number((titik.batasAtasJutaM3 - titik.batasBawahJutaM3).toFixed(3)),
-    volume: titik.volumeJutaM3,
-    batasBawah: titik.batasBawahJutaM3,
-    batasAtas: titik.batasAtasJutaM3,
-  }));
+  const data: BarisProyeksi[] = (hasil?.proyeksi ?? [])
+    .filter((titik) => titik.jam >= 3)
+    .map((titik) => ({
+      label: teks.grafik.jamKe.replace("{jam}", String(titik.jam)),
+      dasar: titik.batasBawahJutaM3,
+      selisih: Number((titik.batasAtasJutaM3 - titik.batasBawahJutaM3).toFixed(3)),
+      volume: titik.volumeJutaM3,
+      batasBawah: titik.batasBawahJutaM3,
+      batasAtas: titik.batasAtasJutaM3,
+    }));
 
   if (data.length === 0) {
     return <p className="text-muted-foreground text-sm">{teks.grafik.kosong}</p>;

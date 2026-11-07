@@ -35,6 +35,16 @@ React 19, Vite, TypeScript (strict), Tailwind CSS v4, shadcn/ui (radix, warna sl
 - [x] P3 Simulasi & grafik
 - [x] P4 Rekomendasi & keputusan
 - [x] P5 Draf & status
-- [ ] P4 Grafik & rekomendasi
-- [ ] P5 Draf & status
 - [ ] P6 Kualitas
+
+## Tangkapan layar
+
+![Tampilan dashboard](../../docs/ui-prototype/screenshots/01-overview.png)
+
+Galeri lengkap dan penjelasan per komponen ada di `docs/ui-prototype/README.md`.
+
+Untuk memperbarui (butuh dev server berjalan di port 5174):
+
+```bash
+node scripts/screenshots.mjs
+```

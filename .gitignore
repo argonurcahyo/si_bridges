@@ -1,6 +1,9 @@
 # Data besar (lokal saja, tidak masuk repo)
 data/demnas/
 data/shp/
+data/osm/
+
+
 
 # Dependensi & build
 node_modules/

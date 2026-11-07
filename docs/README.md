@@ -2,6 +2,8 @@
 
 Dokumentasi untuk Dashboard Operasional. Status: **draf v0.1** (belum ditinjau tim).
 
+![Tampilan dashboard](ui-prototype/screenshots/01-overview.png)
+
 Pemilik: Tim SWE (Argo Nurcahyo, Yovi Maulana Nugraha). Tim AI (Jhonathan Putro Siahaan, Eka Miftakhul Rachmawati, Meidiana Rahmawati) memberi masukan untuk data, simulasi, dan LLM.
 
 ## Peta Dokumen
@@ -45,6 +47,7 @@ Pemilik: Tim SWE (Argo Nurcahyo, Yovi Maulana Nugraha). Tim AI (Jhonathan Putro 
 | `demo-script.md` | Skrip demo 6–7 menit |
 | `a11y-checklist.md` | Checklist aksesibilitas WCAG 2.1 AA |
 | `usability-notes.md` | Template uji pengguna |
+| `screenshots/` | Tangkapan layar prototipe (10 gambar) |
 
 ## Urutan Membaca
 

@@ -1,4 +1,4 @@
-import type { Feature, FeatureCollection, LineString, Point } from "geojson";
+import type { Feature, FeatureCollection, Point } from "geojson";
 import { riskLevel, type RiskLevel } from "@/engine/riskLevel";
 import type { HydroNetwork } from "@/schemas/hydro";
 import type { SimulationResult } from "@/services/simulationService";
@@ -10,13 +10,6 @@ export type NodeProperties = {
   tmaMeter: number;
   debitM3s: number;
   level: RiskLevel;
-};
-
-export type EdgeProperties = {
-  id: string;
-  dari: string;
-  ke: string;
-  lagMenit: number;
 };
 
 export function nodesToFeatureCollection(
@@ -45,34 +38,6 @@ export function nodesToFeatureCollection(
             }),
         },
       };
-    }),
-  };
-}
-
-export function edgesToFeatureCollection(
-  network: HydroNetwork,
-): FeatureCollection<LineString, EdgeProperties> {
-  const posisi = new Map(network.nodes.map((node) => [node.id, [node.lng, node.lat]]));
-
-  return {
-    type: "FeatureCollection",
-    features: network.edges.flatMap((edge): Feature<LineString, EdgeProperties>[] => {
-      const dari = posisi.get(edge.dari);
-      const ke = posisi.get(edge.ke);
-      if (!dari || !ke) return [];
-
-      return [
-        {
-          type: "Feature",
-          geometry: { type: "LineString", coordinates: [dari, ke] },
-          properties: {
-            id: edge.id,
-            dari: edge.dari,
-            ke: edge.ke,
-            lagMenit: edge.lagMenit,
-          },
-        },
-      ];
     }),
   };
 }

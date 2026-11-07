@@ -14,7 +14,7 @@ import { riskLevel, type RiskLevel } from "@/engine/riskLevel";
 import { useSimulation } from "@/hooks/useSimulation";
 import { useTheme } from "@/hooks/useTheme";
 import { teks } from "@/i18n/id";
-import { edgesToFeatureCollection, nodesToFeatureCollection } from "@/services/geoService";
+import { nodesToFeatureCollection } from "@/services/geoService";
 import type { HydroNetwork } from "@/schemas/hydro";
 
 function hitungLevelTma(network: HydroNetwork): Record<RiskLevel, number> {
@@ -37,7 +37,6 @@ export function OpsDashboardPage() {
   const { network, catchments, hasil, baseline, menunggu, galat } = useSimulation();
 
   const nodes = useMemo(() => nodesToFeatureCollection(network, hasil), [network, hasil]);
-  const edges = useMemo(() => edgesToFeatureCollection(network), [network]);
   const hitung = useMemo(() => hitungLevelTma(network), [network]);
 
   const selectedNode = network.nodes.find((node) => node.id === selectedId) ?? null;
@@ -67,7 +66,6 @@ export function OpsDashboardPage() {
           >
             <MapPanel
               nodes={nodes}
-              edges={edges}
               selectedId={selectedId}
               onSelect={setSelectedId}
               theme={theme}

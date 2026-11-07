@@ -131,6 +131,9 @@ export function StatusSheet() {
                 {teks.statusSistem.fallbackAktif}
               </p>
             ) : null}
+            <p className="text-muted-foreground rounded-lg border border-dashed p-2 text-xs">
+              {teks.statusSistem.catatanKoordinat}
+            </p>
           </section>
         </div>
       </SheetContent>
