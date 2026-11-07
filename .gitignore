@@ -1,0 +1,26 @@
+# Data besar (lokal saja, tidak masuk repo)
+data/demnas/
+data/shp/
+
+# Dependensi & build
+node_modules/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# Environment & secret
+.env
+.env.*
+!.env.example
+
+# Test & laporan
+playwright-report/
+test-results/
+
+# Editor & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp

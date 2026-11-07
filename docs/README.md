@@ -55,6 +55,23 @@ Pemilik: Tim SWE (Argo Nurcahyo, Yovi Maulana Nugraha). Tim AI (Jhonathan Putro 
 5. `ui-prototype/README.md`
 6. Sisanya sesuai kebutuhan
 
+### Diagram Editable (`diagrams/`)
+
+File `.drawio` dapat dibuka di [diagrams.net](https://app.diagrams.net) atau ekstensi VS Code "Draw.io Integration".
+
+| File | Diagram |
+|---|---|
+| `01-context.drawio` | Context (C4 L1) |
+| `02-container.drawio` | Container (C4 L2) |
+| `03-component-frontend.drawio` | Component frontend (C4 L3) |
+| `04-deployment-produksi.drawio` | Deployment produksi |
+| `05-dfd-level-0.drawio` | DFD level 0 |
+| `06-dfd-level-1.drawio` | DFD level 1 |
+| `07-use-case.drawio` | Use case |
+| `08-activity.drawio` | Activity, alur operator |
+
+Sequence, state, dan ERD masih tersedia dalam Mermaid di `analysis/` dan `architecture/`.
+
 ## Konvensi
 
 - Diagram ditulis dalam Mermaid dan dapat dirender langsung di GitHub.

@@ -20,7 +20,7 @@ flowchart LR
     EXT2 -->|data hujan| SYS
     EXT3 -->|LULC & citra| SYS
     EXT4 -->|batas admin & DAS| SYS
-    AD -->|SHP, DEMNAS (GeoJSON)| SYS
+    AD -->|SHP, DEMNAS | SYS
     OP -->|input skenario & keputusan| SYS
     SYS -->|peta, grafik, rekomendasi| OP
     SYS -->|prompt ringkasan hasil| LLM
