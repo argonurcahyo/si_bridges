@@ -30,9 +30,9 @@ React 19, Vite, TypeScript (strict), Tailwind CSS v4, shadcn/ui (radix, warna sl
 ## Status fase
 
 - [x] P0 Setup
-- [ ] P1 Shell & data mock
-- [ ] P2 Peta
-- [ ] P3 Simulasi
+- [x] P1 Shell & data mock
+- [x] P2 Peta
+- [x] P3 Simulasi & grafik
 - [ ] P4 Grafik & rekomendasi
 - [ ] P5 Draf & status
 - [ ] P6 Kualitas
