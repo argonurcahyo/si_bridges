@@ -15,6 +15,7 @@ export const lulcSchema = z
 
 export const catchmentSchema = z.object({
   nodeId: z.string().min(1),
+  wilayah: z.string().min(1),
   luasHa: z.number().positive(),
   terpengaruhKonversi: z.boolean().default(false),
   lulc: lulcSchema,

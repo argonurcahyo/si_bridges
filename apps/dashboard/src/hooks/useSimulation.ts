@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { useSimulationStore } from "@/store/simulationStore";
@@ -27,6 +27,7 @@ export function useSimulation() {
     queryKey: ["simulation", inputTertunda.intensitasMmJam, inputTertunda.konversiLahanPersen],
     queryFn: () => runSimulation(inputTertunda, jaringan.network, jaringan.catchments),
     staleTime: Number.POSITIVE_INFINITY,
+    placeholderData: keepPreviousData,
   });
 
   const baseline = useQuery({
@@ -44,7 +45,7 @@ export function useSimulation() {
     baseline: baseline.data,
     memuat: simulasi.isLoading,
     menunggu,
-    galat: simulasi.error,
+    galat: simulasi.isError,
     input,
   };
 }

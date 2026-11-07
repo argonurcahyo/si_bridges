@@ -38,7 +38,7 @@ export const BATAS_INTENSITAS = { min: 0, max: 200 } as const;
 export const BATAS_KONVERSI = [0, 10, 20, 30] as const;
 
 /** Lama perjalanan air dari hulu ke node, dihitung dari lag edge. */
-function lagKumulatifMenit(network: HydroNetwork): Map<string, number> {
+export function lagKumulatifMenit(network: HydroNetwork): Map<string, number> {
   const hulu = new Map<string, { dari: string; lagMenit: number }[]>();
   for (const node of network.nodes) hulu.set(node.id, []);
   for (const edge of network.edges) {

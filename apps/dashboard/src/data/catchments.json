@@ -4,6 +4,7 @@
   "catchments": [
     {
       "nodeId": "katulampa",
+      "wilayah": "Katulampa",
       "luasHa": 14000,
       "terpengaruhKonversi": true,
       "lulc": { "terbangun": 0.27, "vegetasi": 0.6, "terbuka": 0.11, "badanAir": 0.02 },
@@ -12,6 +13,7 @@
     },
     {
       "nodeId": "depok",
+      "wilayah": "Depok",
       "luasHa": 9000,
       "terpengaruhKonversi": true,
       "lulc": { "terbangun": 0.45, "vegetasi": 0.35, "terbuka": 0.18, "badanAir": 0.02 },
@@ -20,6 +22,7 @@
     },
     {
       "nodeId": "manggarai",
+      "wilayah": "Manggarai",
       "luasHa": 6000,
       "lulc": { "terbangun": 0.55, "vegetasi": 0.27, "terbuka": 0.16, "badanAir": 0.02 },
       "ambangWaspadaM3s": 2200,
@@ -27,6 +30,7 @@
     },
     {
       "nodeId": "kampung_melayu",
+      "wilayah": "Kampung Melayu",
       "luasHa": 2500,
       "lulc": { "terbangun": 0.65, "vegetasi": 0.19, "terbuka": 0.14, "badanAir": 0.02 },
       "ambangWaspadaM3s": 2600,
@@ -34,6 +38,7 @@
     },
     {
       "nodeId": "bidara_cina",
+      "wilayah": "Bidara Cina",
       "luasHa": 1200,
       "lulc": { "terbangun": 0.7, "vegetasi": 0.15, "terbuka": 0.13, "badanAir": 0.02 },
       "ambangWaspadaM3s": 2800,
@@ -41,6 +46,7 @@
     },
     {
       "nodeId": "cawang",
+      "wilayah": "Cawang",
       "luasHa": 1600,
       "lulc": { "terbangun": 0.55, "vegetasi": 0.28, "terbuka": 0.15, "badanAir": 0.02 },
       "ambangWaspadaM3s": 3400,

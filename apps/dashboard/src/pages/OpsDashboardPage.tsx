@@ -1,6 +1,5 @@
-import { Activity, Map as MapIcon, Sparkles, SlidersHorizontal } from "lucide-react";
+﻿import { Activity, Map as MapIcon, Sparkles, SlidersHorizontal } from "lucide-react";
 import { useMemo, useState } from "react";
-import { EmptyState } from "@/components/shared/EmptyState";
 import { Panel } from "@/components/shared/Panel";
 import { DischargeChart } from "@/features/charts/DischargeChart";
 import { ProjectionChart } from "@/features/charts/ProjectionChart";
@@ -10,6 +9,7 @@ import { LevelSummary } from "@/features/monitoring/LevelSummary";
 import { NodeDetailSheet } from "@/features/monitoring/NodeDetailSheet";
 import { NodeTable } from "@/features/monitoring/NodeTable";
 import { SimulationPanel } from "@/features/simulation/SimulationPanel";
+import { RecommendationPanel } from "@/features/recommendation/RecommendationPanel";
 import { riskLevel, type RiskLevel } from "@/engine/riskLevel";
 import { useSimulation } from "@/hooks/useSimulation";
 import { useTheme } from "@/hooks/useTheme";
@@ -34,7 +34,7 @@ export function OpsDashboardPage() {
   const { theme } = useTheme();
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const { network, hasil, baseline, menunggu } = useSimulation();
+  const { network, catchments, hasil, baseline, menunggu, galat } = useSimulation();
 
   const nodes = useMemo(() => nodesToFeatureCollection(network, hasil), [network, hasil]);
   const edges = useMemo(() => edgesToFeatureCollection(network), [network]);
@@ -55,7 +55,7 @@ export function OpsDashboardPage() {
           tone="violet"
           className="order-2 xl:order-none"
         >
-          <SimulationPanel hasil={hasil} baseline={baseline} menunggu={menunggu} />
+          <SimulationPanel hasil={hasil} baseline={baseline} menunggu={menunggu} galat={galat} />
         </Panel>
 
         <div className="order-1 grid min-w-0 gap-6 xl:order-none">
@@ -111,7 +111,7 @@ export function OpsDashboardPage() {
           tone="violet"
           className="order-3 xl:order-none"
         >
-          <EmptyState message={teks.panel.segeraTersedia} />
+          <RecommendationPanel hasil={hasil} network={network} catchments={catchments} />
         </Panel>
       </div>
 

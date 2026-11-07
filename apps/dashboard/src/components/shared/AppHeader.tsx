@@ -1,22 +1,9 @@
 import { Droplets } from "lucide-react";
+import { StatusSheet } from "@/features/status/StatusSheet";
 import { teks } from "@/i18n/id";
 import { ClockWib } from "./ClockWib";
 import { ModeBanner } from "./ModeBanner";
 import { ThemeToggle } from "./ThemeToggle";
-
-function StatusPill({ label, tone }: { label: string; tone: "emerald" | "amber" }) {
-  const dot = tone === "emerald" ? "bg-emerald-500" : "bg-amber-500";
-
-  return (
-    <span className="bg-card/70 text-muted-foreground hidden items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium sm:inline-flex">
-      <span
-        className={`size-1.5 rounded-full ${dot} shadow-[0_0_8px_currentColor]`}
-        aria-hidden="true"
-      />
-      {label}
-    </span>
-  );
-}
 
 export function AppHeader() {
   return (
@@ -32,11 +19,10 @@ export function AppHeader() {
           </div>
         </div>
         <div className="text-muted-foreground flex items-center gap-2 text-sm tabular-nums">
-          <StatusPill label="Simulasi: mock" tone="emerald" />
-          <StatusPill label="LLM: mock" tone="amber" />
           <span className="bg-card/70 rounded-full border px-3 py-1 text-xs font-medium">
             <ClockWib />
           </span>
+          <StatusSheet />
           <ThemeToggle />
         </div>
       </div>

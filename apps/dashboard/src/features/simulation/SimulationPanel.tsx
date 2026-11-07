@@ -8,14 +8,21 @@ import { useSimulationStore } from "@/store/simulationStore";
 import { LandUseControl } from "./LandUseControl";
 import { RainfallSlider } from "./RainfallSlider";
 import { ScenarioButtons } from "./ScenarioButtons";
+import { SimulationErrorBanner } from "./SimulationErrorBanner";
 
 type SimulationPanelProps = {
   hasil: SimulationResult | undefined;
   baseline: SimulationResult | undefined;
   menunggu: boolean;
+  galat?: boolean;
 };
 
-export function SimulationPanel({ hasil, baseline, menunggu }: SimulationPanelProps) {
+export function SimulationPanel({
+  hasil,
+  baseline,
+  menunggu,
+  galat = false,
+}: SimulationPanelProps) {
   const intensitasMmJam = useSimulationStore((state) => state.intensitasMmJam);
   const konversiLahanPersen = useSimulationStore((state) => state.konversiLahanPersen);
   const setIntensitas = useSimulationStore((state) => state.setIntensitas);
@@ -29,6 +36,7 @@ export function SimulationPanel({ hasil, baseline, menunggu }: SimulationPanelPr
 
   return (
     <div className="space-y-5">
+      {galat ? <SimulationErrorBanner /> : null}
       <RainfallSlider value={intensitasMmJam} onChange={setIntensitas} />
 
       <LandUseControl value={konversiLahanPersen} onChange={setKonversi} />
