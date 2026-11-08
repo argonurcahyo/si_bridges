@@ -1,151 +1,246 @@
-<mxfile host="app.diagrams.net" agent="opencode" version="24.7.0" type="device">
-  <diagram id="component" name="03 Component Frontend (C4 L3)">
-    <mxGraphModel dx="1000" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1250" pageHeight="750" math="0" shadow="0">
-      <root>
-        <mxCell id="0"/>
-        <mxCell id="1" parent="0"/>
-        <mxCell id="app" value="App Shell" style="swimlane;startSize=28;html=1;fillColor=#F8F9FA;strokeColor=#666666;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="40" y="40" width="260" height="170" as="geometry"/>
-        </mxCell>
-        <mxCell id="router" value="Router: /ops" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" vertex="1" parent="app">
-          <mxGeometry x="20" y="40" width="220" height="45" as="geometry"/>
-        </mxCell>
-        <mxCell id="layout" value="OpsLayout: header, ModeBanner, DisclaimerBanner" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" vertex="1" parent="app">
-          <mxGeometry x="20" y="100" width="220" height="50" as="geometry"/>
-        </mxCell>
-        <mxCell id="feat" value="Feature Modules" style="swimlane;startSize=28;html=1;fillColor=#F8F9FA;strokeColor=#666666;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="340" y="40" width="560" height="430" as="geometry"/>
-        </mxCell>
-        <mxCell id="map" value="map: MapView, NodeLayer, EdgeLayer, HeatmapLayer, MapLegend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" vertex="1" parent="feat">
-          <mxGeometry x="20" y="40" width="250" height="80" as="geometry"/>
-        </mxCell>
-        <mxCell id="sim" value="simulation: RainfallSlider, LandUseControl, ScenarioButtons, ScenarioCompare" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" vertex="1" parent="feat">
-          <mxGeometry x="290" y="40" width="250" height="80" as="geometry"/>
-        </mxCell>
-        <mxCell id="charts" value="charts: DischargeChart, ProjectionChart" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" vertex="1" parent="feat">
-          <mxGeometry x="20" y="140" width="250" height="70" as="geometry"/>
-        </mxCell>
-        <mxCell id="rec" value="recommendation: RecommendationCard, ConfidenceBadge, SourceBadge, OperatorDecision, AuditLogPanel" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" vertex="1" parent="feat">
-          <mxGeometry x="290" y="140" width="250" height="80" as="geometry"/>
-        </mxCell>
-        <mxCell id="alerts" value="alerts: AlertDraftPanel" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" vertex="1" parent="feat">
-          <mxGeometry x="20" y="240" width="250" height="60" as="geometry"/>
-        </mxCell>
-        <mxCell id="hist" value="history: TimelinePlayer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" vertex="1" parent="feat">
-          <mxGeometry x="290" y="240" width="250" height="60" as="geometry"/>
-        </mxCell>
-        <mxCell id="status" value="status: DataStatusPage, ServiceStatusList" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" vertex="1" parent="feat">
-          <mxGeometry x="20" y="320" width="250" height="70" as="geometry"/>
-        </mxCell>
-        <mxCell id="state" value="State" style="swimlane;startSize=28;html=1;fillColor=#F8F9FA;strokeColor=#666666;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="940" y="40" width="240" height="200" as="geometry"/>
-        </mxCell>
-        <mxCell id="simst" value="simulationStore (Zustand)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;" vertex="1" parent="state">
-          <mxGeometry x="20" y="40" width="200" height="45" as="geometry"/>
-        </mxCell>
-        <mxCell id="opst" value="operatorStore (Zustand)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;" vertex="1" parent="state">
-          <mxGeometry x="20" y="95" width="200" height="45" as="geometry"/>
-        </mxCell>
-        <mxCell id="query" value="TanStack Query: hasil dan narasi" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;" vertex="1" parent="state">
-          <mxGeometry x="20" y="150" width="200" height="40" as="geometry"/>
-        </mxCell>
-        <mxCell id="svc" value="Service Layer" style="swimlane;startSize=28;html=1;fillColor=#F8F9FA;strokeColor=#666666;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="940" y="270" width="240" height="270" as="geometry"/>
-        </mxCell>
-        <mxCell id="simsvc" value="simulationService: run" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" vertex="1" parent="svc">
-          <mxGeometry x="20" y="40" width="200" height="45" as="geometry"/>
-        </mxCell>
-        <mxCell id="narr" value="narrativeService: llm, timeout, rule-based" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" vertex="1" parent="svc">
-          <mxGeometry x="20" y="95" width="200" height="50" as="geometry"/>
-        </mxCell>
-        <mxCell id="data" value="dataService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" vertex="1" parent="svc">
-          <mxGeometry x="20" y="155" width="200" height="40" as="geometry"/>
-        </mxCell>
-        <mxCell id="draft" value="draftService: susun teks peringatan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" vertex="1" parent="svc">
-          <mxGeometry x="20" y="205" width="200" height="45" as="geometry"/>
-        </mxCell>
-        <mxCell id="adapt" value="Adapter" style="swimlane;startSize=28;html=1;fillColor=#F8F9FA;strokeColor=#666666;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="40" y="540" width="500" height="170" as="geometry"/>
-        </mxCell>
-        <mxCell id="mocksim" value="mockSimulation (prototipe)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;" vertex="1" parent="adapt">
-          <mxGeometry x="20" y="40" width="200" height="45" as="geometry"/>
-        </mxCell>
-        <mxCell id="mockllm" value="mockLlm: delay dan gagal acak" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;" vertex="1" parent="adapt">
-          <mxGeometry x="270" y="40" width="200" height="45" as="geometry"/>
-        </mxCell>
-        <mxCell id="rule" value="ruleBasedNarrative: template" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;" vertex="1" parent="adapt">
-          <mxGeometry x="20" y="105" width="200" height="45" as="geometry"/>
-        </mxCell>
-        <mxCell id="valid" value="validateNarrative: cek angka (FR-R5)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;" vertex="1" parent="adapt">
-          <mxGeometry x="270" y="105" width="200" height="45" as="geometry"/>
-        </mxCell>
-        <mxCell id="shared" value="Shared" style="swimlane;startSize=28;html=1;fillColor=#F8F9FA;strokeColor=#666666;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="580" y="540" width="600" height="170" as="geometry"/>
-        </mxCell>
-        <mxCell id="schema" value="schemas (Zod)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;" vertex="1" parent="shared">
-          <mxGeometry x="20" y="40" width="170" height="45" as="geometry"/>
-        </mxCell>
-        <mxCell id="i18n" value="i18n/id.ts" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;" vertex="1" parent="shared">
-          <mxGeometry x="210" y="40" width="170" height="45" as="geometry"/>
-        </mxCell>
-        <mxCell id="fmt" value="lib/format.ts: angka, WIB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;" vertex="1" parent="shared">
-          <mxGeometry x="400" y="40" width="170" height="45" as="geometry"/>
-        </mxCell>
-        <mxCell id="risk" value="lib/risk.ts: warna, label" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;" vertex="1" parent="shared">
-          <mxGeometry x="20" y="105" width="170" height="45" as="geometry"/>
-        </mxCell>
-        <mxCell id="uic" value="components/ui (shadcn)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;" vertex="1" parent="shared">
-          <mxGeometry x="210" y="105" width="170" height="45" as="geometry"/>
-        </mxCell>
-        <mxCell id="c1" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="map" target="query">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="c2" value="set input" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="sim" target="simst">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="c3" value="keputusan" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="rec" target="opst">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="c4" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="rec" target="query">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="c5" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="query" target="simsvc">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="c6" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="query" target="narr">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="c7" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="map" target="data">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="c8" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="alerts" target="draft">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="c9" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="status" target="data">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="c10" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="simsvc" target="mocksim">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="c11" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="narr" target="mockllm">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="c12" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="narr" target="rule">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="c13" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="narr" target="valid">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="c14" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="data" target="schema">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="c15" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="mocksim" target="schema">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="c16" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="draft" target="risk">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-      </root>
-    </mxGraphModel>
-  </diagram>
+<mxfile host="65bd71144e">
+    <diagram id="component" name="03 Component Frontend (C4 L3)">
+        <mxGraphModel dx="647" dy="394" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1250" pageHeight="750" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="app" parent="1" style="swimlane;startSize=28;html=1;fillColor=#F8F9FA;strokeColor=#666666;rounded=1;strokeWidth=3;" value="App Shell" vertex="1">
+                    <mxGeometry height="170" width="260" x="40" y="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="router" parent="app" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="Router: /ops" vertex="1">
+                    <mxGeometry height="45" width="220" x="20" y="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="layout" parent="app" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="OpsLayout: header, ModeBanner, DisclaimerBanner" vertex="1">
+                    <mxGeometry height="50" width="220" x="20" y="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="feat" parent="1" style="swimlane;startSize=28;html=1;fillColor=#F8F9FA;strokeColor=#666666;rounded=1;strokeWidth=3;" value="Feature Modules" vertex="1">
+                    <mxGeometry height="430" width="560" x="340" y="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="map" parent="feat" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" value="map: MapView, NodeLayer, EdgeLayer, HeatmapLayer, MapLegend" vertex="1">
+                    <mxGeometry height="80" width="250" x="20" y="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="sim" parent="feat" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" value="simulation: RainfallSlider, LandUseControl, ScenarioButtons, ScenarioCompare" vertex="1">
+                    <mxGeometry height="80" width="250" x="290" y="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="charts" parent="feat" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" value="charts: DischargeChart, ProjectionChart" vertex="1">
+                    <mxGeometry height="70" width="250" x="20" y="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="rec" parent="feat" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" value="recommendation: RecommendationCard, ConfidenceBadge, SourceBadge, OperatorDecision, AuditLogPanel" vertex="1">
+                    <mxGeometry height="80" width="250" x="290" y="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="alerts" parent="feat" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" value="alerts: AlertDraftPanel" vertex="1">
+                    <mxGeometry height="60" width="250" x="20" y="240" as="geometry"/>
+                </mxCell>
+                <mxCell id="hist" parent="feat" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" value="history: TimelinePlayer" vertex="1">
+                    <mxGeometry height="60" width="250" x="290" y="240" as="geometry"/>
+                </mxCell>
+                <mxCell id="status" parent="feat" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" value="status: DataStatusPage, ServiceStatusList" vertex="1">
+                    <mxGeometry height="70" width="250" x="20" y="320" as="geometry"/>
+                </mxCell>
+                <mxCell id="state" parent="1" style="swimlane;startSize=28;html=1;fillColor=#F8F9FA;strokeColor=#666666;rounded=1;strokeWidth=3;" value="State" vertex="1">
+                    <mxGeometry height="200" width="240" x="940" y="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="simst" parent="state" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;" value="simulationStore (Zustand)" vertex="1">
+                    <mxGeometry height="45" width="200" x="20" y="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="opst" parent="state" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;" value="operatorStore (Zustand)" vertex="1">
+                    <mxGeometry height="45" width="200" x="20" y="95" as="geometry"/>
+                </mxCell>
+                <mxCell id="query" parent="state" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;" value="TanStack Query: hasil dan narasi" vertex="1">
+                    <mxGeometry height="40" width="200" x="20" y="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc" parent="1" style="swimlane;startSize=28;html=1;fillColor=#F8F9FA;strokeColor=#666666;rounded=1;strokeWidth=3;" value="Service Layer" vertex="1">
+                    <mxGeometry height="270" width="240" x="950" y="270" as="geometry"/>
+                </mxCell>
+                <mxCell id="simsvc" parent="svc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="simulationService: run" vertex="1">
+                    <mxGeometry height="45" width="200" x="20" y="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="narr" parent="svc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="narrativeService: llm, timeout, rule-based" vertex="1">
+                    <mxGeometry height="50" width="200" x="20" y="95" as="geometry"/>
+                </mxCell>
+                <mxCell id="data" parent="svc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="dataService" vertex="1">
+                    <mxGeometry height="40" width="200" x="20" y="155" as="geometry"/>
+                </mxCell>
+                <mxCell id="draft" parent="svc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="draftService: susun teks peringatan" vertex="1">
+                    <mxGeometry height="45" width="200" x="20" y="205" as="geometry"/>
+                </mxCell>
+                <mxCell id="adapt" parent="1" style="swimlane;startSize=28;html=1;fillColor=#F8F9FA;strokeColor=#666666;rounded=1;strokeWidth=3;" value="Adapter" vertex="1">
+                    <mxGeometry height="170" width="500" x="39" y="553" as="geometry"/>
+                </mxCell>
+                <mxCell id="mocksim" parent="adapt" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;" value="mockSimulation (prototipe)" vertex="1">
+                    <mxGeometry height="45" width="200" x="20" y="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="mockllm" parent="adapt" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;" value="mockLlm: delay dan gagal acak" vertex="1">
+                    <mxGeometry height="45" width="200" x="270" y="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="rule" parent="adapt" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;" value="ruleBasedNarrative: template" vertex="1">
+                    <mxGeometry height="45" width="200" x="20" y="105" as="geometry"/>
+                </mxCell>
+                <mxCell id="valid" parent="adapt" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;" value="validateNarrative: cek angka (FR-R5)" vertex="1">
+                    <mxGeometry height="45" width="200" x="270" y="105" as="geometry"/>
+                </mxCell>
+                <mxCell id="shared" parent="1" style="swimlane;startSize=28;html=1;fillColor=#F8F9FA;strokeColor=#666666;rounded=1;strokeWidth=3;" value="Shared" vertex="1">
+                    <mxGeometry height="170" width="600" x="580" y="554" as="geometry"/>
+                </mxCell>
+                <mxCell id="schema" parent="shared" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;" value="schemas (Zod)" vertex="1">
+                    <mxGeometry height="45" width="170" x="20" y="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="i18n" parent="shared" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;" value="i18n/id.ts" vertex="1">
+                    <mxGeometry height="45" width="170" x="210" y="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="fmt" parent="shared" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;" value="lib/format.ts: angka, WIB" vertex="1">
+                    <mxGeometry height="45" width="170" x="400" y="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="risk" parent="shared" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;" value="lib/risk.ts: warna, label" vertex="1">
+                    <mxGeometry height="45" width="170" x="20" y="105" as="geometry"/>
+                </mxCell>
+                <mxCell id="uic" parent="shared" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;" value="components/ui (shadcn)" vertex="1">
+                    <mxGeometry height="45" width="170" x="210" y="105" as="geometry"/>
+                </mxCell>
+                <mxCell id="c1" edge="1" parent="1" source="map" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" target="query" value="">
+                    <mxGeometry relative="1" x="-0.2059" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="485" y="20"/>
+                            <mxPoint x="1210" y="20"/>
+                            <mxPoint x="1210" y="200"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="c2" edge="1" parent="1" source="sim" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" target="simst" value="set input">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="900" y="102.5"/>
+                            <mxPoint x="900" y="102.5"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="c3" edge="1" parent="1" source="rec" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" target="opst" value="keputusan">
+                    <mxGeometry relative="1" x="-0.2711" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="920" y="190"/>
+                            <mxPoint x="920" y="157.5"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="c4" edge="1" parent="1" source="rec" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" target="query" value="">
+                    <mxGeometry relative="1" x="0.1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="900" y="210"/>
+                            <mxPoint x="900" y="210"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="c5" edge="1" parent="1" source="query" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" target="simsvc" value="">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1120" y="290"/>
+                            <mxPoint x="1120" y="290"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="c6" edge="1" parent="1" source="query" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" target="narr" value="">
+                    <mxGeometry relative="1" x="-0.0345" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1210" y="220"/>
+                            <mxPoint x="1210" y="390"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="c7" edge="1" parent="1" source="map" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" target="data" value="">
+                    <mxGeometry relative="1" x="-0.2694" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="470" y="10"/>
+                            <mxPoint x="1230" y="10"/>
+                            <mxPoint x="1230" y="445"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="c8" edge="1" parent="1" source="alerts" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" target="draft" value="">
+                    <mxGeometry relative="1" x="0.1455" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="485" y="350"/>
+                            <mxPoint x="960" y="350"/>
+                            <mxPoint x="960" y="497.5"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="c9" edge="1" parent="1" source="status" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" target="data" value="">
+                    <mxGeometry relative="1" x="0.0127" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="680" y="395"/>
+                            <mxPoint x="680" y="440"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="c10" edge="1" parent="1" source="simsvc" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" target="mocksim" value="">
+                    <mxGeometry relative="1" x="-0.2171" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="910" y="332.5"/>
+                            <mxPoint x="910" y="520"/>
+                            <mxPoint x="30" y="520"/>
+                            <mxPoint x="30" y="602.5"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="c11" edge="1" parent="1" source="narr" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" target="mockllm" value="">
+                    <mxGeometry relative="1" x="-0.034" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="930" y="400"/>
+                            <mxPoint x="930" y="490"/>
+                            <mxPoint x="530" y="490"/>
+                            <mxPoint x="530" y="602.5"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="c12" edge="1" parent="1" source="narr" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" target="rule" value="">
+                    <mxGeometry relative="1" x="-0.2429" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="930" y="390"/>
+                            <mxPoint x="930" y="480"/>
+                            <mxPoint x="10" y="480"/>
+                            <mxPoint x="10" y="667.5"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="c13" edge="1" parent="1" source="narr" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" target="valid" value="">
+                    <mxGeometry relative="1" x="-0.0118" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="930" y="410"/>
+                            <mxPoint x="930" y="500"/>
+                            <mxPoint x="550" y="500"/>
+                            <mxPoint x="550" y="667.5"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="c14" edge="1" parent="1" source="data" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" target="schema" value="">
+                    <mxGeometry relative="1" x="-0.0098" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="940" y="450"/>
+                            <mxPoint x="940" y="540"/>
+                            <mxPoint x="685" y="540"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="c15" edge="1" parent="1" source="mocksim" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" target="schema" value="">
+                    <mxGeometry relative="1" x="-0.0227" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="280" y="602.5"/>
+                            <mxPoint x="280" y="740"/>
+                            <mxPoint x="560" y="740"/>
+                            <mxPoint x="560" y="602.5"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="c16" edge="1" parent="1" source="draft" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" target="risk" value="">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1210" y="497.5"/>
+                            <mxPoint x="1210" y="740"/>
+                            <mxPoint x="685" y="740"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
 </mxfile>

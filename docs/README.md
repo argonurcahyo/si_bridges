@@ -58,8 +58,15 @@ Pemilik: Tim SWE (Argo Nurcahyo, Yovi Maulana Nugraha). Tim AI (Jhonathan Putro 
 5. `ui-prototype/README.md`
 6. Sisanya sesuai kebutuhan
 
-### Diagram Editable (`diagrams/`)
+### Rencana (`plan/`)
 
+| Dokumen | Isi |
+|---|---|
+| `plan/README.md` | Indeks rencana dan cara pakai |
+| `plan/web-publik.md` | Rencana web publik: snapshot, data desa, zonasi, offline (Q0–Q7) |
+| `plan/dashboard.md` | Status dashboard P0–P5 dan sisa pekerjaan P6 |
+
+### Diagram Editable (`diagrams/`)
 File `.drawio` dapat dibuka di [diagrams.net](https://app.diagrams.net) atau ekstensi VS Code "Draw.io Integration".
 
 | File | Diagram |
@@ -84,7 +91,7 @@ Sequence, state, dan ERD masih tersedia dalam Mermaid di `analysis/` dan `archit
 
 ## Belum Ada (Tahap Berikutnya)
 
-- Mockup visual PNG (dibuat dari prototipe React)
-- Kode prototipe di `apps/dashboard/`
 - Kontrak API (`api-contract.md`)
 - Hasil uji usability
+- Halaman web publik (rencana: `plan/web-publik.md`)
+- Playwright e2e dan audit aksesibilitas (P6 dashboard)

@@ -117,6 +117,9 @@ Catatan:
 ## Dokumentasi
 
 - [Dokumentasi lengkap](docs/README.md)
+- [Rencana pengembangan](docs/plan/README.md)
+- [Rencana web publik](docs/plan/web-publik.md)
+- [Rencana dashboard & sisa P6](docs/plan/dashboard.md)
 - [Requirement](docs/analysis/requirements.md)
 - [Arsitektur](docs/architecture/01-context.md)
 - [UI prototipe & screenshot](docs/ui-prototype/README.md)
