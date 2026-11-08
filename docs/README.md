@@ -1,8 +1,8 @@
-# Dokumentasi HydroGraph-AI
+# Dokumentasi HydroTwin-AI
 
-Dokumentasi untuk Dashboard Operasional. Status: **draf v0.1** (belum ditinjau tim).
+Dokumentasi untuk prototipe HydroTwin-AI: Dashboard Operasional, Konsol Perencana, dan PWA Warga. Status: **draf v0.2** (belum ditinjau tim).
 
-![Tampilan dashboard](ui-prototype/screenshots/01-overview.png)
+![Konsol Perencana](ui-prototype/screenshots/12-konsol-perencana.png)
 
 Pemilik: Tim SWE (Argo Nurcahyo, Yovi Maulana Nugraha). Tim AI (Jhonathan Putro Siahaan, Eka Miftakhul Rachmawati, Meidiana Rahmawati) memberi masukan untuk data, simulasi, dan LLM.
 
@@ -33,6 +33,7 @@ Pemilik: Tim SWE (Argo Nurcahyo, Yovi Maulana Nugraha). Tim AI (Jhonathan Putro 
 | `03-component-frontend.md` | C4 level 3, komponen frontend dan kontrak layanan |
 | `04-deployment.md` | Deployment prototipe, staging, dan produksi |
 | `05-arsitektur-si.md` | Tiga lapisan SI, status komponen, pipeline pemodelan |
+| `06-arsitektur-spbe.md` | Arsitektur SPBE 6 domain untuk HydroTwin-AI |
 | `sequence.md` | Sequence diagram: slider, narasi & fallback, keputusan, draf |
 | `adr/ADR-001` sampai `ADR-006` | Keputusan arsitektur |
 
@@ -49,6 +50,7 @@ Pemilik: Tim SWE (Argo Nurcahyo, Yovi Maulana Nugraha). Tim AI (Jhonathan Putro 
 | `a11y-checklist.md` | Checklist aksesibilitas WCAG 2.1 AA |
 | `usability-notes.md` | Template uji pengguna |
 | `screenshots/` | Tangkapan layar prototipe (10 gambar) |
+| `hydrotwin/` | Mockup HydroTwin-AI: konsol perencana + PWA, sumber HTML dan PNG |
 
 ## Urutan Membaca
 

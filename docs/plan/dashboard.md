@@ -85,3 +85,28 @@ scripts/                            build-geo, build-sungai-osm, build-terrain, 
 - E2E dan audit aksesibilitas lulus.
 - Build produksi berjalan dan ukuran bundle terkendali.
 - Panduan demo dan screenshot final tersedia.
+
+---
+
+## 7. Integrasi HydroTwin-AI
+
+Selesai pada November 2026. Dashboard operator tetap berjalan; dua tampilan baru ditambahkan tanpa menghapus fitur lama.
+
+| Bagian | Status | Catatan |
+|---|---|---|
+| Data kelurahan | Selesai | 237 kelurahan dari SHP BPS 2020, dipotong ke koridor; `scripts/build-kelurahan-geo.py` |
+| Heatmap kedalaman | Selesai | Layer MapLibre `kelurahan-fill`, warna sesuai `kedalamanM`, hover dan klik |
+| Parameter skenario | Selesai | Hujan 24 jam, pasang, RTH, moratorium; store terpisah dari simulasi operator |
+| Dampak skenario | Selesai | Luas genangan, RW terdampak, puncak, keyakinan, grafik empat opsi |
+| Executive Brief | Selesai | Template deterministik, bukan LLM; label draf dan catatan mock |
+| PWA warga | Selesai | Rute `/warga`, kartu mobile, peta kelurahan, status persetujuan operator |
+| Navigasi | Selesai | Header: Operator, Perencana, Warga |
+| Sisa | Belum | E2E, audit aksesibilitas, performa, skrip demo untuk tiga rute |
+
+### Batasan yang disengaja
+
+- Model kedalaman masih mock (`engine/planner.ts`), bukan HEC-RAS/GNN.
+- Angka RW adalah perkiraan dari luas kelurahan, bukan data RW resmi.
+- PWA warga belum memakai service worker atau cache offline.
+- Status persetujuan membaca log keputusan operator di store, belum snapshot publik.
+

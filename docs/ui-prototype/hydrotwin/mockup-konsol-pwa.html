@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>HydroTwin-AI — Mockup Konsol Perencana dan PWA</title>
+<style>
+  :root{
+    --navy:#16324F; --ink:#0F172A; --muted:#64748B; --line:#E2E8F0;
+    --blue:#2563EB; --blue-soft:#EFF6FF; --orange:#EA580C; --amber:#F59E0B;
+    --red:#DC2626; --green:#059669; --cream:#FFFBEB;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:#fff;font-family:"Segoe UI",system-ui,sans-serif;color:var(--ink)}
+  .canvas{position:relative;width:2055px;height:1185px;padding:20px;display:flex;gap:40px;background:#fff}
+
+  /* ---------- konsol ---------- */
+  .console{position:relative;width:1575px;border:2px solid var(--line);border-radius:16px;background:#fff;overflow:hidden;display:flex;flex-direction:column}
+  .head{height:74px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 26px}
+  .head .kiri{display:flex;align-items:center;gap:14px;font-size:24px}
+  .head .brand{font-weight:700;letter-spacing:.2px}
+  .head .pipa{width:1px;height:30px;background:#3B5573}
+  .head .sub{color:#BFD3E6;font-size:21px}
+  .head .tag{font-size:16px;letter-spacing:.6px;color:#FCD34D;font-weight:600}
+
+  .body{display:grid;grid-template-columns:355px 540px 1fr;gap:20px;padding:18px 20px 0;flex:1}
+  .panel{border:1.5px solid var(--line);border-radius:12px;background:#fff;padding:16px;position:relative;display:flex;flex-direction:column}
+  .panel h2{margin:0;font-size:23px;font-weight:700}
+  .panel .hint{margin:2px 0 14px;font-size:15px;color:var(--muted)}
+  .sumber{margin-top:auto;padding-top:12px;font-size:13px;color:var(--muted);border-top:1px dashed var(--line)}
+
+  /* skenario */
+  .row{margin-bottom:18px}
+  .row .atas{display:flex;justify-content:space-between;align-items:baseline;font-size:17px;margin-bottom:8px}
+  .row .val{font-weight:700;color:var(--blue)}
+  .track{position:relative;height:10px;border-radius:6px;background:#E8EEF6}
+  .track .fill{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:var(--blue)}
+  .track .knob{position:absolute;top:50%;width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid var(--blue);transform:translate(-50%,-50%);box-shadow:0 1px 4px rgba(15,23,42,.18)}
+  .toggle{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+  .switch{width:64px;height:34px;border-radius:20px;background:var(--blue);position:relative}
+  .switch::after{content:"";position:absolute;right:4px;top:4px;width:26px;height:26px;border-radius:50%;background:#fff}
+  .note{font-size:14px;color:var(--muted);margin-top:8px}
+  .btn{margin-top:8px;width:100%;height:54px;border:0;border-radius:10px;background:var(--blue);color:#fff;font-size:19px;font-weight:600}
+
+  /* peta */
+  .map{position:relative;height:505px;border-radius:10px;background:#F8FAFC;overflow:hidden;border:1px solid #EDF2F7}
+  .map svg{display:block;width:100%;height:100%}
+  .legend{margin-top:12px;display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted)}
+  .legend .bar{flex:1;height:12px;border-radius:6px;background:linear-gradient(90deg,#3B82F6,#22C55E,#FACC15,#F97316,#DC2626)}
+
+  /* dampak */
+  .metrics{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .metric{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#FCFDFE}
+  .metric .label{font-size:14px;color:var(--muted)}
+  .metric .big{font-size:29px;font-weight:700;margin-top:4px}
+  .metric .big s{color:#94A3B8;font-weight:600;font-size:20px;text-decoration-thickness:2px}
+  .metric .delta{font-size:14px;color:var(--green);font-weight:600}
+  .chart{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}
+  .chart .judul{font-size:14px;color:var(--muted);margin-bottom:10px}
+  .bars{display:flex;align-items:flex-end;gap:22px;height:170px;padding:0 6px}
+  .bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%}
+  .bar .kolom{width:100%;border-radius:5px 5px 0 0;background:#93C5FD}
+  .bar.aktif .kolom{background:var(--blue)}
+  .bar .lbl{font-size:13px;color:var(--muted)}
+  .bar .nil{font-size:13px;font-weight:600}
+
+  /* brief */
+  .brief{position:relative;flex:0 0 215px;margin:18px 20px 18px;border:2px solid #FCD34D;border-radius:12px;background:var(--cream);padding:16px 20px}
+  .brief .atas{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+  .brief h2{margin:0;font-size:23px;color:#B45309}
+  .brief .status{font-size:14px;color:#92400E;background:#FEF3C7;border:1px solid #FCD34D;border-radius:999px;padding:4px 12px}
+  .brief p{margin:0;font-size:18.5px;line-height:1.45;color:#3F3A2E}
+
+  /* pwa */
+  .phone{width:360px;height:980px;align-self:center;border-radius:44px;background:#0F172A;padding:11px;box-shadow:0 0 0 2px #1E293B}
+  .screen{height:100%;border-radius:34px;background:#fff;overflow:hidden;display:flex;flex-direction:column}
+  .pwa-head{padding:26px 22px 14px;text-align:center;border-bottom:1px solid var(--line)}
+  .pwa-head .nama{font-size:26px;font-weight:700}
+  .pwa-head .lokasi{font-size:14px;color:var(--muted);margin-top:4px}
+  .alert{margin:16px 18px;border-radius:16px;background:linear-gradient(160deg,#F59E0B,#EA580C);color:#fff;padding:20px;text-align:center}
+  .alert .level{font-size:38px;font-weight:800;letter-spacing:.5px}
+  .alert .d1{font-size:16px;margin-top:8px}
+  .alert .d2{font-size:15px;margin-top:6px;opacity:.95}
+  .minimap{margin:0 18px;border:1px solid var(--line);border-radius:12px;overflow:hidden;position:relative;height:190px;background:#F8FAFC}
+  .minimap svg{display:block;width:100%;height:100%}
+  .minimap .tag{position:absolute;top:8px;left:0;right:0;text-align:center;font-size:12px;color:var(--muted)}
+  .meta{display:flex;justify-content:space-between;padding:10px 20px;font-size:13px;color:var(--muted)}
+  .langkah{padding:4px 18px 0}
+  .langkah .t{font-size:17px;font-weight:700;margin-bottom:12px}
+  .step{display:flex;gap:12px;margin-bottom:16px;align-items:flex-start}
+  .step .n{flex:0 0 30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px}
+  .step .teks{font-size:15.5px;line-height:1.3}
+  .step .teks small{display:block;color:var(--muted);font-size:13px;margin-top:3px}
+  .jelas{margin:2px 18px 0;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#F8FAFC}
+  .jelas .t{font-size:14px;font-weight:700;margin-bottom:4px}
+  .jelas p{margin:0;font-size:13px;color:var(--muted);line-height:1.35}
+  .ok{margin:auto 18px 14px;border:1.5px solid #6EE7B7;background:#ECFDF5;color:#047857;border-radius:10px;padding:11px;text-align:center;font-size:14.5px;font-weight:600}
+  .pwa-foot{text-align:center;font-size:12px;color:var(--muted);padding:0 0 18px}
+
+  /* callout */
+  .callout{position:absolute;width:38px;height:38px;border-radius:50%;background:var(--amber);color:#fff;font-weight:800;font-size:19px;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 2px 6px rgba(15,23,42,.25);z-index:5}
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <!-- ============ KONSOL ============ -->
+  <div class="console">
+    <div class="head">
+      <div class="kiri">
+        <span class="brand">HydroTwin-AI</span>
+        <span class="pipa"></span>
+        <span class="sub">Konsol Perencana: Koridor Ciliwung (Depok – Manggarai)</span>
+      </div>
+      <span class="tag">CONTOH ILUSTRATIF (data sintetis)</span>
+    </div>
+
+    <div class="body">
+      <!-- skenario -->
+      <section class="panel">
+        <div class="callout" style="right:-14px;top:-14px">1</div>
+        <h2>Skenario</h2>
+        <p class="hint">Parameter kebijakan</p>
+
+        <div class="row">
+          <div class="atas"><span>Hujan 24 jam</span><span class="val">180 mm</span></div>
+          <div class="track"><span class="fill" style="width:72%"></span><span class="knob" style="left:72%"></span></div>
+        </div>
+
+        <div class="row">
+          <div class="atas"><span>Pasang laut</span><span class="val">+0,4 m</span></div>
+          <div class="track"><span class="fill" style="width:40%"></span><span class="knob" style="left:40%"></span></div>
+        </div>
+
+        <div class="row">
+          <div class="atas"><span>RTH Depok</span><span class="val">+15%</span></div>
+          <div class="track"><span class="fill" style="width:55%"></span><span class="knob" style="left:55%"></span></div>
+        </div>
+
+        <div class="row">
+          <div class="atas"><span>Moratorium air tanah</span></div>
+          <div class="toggle"><span class="note" style="margin:0">100% mulai 2027</span><span class="switch"></span></div>
+        </div>
+
+        <button class="btn">Jalankan simulasi</button>
+        <div class="sumber">Skenario hujan 2–100 tahun; RTH dari RDTR; pasang dari BIG.</div>
+      </section>
+
+      <!-- peta -->
+      <section class="panel">
+        <div class="callout" style="right:-14px;top:-14px">2</div>
+        <h2>Peta kedalaman</h2>
+        <p class="hint">Per kelurahan · skenario aktif</p>
+        <div class="map">
+          <svg viewBox="0 0 540 505" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="air" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#60A5FA"/><stop offset="1" stop-color="#2563EB"/>
+              </linearGradient>
+            </defs>
+            <rect width="540" height="505" fill="#F8FAFC"/>
+            <path d="M150 -10 C 180 80, 250 120, 262 190 C 274 262, 330 330, 352 520"
+                  fill="none" stroke="#93C5FD" stroke-width="18" opacity=".55"/>
+            <path d="M150 -10 C 180 80, 250 120, 262 190 C 274 262, 330 330, 352 520"
+                  fill="none" stroke="#3B82F6" stroke-width="2" opacity=".5"/>
+
+            <polygon points="40,40 205,22 228,145 118,168 52,132" fill="#60A5FA" stroke="#2563EB" stroke-width="2"/>
+            <text x="118" y="82" font-size="15" font-weight="700" fill="#0F172A">Pejaten Timur</text>
+            <text x="148" y="106" font-size="14" fill="#1E3A8A">62 cm</text>
+
+            <polygon points="232,140 372,118 392,242 250,262 214,196" fill="#FBBF24" stroke="#D97706" stroke-width="2"/>
+            <text x="292" y="180" font-size="15" font-weight="700" fill="#0F172A">Cawang</text>
+            <text x="300" y="204" font-size="14" fill="#78350F">88 cm</text>
+
+            <polygon points="92,178 226,166 258,286 122,312 84,240" fill="#EF4444" stroke="#B91C1C" stroke-width="2"/>
+            <text x="150" y="230" font-size="15" font-weight="700" fill="#fff">Bidara Cina</text>
+            <text x="170" y="254" font-size="14" fill="#FEE2E2">128 cm</text>
+
+            <polygon points="120,318 252,292 292,404 146,430 112,372" fill="#F59E0B" stroke="#B45309" stroke-width="2"/>
+            <text x="150" y="362" font-size="15" font-weight="700" fill="#0F172A">Kampung Melayu</text>
+            <text x="196" y="386" font-size="14" fill="#78350F">96 cm</text>
+
+            <text x="360" y="462" font-size="12" fill="#64748B">hilir: Manggarai</text>
+          </svg>
+        </div>
+        <div class="legend"><span>0</span><span class="bar"></span><span>&gt;150 cm</span></div>
+        <div class="sumber">Klik kelurahan untuk melihat RW dan waktu puncak.</div>
+      </section>
+
+      <!-- dampak -->
+      <section class="panel">
+        <div class="callout" style="right:-14px;top:-14px">3</div>
+        <h2>Dampak skenario</h2>
+        <p class="hint">Dasar → dengan kebijakan</p>
+
+        <div class="metrics">
+          <div class="metric">
+            <div class="label">Luas genangan</div>
+            <div class="big"><s>142</s> → 118 ha</div>
+            <div class="delta">-17%</div>
+          </div>
+          <div class="metric">
+            <div class="label">RW terdampak</div>
+            <div class="big"><s>38</s> → 29</div>
+            <div class="delta">-9 RW</div>
+          </div>
+          <div class="metric">
+            <div class="label">Puncak di Kampung Melayu</div>
+            <div class="big">+3 j 10 m</div>
+            <div class="delta" style="color:var(--muted)">dari awal hujan</div>
+          </div>
+          <div class="metric">
+            <div class="label">Keyakinan model</div>
+            <div class="big">78%</div>
+            <div class="delta" style="color:var(--muted)">rentang ±11–22%</div>
+          </div>
+        </div>
+
+        <div class="chart">
+          <div class="judul">Luas genangan per opsi kebijakan (ha)</div>
+          <div class="bars">
+            <div class="bar"><span class="nil">142</span><div class="kolom" style="height:120px"></div><span class="lbl">Dasar</span></div>
+            <div class="bar"><span class="nil">118</span><div class="kolom" style="height:100px"></div><span class="lbl">RTH</span></div>
+            <div class="bar"><span class="nil">139</span><div class="kolom" style="height:117px"></div><span class="lbl">Morat.</span></div>
+            <div class="bar aktif"><span class="nil">110</span><div class="kolom" style="height:93px"></div><span class="lbl">Gabung</span></div>
+          </div>
+        </div>
+        <div class="sumber">Angka dari model hidrodinamika; rentang dari ensemble 30 run.</div>
+      </section>
+    </div>
+
+    <!-- brief -->
+    <section class="brief">
+      <div class="callout" style="right:-14px;top:-14px">4</div>
+      <div class="atas">
+        <h2>Executive Brief</h2>
+        <span class="status">draf SI, menunggu tinjauan analis</span>
+      </div>
+      <p>
+        Pada hujan 180 mm/24 jam dan pasang +0,4 m, penambahan RTH Depok 15% menurunkan luas genangan
+        koridor sekitar 17% (rentang 11–22%) dan mengurangi 9 RW terdampak, terutama di Bidara Cina dan
+        Kampung Melayu. Moratorium air tanah belum mengubah hasil 2027 secara berarti; efeknya baru
+        terlihat pada horizon lebih dari 5 tahun. Kombinasi keduanya paling efektif (-18%). Semua angka
+        berasal dari model hidrodinamika; SI hanya menyusun narasi dan merujuk pasal RDTR yang relevan.
+        Ketidakpastian utama: akurasi DEM dan data TMA.
+      </p>
+    </section>
+
+  </div>
+
+  <!-- ============ PWA ============ -->
+  <div class="phone" style="position:relative">
+    <div class="screen">
+      <div class="pwa-head">
+        <div class="nama">HydroTwin Siaga</div>
+        <div class="lokasi">RW 04, Kampung Melayu (lokasi di perangkat)</div>
+      </div>
+
+      <div class="alert">
+        <div class="level">SIAGA 2</div>
+        <div class="d1">Genangan 80–110 cm · 19.40–21.00</div>
+        <div class="d2">Puncak sekitar 3 jam lagi</div>
+      </div>
+
+      <div class="minimap">
+        <div class="tag">posisi Anda</div>
+        <svg viewBox="0 0 320 190" xmlns="http://www.w3.org/2000/svg">
+          <rect width="320" height="190" fill="#F8FAFC"/>
+          <polygon points="12,18 120,8 132,80 40,94" fill="#60A5FA" stroke="#2563EB" stroke-width="1.5"/>
+          <polygon points="134,78 238,62 250,132 142,146" fill="#FBBF24" stroke="#D97706" stroke-width="1.5"/>
+          <polygon points="30,96 140,82 152,160 44,170" fill="#EF4444" stroke="#B91C1C" stroke-width="1.5"/>
+          <polygon points="154,148 262,134 272,182 164,186" fill="#F59E0B" stroke="#B45309" stroke-width="1.5"/>
+          <circle cx="128" cy="112" r="9" fill="#fff" stroke="#16324F" stroke-width="3"/>
+          <circle cx="128" cy="112" r="3.5" fill="#16324F"/>
+        </svg>
+      </div>
+
+      <div class="meta"><span>Keyakinan model 78%</span><span>Pembaruan 18:40</span></div>
+
+      <div class="langkah">
+        <div class="t">Langkah cepat</div>
+        <div class="step"><span class="n">1</span><span class="teks">Naikkan dokumen dan barang ke lantai atas</span></div>
+        <div class="step"><span class="n">2</span><span class="teks">Siapkan tas siaga dan obat</span></div>
+        <div class="step"><span class="n">3</span><span class="teks">Menuju posko terdekat<small>data BPBD: 450 m, rute aman</small></span></div>
+      </div>
+
+      <div class="jelas">
+        <div class="t">Apa arti Siaga 2?</div>
+        <p>Air diperkirakan masuk ke permukiman. Ikuti arahan RW, siapkan dokumen, dan pantau pembaruan tiap 30 menit.</p>
+      </div>
+
+      <div class="ok">Disetujui operator BPBD 18:40</div>
+      <div class="pwa-foot">Angka: model hidrodinamika · Narasi: SI</div>
+    </div>
+    <div class="callout" style="right:-14px;top:8px">5</div>
+  </div>
+
+</div>
+</body>
+</html>

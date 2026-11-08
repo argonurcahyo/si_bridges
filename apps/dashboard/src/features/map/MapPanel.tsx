@@ -1,4 +1,4 @@
-﻿import type { FeatureCollection, Point } from "geojson";
+﻿import type { FeatureCollection, MultiPolygon, Point, Polygon } from "geojson";
 import { Layers } from "lucide-react";
 import { lazy, Suspense, useState } from "react";
 import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import type { KelurahanPropertiesPeta } from "@/engine/planner";
 import { teks } from "@/i18n/id";
 import type { NodeProperties } from "@/services/geoService";
 import { layerAwal, type MapLayers } from "./mapLayers";
@@ -19,6 +20,8 @@ type MapPanelProps = {
   selectedId: string | null;
   onSelect: (id: string) => void;
   theme: "dark" | "light";
+  kelurahan?: FeatureCollection<Polygon | MultiPolygon, KelurahanPropertiesPeta>;
+  onSelectKelurahan?: (kode: string) => void;
 };
 
 function PetaGagal({ onRetry }: { onRetry?: () => void }) {
@@ -48,7 +51,14 @@ function PetaMemuat() {
   );
 }
 
-export function MapPanel({ nodes, selectedId, onSelect, theme }: MapPanelProps) {
+export function MapPanel({
+  nodes,
+  selectedId,
+  onSelect,
+  theme,
+  kelurahan,
+  onSelectKelurahan,
+}: MapPanelProps) {
   const [mode, setMode] = useState<"2d" | "3d">("2d");
   const [skala, setSkala] = useState(6);
   const [tampilan, setTampilan] = useState<MapViewMode>("ciliwung");
@@ -63,6 +73,16 @@ export function MapPanel({ nodes, selectedId, onSelect, theme }: MapPanelProps) 
 
   const aktifkanLayer = (kunci: keyof MapLayers) => (aktif: boolean) =>
     setLayers((sebelumnya) => ({ ...sebelumnya, [kunci]: aktif }));
+
+  const daftarLayer: Array<[keyof MapLayers, string]> = [
+    ["sungai", teks.peta.layerSungai],
+    ["alur", teks.peta.layerAlur],
+    ["node", teks.peta.layerNode],
+    ["kecamatan", teks.peta.layerKecamatan],
+    ["batas", teks.peta.layerBatas],
+    ["masker", teks.peta.layerMasker],
+  ];
+  if (kelurahan) daftarLayer.splice(4, 0, ["kedalaman", teks.peta.layerKedalaman]);
 
   return (
     <section className="space-y-4">
@@ -150,6 +170,8 @@ export function MapPanel({ nodes, selectedId, onSelect, theme }: MapPanelProps) 
               theme={theme}
               view={tampilan}
               exaggeration={skala}
+              kelurahan={kelurahan}
+              onSelectKelurahan={onSelectKelurahan}
             />
           </Suspense>
         </ErrorBoundary>
@@ -160,16 +182,7 @@ export function MapPanel({ nodes, selectedId, onSelect, theme }: MapPanelProps) 
           <IconChip icon={Layers} tone="cyan" className="size-7 rounded-lg" />
           {teks.peta.layer}
         </div>
-        {(
-          [
-            ["sungai", teks.peta.layerSungai],
-            ["alur", teks.peta.layerAlur],
-            ["node", teks.peta.layerNode],
-            ["kecamatan", teks.peta.layerKecamatan],
-            ["batas", teks.peta.layerBatas],
-            ["masker", teks.peta.layerMasker],
-          ] as const
-        ).map(([kunci, label]) => (
+        {daftarLayer.map(([kunci, label]) => (
           <div key={kunci} className="flex items-center gap-2">
             <Switch
               id={`layer-${kunci}`}
@@ -213,6 +226,19 @@ export function MapPanel({ nodes, selectedId, onSelect, theme }: MapPanelProps) 
           Sungai Ciliwung
         </span>
       </div>
+
+      {kelurahan ? (
+        <div className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-2 text-xs">
+          <span>{teks.peta.legendaKedalaman}</span>
+          <span>0</span>
+          <span
+            className="h-2.5 w-40 rounded-full bg-gradient-to-r from-sky-100 via-yellow-300 to-red-600"
+            aria-hidden="true"
+          />
+          <span>&gt;1,5 m</span>
+          <span className="text-muted-foreground/80">{teks.peta.catatanKedalaman}</span>
+        </div>
+      ) : null}
     </section>
   );
 }

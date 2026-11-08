@@ -5,6 +5,7 @@ export type MapLayers = {
   kecamatan: boolean;
   batas: boolean;
   masker: boolean;
+  kedalaman: boolean;
 };
 
 export const layerAwal: MapLayers = {
@@ -14,4 +15,5 @@ export const layerAwal: MapLayers = {
   kecamatan: true,
   batas: true,
   masker: true,
+  kedalaman: true,
 };

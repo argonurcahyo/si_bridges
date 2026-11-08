@@ -12,7 +12,7 @@ const STORAGE_KEY = "hydrograph-theme";
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 function temaAwal(): Theme {
-  return localStorage.getItem(STORAGE_KEY) === "light" ? "light" : "dark";
+  return localStorage.getItem(STORAGE_KEY) === "dark" ? "dark" : "light";
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {

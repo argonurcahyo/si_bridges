@@ -1,5 +1,7 @@
 # Arsitektur SI — Tiga Lapisan
 
+> Catatan: dokumen ini menjelaskan konsep **HydroGraph-AI**. Arsitektur terkini **HydroTwin-AI** ada di `06-arsitektur-spbe.md`.
+
 Dokumen ini menjelaskan pembagian peran SI pada HydroGraph-AI dan menjadi rujukan Gambar 1–2 di proposal.
 
 ![Arsitektur SI tiga lapisan](figures/arsitektur-sistem.png)

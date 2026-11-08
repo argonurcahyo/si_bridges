@@ -1,66 +1,59 @@
-# HydroGraph-AI
+# HydroTwin-AI
 
 Super Intelligence (SI) untuk pemantauan, prediksi limpasan mikro, dan skenario mitigasi banjir Jakarta: model SI mengklasifikasi dan menarasikan, model numerik menghitung, operator memutuskan.
 
-Repositori ini berisi **artefak analisis, arsitektur, dan prototipe Dashboard Operasional** untuk tim HydroAI Labs (SI Bridges Indonesia). Fokus tahap ini: dashboard operator BPBD/DSDA. Web publik dan pemodelan hidrologi penuh berada di luar lingkup.
+Prototipe memiliki tiga tampilan: **Konsol Perencana** (`/rencana`), **Dashboard Operasional** (`/ops`), dan **PWA Warga** (`/warga`).
 
 > **Semua data pada prototipe adalah mock.** Sistem ini alat bantu keputusan (DSS); keputusan akhir ada pada petugas berwenang.
 
-## Tangkapan Layar
+## Tampilan Utama — Konsol Perencana
 
-### Tampilan keseluruhan
+![Konsol Perencana](docs/ui-prototype/screenshots/12-konsol-perencana.png)
 
-![Tampilan keseluruhan dashboard](docs/ui-prototype/screenshots/01-overview.png)
+Perencana menggeser hujan 24 jam, pasang laut, RTH Depok, dan moratorium air tanah; peta menampilkan heatmap kedalaman per kelurahan, panel dampak menghitung luas genangan dan RW terdampak, lalu Executive Brief merangkumnya untuk analis.
 
-### Panel simulasi
+## Tiga Tampilan
 
-![Panel simulasi](docs/ui-prototype/screenshots/02-panel-simulasi.png)
+| Rute | Tampilan | Untuk siapa |
+|---|---|---|
+| `/rencana` | Konsol Perencana | Perencana Pemprov DKI, Kota Depok, Kabupaten Bogor |
+| `/ops` | Dashboard Operasional | Operator BPBD dan DSDA |
+| `/warga` | PWA Warga | Warga RW bantaran |
 
-### Peta jaringan (2D)
+### PWA Warga
 
-![Peta 2D](docs/ui-prototype/screenshots/03-panel-peta.png)
+![PWA Warga](docs/ui-prototype/screenshots/11-warga-pwa.png)
 
-### Grafik debit dan proyeksi
+Level siaga, kisaran kedalaman, puncak, peta kelurahan dengan posisi di perangkat, langkah evakuasi, dan status persetujuan operator.
 
-![Grafik debit dan proyeksi](docs/ui-prototype/screenshots/04-panel-grafik.png)
+### Dashboard Operasional
 
-### Rekomendasi taktis
+![Dashboard Operasional](docs/ui-prototype/screenshots/01-overview.png)
 
-![Rekomendasi taktis](docs/ui-prototype/screenshots/05-panel-rekomendasi.png)
+Monitoring TMA, simulasi debit, peta 2D/3D, rekomendasi taktis, keputusan operator, log audit, dan draf peringatan publik.
 
-### Log keputusan
+## Fitur
 
-![Log keputusan](docs/ui-prototype/screenshots/06-log-keputusan.png)
+**Konsol Perencana**
 
-### Detail node
+- Parameter skenario: hujan 24 jam (0–300 mm), pasang laut (0–1,2 m), RTH Depok (0–30%), moratorium air tanah.
+- Heatmap kedalaman 237 kelurahan koridor Ciliwung, warna dari kedalaman simulasi; hover dan klik untuk detail.
+- Dampak skenario: luas genangan, RW terdampak, waktu puncak, keyakinan model, grafik empat opsi kebijakan.
+- Executive Brief: draf narasi untuk analis, dengan angka dari model dan catatan mock.
+- Detail pintu air tetap tersedia lewat klik node di peta.
 
-![Detail node](docs/ui-prototype/screenshots/07-detail-node.png)
+**Dashboard Operasional**
 
-### Draf peringatan publik
+- Peta interaktif 2D/3D: centerline Ciliwung, alur simulasi, node berwarna level risiko, batas kecamatan/kabupaten/provinsi.
+- Simulasi Rational Method (mock) dengan routing DAG, proyeksi 3–6 jam, dan skor kepastian.
+- Rekomendasi dari adapter LLM (mock) dengan fallback rule-based, timeout 5 detik, dan validasi angka.
+- Keputusan operator dan log audit; draf peringatan publik tanpa pengiriman otomatis.
 
-![Draf peringatan publik](docs/ui-prototype/screenshots/08-draf-peringatan.png)
+**PWA Warga**
 
-### Status data dan layanan
-
-![Status data dan layanan](docs/ui-prototype/screenshots/09-status-data.png)
-
-### Mode 3D (terrain DEMNAS)
-
-![Mode 3D](docs/ui-prototype/screenshots/10-mode-3d.png)
-
-Penjelasan tiap komponen ada di [`docs/ui-prototype/README.md`](docs/ui-prototype/README.md).
-
-## Fitur Prototipe
-
-- Peta interaktif 2D/3D: centerline Ciliwung, alur simulasi mengikuti sungai, node berwarna level risiko, batas kecamatan/kabupaten/provinsi, basemap OSM di luar cakupan.
-- Pilihan tampilan koridor: Ciliwung, Pesanggrahan, Jabodetabek.
-- Simulasi: slider intensitas hujan, konversi lahan Depok, tiga skenario cepat, debit hilir, dan skor kepastian.
-- Grafik debit per node (baseline vs skenario) dan proyeksi volume 3–6 jam.
-- Rekomendasi taktis dari adapter LLM (mock) dengan fallback rule-based, timeout 5 detik, dan validasi angka.
-- Keputusan operator (Diterima/Ditolak/Perlu Verifikasi) dan log audit.
-- Draf peringatan publik per wilayah, hanya untuk disalin, tanpa pengiriman otomatis.
-- Status data & layanan, label data mock/sintetis/open data.
-- Mode 3D memakai terrain DEMNAS (skala vertikal 2×–8×).
+- Kartu peringatan mobile dengan level, kedalaman, waktu puncak, dan tiga langkah evakuasi.
+- Posisi GPS diproses di perangkat, tidak dikirim ke server.
+- Status "Disetujui operator BPBD" muncul setelah ada keputusan operator yang diterima.
 
 ## Menjalankan Prototipe
 
@@ -73,7 +66,11 @@ pnpm install
 pnpm dev
 ```
 
-Buka `http://localhost:5173/ops`.
+Buka salah satu rute:
+
+- `http://localhost:5173/rencana` — Konsol Perencana
+- `http://localhost:5173/ops` — Dashboard Operasional
+- `http://localhost:5173/warga` — PWA Warga
 
 Perintah lain:
 
@@ -87,13 +84,16 @@ pnpm build
 ## Struktur Repositori
 
 ```
-apps/dashboard/        Prototipe React (Vite, Tailwind, shadcn/ui, MapLibre)
-  public/geo/          GeoJSON hasil build (kecamatan, kabupaten, provinsi, Ciliwung, alur)
+apps/dashboard/        Prototipe React (Vite, Tailwind, shadcn/ui, MapLibre, Recharts)
+  public/geo/          GeoJSON: kelurahan, kecamatan, kabupaten, provinsi, Ciliwung, alur
   public/terrain/      Tile terrain-RGB dari DEMNAS
+  src/engine/          Simulasi debit dan model kedalaman perencana (mock)
+  src/features/        Map, simulasi, rekomendasi, planner, monitoring
+  src/pages/           OpsDashboardPage, PlannerPage, WargaPage
   scripts/             Skrip pembangunan data dan screenshot
 docs/                  Artefak analisis, arsitektur, dan UI
   analysis/            Requirement, use case, user story, DFD, state, ERD
-  architecture/        C4, deployment, sequence, ADR
+  architecture/        C4, SPBE 6 domain, deployment, sequence, ADR
   diagrams/            Diagram .drawio
   ui-prototype/        Wireframe, design token, interaksi, screenshot
 data/                  Data sumber lokal (SHP, DEMNAS) — tidak masuk repo
@@ -103,26 +103,39 @@ data/                  Data sumber lokal (SHP, DEMNAS) — tidak masuk repo
 
 | Data | Sumber | Status |
 |---|---|---|
+| Batas kelurahan (237) | BPS ADM4 2020, dipotong ke koridor | Open data |
 | Batas kecamatan/kabupaten/provinsi | Peta Kita (SHP) | Open data |
 | Elevasi | DEMNAS (BIG) | Open data |
-| Centerline Ciliwung | OpenStreetMap (ODbL) | Open data |
-| Sungai Pesanggrahan | OpenStreetMap (ODbL) | Open data |
-| TMA, hujan, tutupan lahan, debit | Generator internal | Mock/sintetis |
+| Centerline Ciliwung & Pesanggrahan | OpenStreetMap (ODbL) | Open data |
+| TMA, hujan, tutupan lahan, debit, kedalaman | Generator internal | Mock/sintetis |
+
+Bangun ulang poligon kelurahan:
+
+```bash
+python scripts/build-kelurahan-geo.py
+```
 
 Catatan:
+
 - Koordinat pintu air hasil snap ke centerline OSM dan **belum diverifikasi DSDA**.
+- Jumlah RW per kelurahan masih perkiraan dari luas, bukan data RW resmi.
 - Basemap OSM memerlukan internet.
 - Data sumber berukuran besar berada di `data/` dan diabaikan git.
+
+## Batasan Prototipe
+
+- Model kedalaman perencana masih mock (`engine/planner.ts`), bukan HEC-RAS/GNN.
+- PWA warga belum memakai service worker atau cache offline.
+- Status persetujuan membaca log keputusan operator di store, belum snapshot publik.
+- Dashboard operasional dan konsol perencana memakai store simulasi terpisah agar satuan mm/jam dan mm/24 jam tidak saling mengganggu.
 
 ## Dokumentasi
 
 - [Dokumentasi lengkap](docs/README.md)
-- [Rencana pengembangan](docs/plan/README.md)
-- [Rencana web publik](docs/plan/web-publik.md)
-- [Rencana dashboard & sisa P6](docs/plan/dashboard.md)
-- [Requirement](docs/analysis/requirements.md)
-- [Arsitektur](docs/architecture/01-context.md)
 - [UI prototipe & screenshot](docs/ui-prototype/README.md)
+- [Arsitektur SPBE 6 domain](docs/architecture/06-arsitektur-spbe.md)
+- [Rencana pengembangan](docs/plan/README.md)
+- [Requirement](docs/analysis/requirements.md)
 
 ## Tim
 

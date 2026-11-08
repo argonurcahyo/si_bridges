@@ -8,7 +8,8 @@
 } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useRef, useState } from "react";
-import type { FeatureCollection, Point } from "geojson";
+import type { FeatureCollection, MultiPolygon, Point, Polygon } from "geojson";
+import type { KelurahanPropertiesPeta } from "@/engine/planner";
 import type { NodeProperties } from "@/services/geoService";
 import type { MapLayers } from "./mapLayers";
 
@@ -24,6 +25,8 @@ type MapViewProps = {
   theme: "dark" | "light";
   view: MapViewMode;
   exaggeration: number;
+  kelurahan?: FeatureCollection<Polygon | MultiPolygon, KelurahanPropertiesPeta>;
+  onSelectKelurahan?: (kode: string) => void;
 };
 
 const PUSAT: Record<MapViewMode, { center: [number, number]; zoom: number }> = {
@@ -98,6 +101,8 @@ export default function MapView({
   theme,
   view,
   exaggeration,
+  kelurahan,
+  onSelectKelurahan,
 }: MapViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
@@ -105,10 +110,12 @@ export default function MapView({
 
   const onSelectRef = useRef(onSelectNode);
   const onErrorRef = useRef(onError);
+  const onSelectKelurahanRef = useRef(onSelectKelurahan);
 
   useEffect(() => {
     onSelectRef.current = onSelectNode;
     onErrorRef.current = onError;
+    onSelectKelurahanRef.current = onSelectKelurahan;
   });
 
   useEffect(() => {
@@ -129,6 +136,9 @@ export default function MapView({
     }
 
     mapRef.current = map;
+    if (import.meta.env.DEV) {
+      (window as typeof window & { __hydrotwinMap?: MapLibreMap }).__hydrotwinMap = map;
+    }
     map.addControl(new NavigationControl({ showCompass: true }), "top-left");
     map.addControl(
       new AttributionControl({
@@ -153,6 +163,7 @@ export default function MapView({
         "ciliwung",
         "pesanggrahan",
         "alur",
+        "kelurahan",
       ]) {
         map.addSource(nama, { type: "geojson", data: kosong });
       }
@@ -222,9 +233,42 @@ export default function MapView({
         source: "kecamatan",
         paint: {
           "line-color": style.kecamatanLine,
-          "line-opacity": 0.55,
-          "line-width": 0.9,
+          "line-opacity": 0.6,
+          "line-width": 1.1,
         },
+      });
+      map.addLayer({
+        id: "kelurahan-fill",
+        type: "fill",
+        source: "kelurahan",
+        layout: { visibility: "none" },
+        paint: {
+          "fill-color": [
+            "interpolate",
+            ["linear"],
+            ["get", "kedalamanM"],
+            0,
+            "#dbeafe",
+            0.2,
+            "#7dd3fc",
+            0.45,
+            "#fde047",
+            0.7,
+            "#fb923c",
+            1,
+            "#ef4444",
+            1.5,
+            "#991b1b",
+          ],
+          "fill-opacity": 0.78,
+        },
+      });
+      map.addLayer({
+        id: "kelurahan-line",
+        type: "line",
+        source: "kelurahan",
+        layout: { visibility: "none" },
+        paint: { "line-color": "#ffffff", "line-width": 0.8, "line-opacity": 0.75 },
       });
       map.addLayer({
         id: "ciliwung-glow",
@@ -344,6 +388,28 @@ export default function MapView({
         labelWilayah(event);
       });
       map.on("mouseleave", "kecamatan-fill", lepasKursor);
+
+      // Heatmap kedalaman per kelurahan.
+      map.on("mousemove", "kelurahan-fill", (event) => {
+        const fitur = event.features?.[0];
+        const p = fitur?.properties as
+          | { kelurahan?: string; kecamatan?: string; kedalamanM?: number; rw?: number }
+          | undefined;
+        if (!p) return;
+        map.getCanvas().style.cursor = "pointer";
+        popup
+          .setLngLat(event.lngLat)
+          .setText(
+            `${p.kelurahan ?? ""} · ${p.kecamatan ?? ""}\n` +
+              `${Number(p.kedalamanM ?? 0).toFixed(2)} m · ${p.rw ?? 0} RW`,
+          )
+          .addTo(map);
+      });
+      map.on("mouseleave", "kelurahan-fill", lepasKursor);
+      map.on("click", "kelurahan-fill", (event) => {
+        const kode = event.features?.[0]?.properties?.kode;
+        if (typeof kode === "string") onSelectKelurahanRef.current?.(kode);
+      });
       map.on("mousemove", "kabupaten-line", labelWilayah);
       map.on("mouseleave", "kabupaten-line", () => popup.remove());
       map.on("mousemove", "ciliwung-line", () => {
@@ -362,6 +428,13 @@ export default function MapView({
           frame = requestAnimationFrame(animasi);
         };
         frame = requestAnimationFrame(animasi);
+      }
+
+      // Batas administrasi digambar di atas heatmap agar tetap terbaca.
+      for (const id of ["provinsi-line", "kabupaten-line", "kecamatan-line"]) {
+        if (map.getLayer(id) && map.getLayer("ciliwung-glow")) {
+          map.moveLayer(id, "ciliwung-glow");
+        }
       }
 
       setSiap(true);
@@ -393,6 +466,12 @@ export default function MapView({
     if (!siap) return;
     (mapRef.current?.getSource("nodes") as GeoJSONSource | undefined)?.setData(nodes);
   }, [nodes, siap]);
+
+  useEffect(() => {
+    if (!siap) return;
+    const source = mapRef.current?.getSource("kelurahan") as GeoJSONSource | undefined;
+    source?.setData(kelurahan ?? { type: "FeatureCollection", features: [] });
+  }, [kelurahan, siap]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -434,10 +513,13 @@ export default function MapView({
     map.setLayoutProperty("nodes-terpilih", "visibility", tampil(layers.node && modeCiliwung));
     map.setLayoutProperty("kecamatan-fill", "visibility", tampil(layers.kecamatan));
     map.setLayoutProperty("kecamatan-line", "visibility", tampil(layers.kecamatan));
+    const kelurahanAktif = layers.kedalaman && Boolean(kelurahan);
+    map.setLayoutProperty("kelurahan-fill", "visibility", tampil(kelurahanAktif));
+    map.setLayoutProperty("kelurahan-line", "visibility", tampil(kelurahanAktif));
     map.setLayoutProperty("scope-mask", "visibility", tampil(layers.masker));
     map.setLayoutProperty("kabupaten-line", "visibility", tampil(layers.batas));
     map.setLayoutProperty("provinsi-line", "visibility", tampil(layers.batas));
-  }, [layers, siap, view]);
+  }, [layers, siap, view, kelurahan]);
 
   useEffect(() => {
     const map = mapRef.current;

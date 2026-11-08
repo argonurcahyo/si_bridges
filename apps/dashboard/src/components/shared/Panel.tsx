@@ -30,7 +30,7 @@ export function Panel({ title, description, icon, tone, className, children }: P
             {description ? <CardDescription>{description}</CardDescription> : null}
           </div>
         </CardHeader>
-        <CardContent>{children}</CardContent>
+        <CardContent className="flex flex-1 flex-col">{children}</CardContent>
       </Card>
     </motion.section>
   );
