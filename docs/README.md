@@ -32,6 +32,7 @@ Pemilik: Tim SWE (Argo Nurcahyo, Yovi Maulana Nugraha). Tim AI (Jhonathan Putro 
 | `02-container.md` | C4 level 2, kontainer dan protokol |
 | `03-component-frontend.md` | C4 level 3, komponen frontend dan kontrak layanan |
 | `04-deployment.md` | Deployment prototipe, staging, dan produksi |
+| `05-arsitektur-si.md` | Tiga lapisan SI, status komponen, pipeline pemodelan |
 | `sequence.md` | Sequence diagram: slider, narasi & fallback, keputusan, draf |
 | `adr/ADR-001` sampai `ADR-006` | Keputusan arsitektur |
 

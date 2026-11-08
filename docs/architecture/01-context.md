@@ -8,7 +8,7 @@ flowchart TB
     AD["Admin Data<br/>(pengguna)"]
     PUB["Masyarakat<br/>(web publik, tahap berikutnya)"]
 
-    SYS["HydroGraph-AI<br/>Sistem informasi pemantauan,<br/>prediksi limpasan mikro, dan<br/>generator skenario mitigasi banjir"]
+    SYS["HydroGraph-AI<br/>Super Intelligence (SI) untuk pemantauan,<br/>prediksi limpasan mikro, dan<br/>skenario mitigasi banjir"]
 
     LLM["Layanan LLM<br/>Gemini (mock pada prototipe)"]
     GEE["Google Earth Engine<br/>Sentinel-2, Landsat"]

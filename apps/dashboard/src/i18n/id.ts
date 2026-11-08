@@ -109,7 +109,7 @@ export const teks = {
     layerNode: "Node",
     layerKecamatan: "Batas kecamatan",
     layerBatas: "Kabupaten & provinsi",
-    layerMasker: "Masker basemap",
+    layerMasker: "Mask basemap",
     tampilan: "Tampilan peta",
     tampilanCiliwung: "Ciliwung",
     tampilanPesanggrahan: "Pesanggrahan",

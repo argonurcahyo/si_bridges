@@ -1,6 +1,6 @@
 # HydroGraph-AI
 
-Sistem informasi pemantauan, prediksi limpasan mikro, dan generator skenario mitigasi banjir Jakarta berbasis jaringan graf hidrologi dan foundation model AI.
+Super Intelligence (SI) untuk pemantauan, prediksi limpasan mikro, dan skenario mitigasi banjir Jakarta: model SI mengklasifikasi dan menarasikan, model numerik menghitung, operator memutuskan.
 
 Repositori ini berisi **artefak analisis, arsitektur, dan prototipe Dashboard Operasional** untuk tim HydroAI Labs (SI Bridges Indonesia). Fokus tahap ini: dashboard operator BPBD/DSDA. Web publik dan pemodelan hidrologi penuh berada di luar lingkup.
 
