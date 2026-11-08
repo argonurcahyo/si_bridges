@@ -1,36 +1,36 @@
 # Arsitektur SI — Tiga Lapisan
 
-> Catatan: dokumen ini menjelaskan konsep **HydroGraph-AI**. Arsitektur terkini **HydroTwin-AI** ada di `06-arsitektur-spbe.md`.
-
-Dokumen ini menjelaskan pembagian peran SI pada HydroGraph-AI dan menjadi rujukan Gambar 1–2 di proposal.
+Dokumen ini menjelaskan lapisan SI pada **HydroTwin-AI** (view subsistem). Arsitektur SPBE enam domain ada di `06-arsitektur-spbe.md`.
 
 ![Arsitektur SI tiga lapisan](figures/arsitektur-sistem.png)
 
-*Gambar 1. Lapisan persepsi & analitik, konteks & penalaran, serta generasi & antarmuka. Hijau = komponen SI, abu-abu = model numerik, oranye = keputusan manusia.*
+*Gambar 1. Lapisan persepsi & analitik, konteks & penalaran, serta generasi & antarmuka. Use case utama: BPBD/DSDA. Executive Brief untuk analis kebijakan; PWA untuk warga RW setelah snapshot disetujui operator. Hijau = komponen SI, abu-abu = numerik/aturan, oranye = keputusan manusia, biru = keluaran.*
 
 ## Prinsip
 
-1. **SI tidak menghitung debit.** Debit, waktu tiba, dan volume berasal dari graph engine deterministik (Rational Method + lag routing pada prototipe; kalibrasi hidrologi pada tahap pendampingan).
-2. **LLM tidak menerima data mentah.** Hanya JSON konteks yang sudah dihitung.
-3. **Tidak ada aktuasi otomatis.** Pintu air, pompa, dan rute evakuasi tetap kewenangan operator.
-4. **Publikasi setelah persetujuan.** Web publik hanya menampilkan snapshot yang diterima operator.
+1. **SI tidak menghitung debit.** Debit, rate of rise, dan waktu puncak berasal dari graph engine deterministik (Rational Method + lag routing pada prototipe; kalibrasi hidrologi pada tahap pendampingan).
+2. **LLM tidak menerima data mentah.** Hanya JSON konteks yang sudah dihitung, ditambah template peringatan atau potongan RDTR via RAG.
+3. **Dua jalur model.** Claude menyusun Executive Brief untuk analis kebijakan; OpenAI menulis pesan peringatan bahasa awam untuk Pengurus RW dan warga.
+4. **Tidak ada aktuasi otomatis.** Pintu air, pompa, dan rute evakuasi tetap kewenangan operator.
+5. **Publikasi setelah persetujuan.** Dashboard dan PWA hanya menampilkan snapshot yang disetujui operator.
 
 ## Komponen dan status
 
 | Komponen | Lapisan | Peran | Status prototipe |
 |---|---|---|---|
-| Random Forest (GEE) + Dynamic World | 1 · Persepsi | Klasifikasi tutupan lahan Sentinel-2 → C per sub-DAS | Rencana; C masih tabel tetap |
+| AlphaEarth Satellite Embedding (Google, Earth Engine) | 1 · Persepsi | Tutupan lahan dan imperviousness 10 m → parameter limpasan C, dengan sedikit label lapangan | Rencana; C masih tabel tetap |
 | XGBoost (status siaga) | 1 · Persepsi | Klasifikasi status siaga dari TMA, tren, hujan, debit | Rencana; level masih ambang TMA |
-| Graph engine | 1 · Analitik | Propagasi debit dan waktu tiba pada DAG | Ada (mock, belum dikalibrasi) |
-| Serializer JSON | 2 · Konteks | Mengubah hasil graph menjadi skema tetap | Sebagian (ringkasan input, belum skema formal) |
-| Gemini (Google) | 2 · Penalaran | Penalaran skenario dan rekomendasi taktis; versi generik, dikunci saat implementasi | Mock; adapter dan fallback ada |
-| Narasi & draf peringatan | 3 · Generasi | Teks rekomendasi dan peringatan per desa | Mock |
-| Validator angka | 3 · Penjaga | Mencocokkan angka narasi dengan simulasi | Ada |
-| Fallback aturan | 3 · Penjaga | Layanan tetap jalan ≤ 5 detik tanpa LLM | Ada |
-| Operator + snapshot | Manusia | Terima/tolak, tanda tangan log audit | Ada (localStorage + BroadcastChannel) |
-| Web publik | Keluaran | Zona hijau/kuning/merah per desa | Rencana (`docs/plan/web-publik.md`) |
+| Graph engine | 1 · Analitik | Debit, rate of rise, dan waktu puncak pada DAG | Ada (mock, belum dikalibrasi) |
+| Serializer JSON | 2 · Konteks | Mengubah hasil graph + fitur lahan + status menjadi skema tetap | Sebagian (ringkasan input, belum skema formal) |
+| Korpus RDTR/RTRW (RAG) | 2 · Konteks | Rujukan pasal untuk Executive Brief | Sebagian (korpus manual) |
+| Template peringatan | 2 · Konteks | Batas bahasa per level Waspada/Siaga/Awas | Ada (mock) |
+| Claude Sonnet 5.5 (Anthropic; API atau Amazon Bedrock) | 3 · Generasi | Executive Brief: analisis skenario, rujukan RDTR via RAG, selisih antar skenario | Mock; adapter dan fallback ada |
+| OpenAI generasi terbaru (OpenAI API atau Azure OpenAI) | 3 · Generasi | Menerjemahkan debit, rate of rise, dan waktu puncak menjadi pesan peringatan bahasa awam untuk RW dan warga | Mock; adapter dan fallback ada |
+| Validator + fallback | 3 · Penjaga | Mencocokkan angka narasi dengan simulasi; fallback aturan ≤ 5 detik | Ada |
+| Operator + snapshot | Manusia | Menyetujui, menandatangani log audit | Ada (localStorage + BroadcastChannel) |
+| Dashboard, PWA, Executive Brief | Keluaran | Konsol operator, peringatan warga/RW, ringkasan untuk analis | Dashboard dan PWA ada; brief masih template |
 
-Catatan model: Gemini ditulis generik. Versi dan jalur aksesnya dikunci saat implementasi, tanpa mengikat proposal ke satu platform enterprise. Random Forest dan XGBoost dilatih tim sendiri; Google Earth Engine adalah platform komputasi, bukan model SI.
+Catatan model: dua LLM dari perusahaan AS dipisah per beban kerja — Claude untuk penalaran kebijakan, OpenAI untuk bahasa awam. Keduanya diakses lewat adapter agar vendor bisa diganti. AlphaEarth adalah model fondasi geospasial, bukan LLM. Google Earth Engine adalah platform komputasi, bukan model.
 
 ## Pipeline pemodelan
 
@@ -41,27 +41,23 @@ Catatan model: Gemini ditulis generik. Versi dan jalur aksesnya dikunci saat imp
 Aturan validasi:
 
 - **Spatial split**, bukan split acak: data uji tidak bersebelahan dengan data latih.
-- Metrik dilaporkan per kelas: overall accuracy, F1, kappa. Akurasi agregat saja tidak cukup.
-- Probabilitas status siaga dikalibrasi (Brier score), karena ambang keputusan lebih penting daripada akurasi mentah.
+- Metrik dilaporkan per kelas: overall accuracy, F1, kappa.
+- Probabilitas status siaga dikalibrasi (Brier score).
 - Baseline pembanding: Dynamic World (10 m, 9 kelas) dan ESA WorldCover 2021 (10 m, 11 kelas, CC-BY-4.0).
 
-## Berkas dan cara mengubah
+## Berkas
 
 | Berkas | Fungsi |
 |---|---|
-| `figures/arsitektur-sistem.drawio` | Versi editable. Buka di https://app.diagrams.net (File > Open from > Device) atau lewat ekstensi Draw.io Integration di VS Code. |
-| `figures/arsitektur-sistem.png` | Gambar 300 dpi yang dipakai proposal. |
-| `figures/pipeline-model-si.png` | Pipeline pemodelan untuk Gambar 2. |
-| `scripts/render-drawio-architecture.py` | Generator `.drawio`. |
-| `scripts/render-architecture-figure.py` | Generator PNG (matplotlib). |
+| `figures/arsitektur-sistem.png` | Gambar 300 dpi untuk proposal |
+| `figures/pipeline-model-si.png` | Pipeline pemodelan untuk Gambar 2 |
+| `scripts/render-architecture-figure.py` | Generator PNG (matplotlib); sumber utama gambar saat ini |
+| `figures/arsitektur-sistem.drawio` | Versi editable sebelumnya (belum memuat pemisahan Claude/OpenAI) |
 
-Setiap komponen pada `.drawio` adalah **grup** berisi bilah judul dan badan teks, jadi bisa digeser, diubah, atau digandakan tanpa merusak yang lain. Warna yang dipakai: `#0F766E` (SI), `#334155` (numerik), `#B45309` (manusia), `#1D4ED8` (keluaran), `#6B7280` (fallback).
+Untuk mengubah gambar saat ini, edit `scripts/render-architecture-figure.py` lalu jalankan:
 
-Jika mengubah `.drawio`:
+```bash
+python scripts/render-architecture-figure.py
+```
 
-1. Ekspor PNG 300 dpi tanpa background (`File > Export as > PNG`, zoom/DPI 300).
-2. Timpa `figures/arsitektur-sistem.png`.
-3. Jalankan `python scripts/fill-proposal.py` lalu ekspor ulang PDF.
-
-Jangan menjalankan `render-architecture-figure.py` setelah menimpa PNG, karena skrip itu akan menulis ulang gambar dari layout matplotlib.
-
+`.drawio` lama masih bisa dipakai sebagai acuan tata letak, tetapi teks dan pembagian modelnya belum diperbarui.

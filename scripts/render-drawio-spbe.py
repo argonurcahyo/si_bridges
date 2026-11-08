@@ -135,16 +135,26 @@ def main():
     domain(795, 230, "D2", "Data dan<br>Informasi", "Data Architecture")
     domain(1055, 230, "D3", "Infrastruktur<br>SPBE", "Technology Arch.")
 
-    # --- D6 layanan
+    # --- D6 layanan: use case utama BPBD, pengguna turunan dalam teks
     y6, h6 = 35, 190
-    w6 = 521
-    x6 = [215, 757, 1299]
-    card(x6[0], y6, w6, h6,
-         "<b>Warga RW bantaran</b><br>PWA peringatan: zona risiko,<br>kisaran kedalaman, langkah evakuasi")
-    card(x6[1], y6, w6, h6,
-         "<b>Operator BPBD / DSDA</b><br>Konsol peringatan: tinjau, setujui,<br>rekomendasi taktis (hanya saran)")
-    card(x6[2], y6, w6, h6,
-         "<b>Perencana Pemprov DKI,<br>Depok, Bogor</b><br>Simulator what-if 3D + Executive Brief")
+    rect(
+        215, y6, 1000, h6,
+        f"rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor={BOX_FILL};strokeColor={BOX_LINE};strokeWidth=2;",
+    )
+    text(235, y6 + 14, 960, 22, "USE CASE UTAMA", 15, color="#B45309", bold=True, align="center")
+    text(
+        235, y6 + 44, 960, 134,
+        "<b>Operator BPBD / DSDA</b><br>Konsol peringatan: tinjau, setujui,<br>rekomendasi taktis (hanya saran).",
+        23, color=INK, align="center",
+    )
+
+    text(1245, 42, 575, 24, "PENGGUNA TURUNAN", 16, color=MUTED, bold=True, align="left")
+    text(
+        1245, 74, 575, 145,
+        "<b>Perencana Pemprov DKI, Depok, Bogor</b><br>Executive Brief dan simulator what-if.<br><br>"
+        "<b>Warga RW bantaran</b><br>PWA peringatan setelah snapshot disetujui.",
+        20, color=INK, align="left", valign="top",
+    )
 
     # --- D1 proses bisnis (chevron)
     y1, h1 = 305, 170

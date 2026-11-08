@@ -4,13 +4,13 @@ Diagram arsitektur helicopter view untuk HydroTwin-AI, mengikuti enam domain Ars
 
 ![Arsitektur SPBE HydroTwin-AI](figures/arsitektur-spbe-hydrotwin.png)
 
-*Gambar. Enam domain SPBE. Data mengalir dari bawah (D3) ke atas (D6); D5 berlaku untuk semua domain.*
+*Gambar. Arsitektur SPBE untuk use case utama BPBD/DSDA. Data mengalir dari bawah (D3) ke atas (D6); D5 berlaku untuk semua domain. Perencana (Executive Brief dan simulator what-if) serta warga RW (PWA) adalah pengguna turunan yang disebut secara tekstual, bukan kotak layanan terpisah.*
 
 ## Isi per domain
 
 | Domain | Isi |
 |---|---|
-| **D6 Layanan** | PWA warga RW, konsol operator BPBD/DSDA, simulator what-if + Executive Brief untuk perencana |
+| **D6 Layanan** | Use case utama: konsol operator BPBD/DSDA. Pengguna turunan: perencana (Executive Brief + simulator what-if) dan warga RW (PWA). |
 | **D1 Proses bisnis** | Sense → Simulate → Explain → Approve (HITL) → Disseminate → Evaluate |
 | **D4 Aplikasi** | Ingest/ETL, hydro engine (HEC-RAS 2D + GNN), scenario service, SI gateway, validator + fallback, web 3D/PWA |
 | **D2 Data** | DEMNAS, Sentinel-2/Landsat/AlphaEarth, hujan BMKG/GPM, TMA, amblesan/pasang, RDTR (RAG), library skenario |

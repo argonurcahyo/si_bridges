@@ -1,4 +1,4 @@
-"""Membuat gambar arsitektur untuk proposal HydroGraph-AI.
+"""Membuat gambar arsitektur untuk proposal HydroTwin-AI.
 
 Jalankan dari root repo:
     python scripts/render-architecture-figure.py
@@ -165,10 +165,10 @@ def label_lapisan(ax, x, y, teks, warna):
 
 def legenda(ax, y):
     item = [
-        (21.0, "SI", "komponen SI", SI),
-        (41.0, "NUM", "model numerik", NUM),
-        (61.0, "MANUSIA", "keputusan operator", HUMAN),
-        (82.0, "KELUARAN", "antarmuka", OUTPUT),
+        (17.0, "SI", "komponen SI", SI),
+        (36.0, "NUM", "numerik/aturan", NUM),
+        (58.0, "MANUSIA", "keputusan operator", HUMAN),
+        (80.0, "KELUARAN", "antarmuka", OUTPUT),
     ]
     for x, kode, teks, warna in item:
         ax.add_patch(Rectangle((x, y - 0.75), 1.5, 1.5, facecolor=warna, edgecolor="none", zorder=4))
@@ -177,7 +177,7 @@ def legenda(ax, y):
 
 
 def gambar_arsitektur():
-    fig = plt.figure(figsize=(6.55, 4.85), dpi=300)
+    fig = plt.figure(figsize=(6.55, 4.95), dpi=300)
     ax = fig.add_axes([0, 0, 1, 1])
     ax.set_xlim(0, 100)
     ax.set_ylim(0, 104)
@@ -200,9 +200,9 @@ def gambar_arsitektur():
     ax.text(
         7.0,
         97.2,
-        "Sentinel-2 & Landsat (GEE)  ·  DEMNAS 8 m  ·  Hujan BMKG  ·  TMA Katulampa–Depok–Manggarai "
-        "(scraping)\nSHP batas desa & jaringan sungai (BIG)  ·  Data sintetis hidrodinamik (Rational Method + "
-        "lag routing)  ·  publik / berizin mitra / sintetis",
+        "Sentinel-2 & Landsat (GEE)  ·  AlphaEarth Satellite Embedding  ·  DEMNAS 8 m  ·  Hujan BMKG  ·  "
+        "TMA 3 pintu air\nSHP batas desa & jaringan sungai (BIG)  ·  Korpus RDTR/RTRW  ·  Data sintetis "
+        "hidrodinamik  ·  publik / mitra / sintetis",
         fontsize=5.6,
         va="center",
         ha="left",
@@ -220,14 +220,14 @@ def gambar_arsitektur():
 
     kotak(
         ax, x[0], y, w, h,
-        "SI · Klasifikasi LULC",
-        "Random Forest di GEE per sub-DAS;\nbaseline Dynamic World (WRI–Google).\n→ C (limpasan) per segmen",
+        "SI · AlphaEarth Embedding (Google)",
+        "Tutupan lahan & imperviousness 10 m\nvia Earth Engine, label lapangan minim.\n→ parameter limpasan C",
         SI,
     )
     kotak(
         ax, x[1], y, w, h,
         "NUM · Graph engine hidrologi",
-        "DAG pintu air–segmen:\nQ = 0,00278·C·I·A + lag routing.\n→ debit, waktu tiba, volume",
+        "DAG pintu air–segmen:\nQ = 0,00278·C·I·A + lag routing.\n→ debit, rate of rise, waktu puncak",
         NUM,
     )
     kotak(
@@ -238,70 +238,73 @@ def gambar_arsitektur():
     )
 
     # --- lapisan 2
-    x2 = [7.0, 54.75]
-    w2 = 43.75
-    y2 = 51.6
-    h2 = 11.8
+    y2, h2 = 51.6, 11.8
     kotak(
-        ax, x2[0], y2, w2, h2,
+        ax, 7.0, y2, 43.75, h2,
         "JSON · Serializer konteks",
-        "Hasil graph + fitur LULC → skema JSON tetap.\nLLM tidak menerima data mentah, hanya konteks terhitung.",
+        "Hasil graph + fitur lahan + status menjadi skema JSON tetap.\nLLM tidak menerima data mentah.",
         NUM,
     )
     kotak(
-        ax, x2[1], y2, w2, h2,
-        "SI · Gemini (Google, Amerika Serikat)",
-        "Foundation model multimodal: penalaran skenario dan\nrekomendasi taktis dari JSON.\nTidak menghitung debit.",
-        SI,
-    )
-
-    # --- lapisan 3
-    x3 = x
-    y3 = 31.6
-    h3 = 11.8
-    kotak(
-        ax, x3[0], y3, w, h3,
-        "SI · Narasi & draf peringatan",
-        "Gemini menyusun teks peringatan desa;\nsetiap angka wajib ada di konteks.\nTidak menghitung sendiri.",
-        SI,
-    )
-    kotak(
-        ax, x3[1], y3, w, h3,
-        "NUM · Validator angka",
-        "Cocokkan angka narasi dengan simulasi;\nconfidence < 85% ditandai.",
+        ax, 54.75, y2, 43.75, h2,
+        "NUM · Template peringatan",
+        "Template baku per level: Waspada / Siaga / Awas.\nTidak menentukan level; hanya membatasi bahasa.",
         NUM,
     )
+
+    # --- lapisan 3: dua jalur model
+    y3, h3 = 31.6, 11.8
     kotak(
-        ax, x3[2], y3, w, h3,
-        "FALLBACK · Aturan hidrologi",
-        "LLM gagal atau > 5 detik:\ntemplate rule-based, tanpa LLM.",
-        FALLBACK,
-        garis=(0, (2.2, 1.4)),
+        ax, x[0], y3, w, h3,
+        "SI · Claude Sonnet 5.5 (Anthropic)",
+        "Executive Brief: analisis skenario,\nrujukan pasal RDTR via RAG, dan\nselisih antar skenario.",
+        SI,
+    )
+    kotak(
+        ax, x[1], y3, w, h3,
+        "SI · OpenAI (model terbaru)",
+        "Peringatan bahasa awam: debit,\nrate of rise, waktu puncak → pesan\nuntuk Pengurus RW & warga.",
+        SI,
+    )
+    kotak(
+        ax, x[2], y3, w, h3,
+        "NUM · Validator + fallback",
+        "Cek angka narasi vs simulasi;\nfallback rule-based ≤ 5 detik.\nTidak menentukan level.",
+        NUM,
     )
 
-    # --- keputusan
+    # --- keputusan dan keluaran
     kotak(
-        ax, 7.0, 9.6, 58.0, 12.4,
+        ax, 7.0, 9.6, 33.0, 12.4,
+        "KELUARAN · Executive Brief",
+        "Untuk analis kebijakan: ringkasan\nskenario, rujukan RDTR, selisih opsi.",
+        OUTPUT,
+        ukuran_judul=5.9,
+        ukuran_isi=5.4,
+    )
+    kotak(
+        ax, 43.0, 9.6, 29.0, 12.4,
         "MANUSIA · Operator BPBD / DSDA",
-        "Meninjau, menerima atau menolak, dan menandatangani log audit.\n"
-        "SI tidak menggerakkan pintu air, pompa, atau rute evakuasi.",
+        "Meninjau, menyetujui, dan menandatangani\nlog audit. Tidak ada aktuasi pintu air/pompa.",
         HUMAN,
+        ukuran_judul=5.9,
+        ukuran_isi=5.4,
     )
     kotak(
-        ax, 67.5, 17.0, 31.0, 5.0,
+        ax, 75.0, 17.0, 23.5, 5.0,
         "KELUARAN · Dashboard operator",
-        "Peta 2D/3D, simulasi, rekomendasi, audit.",
+        "Peta, debit, rekomendasi, audit.",
         OUTPUT,
-        ukuran_judul=5.8,
-        ukuran_isi=5.4,
+        ukuran_judul=5.6,
+        ukuran_isi=5.1,
     )
     kotak(
-        ax, 67.5, 9.6, 31.0, 5.6,
-        "KELUARAN · Web publik",
-        "Zona per desa setelah snapshot disetujui.",
+        ax, 75.0, 9.6, 23.5, 5.6,
+        "KELUARAN · PWA warga & RW",
+        "Zona, kedalaman, langkah evakuasi.",
         OUTPUT,
-        ukuran_judul=5.8,
-        ukuran_isi=5.4,
+        ukuran_judul=5.6,
+        ukuran_isi=5.1,
     )
 
     # --- panah
@@ -311,42 +314,56 @@ def gambar_arsitektur():
     panah(ax, [(x[0] + w, y + 6.2), (x[1], y + 6.2)])
     panah(ax, [(x[1] + w, y + 6.2), (x[2], y + 6.2)])
 
+    # classifier -> serializer
     panah(
         ax,
-        [(x[2] + w / 2, y), (x[2] + w / 2, 68.4), (x2[0] + 13.0, 68.4), (x2[0] + 13.0, y2 + h2)],
+        [(84.3, y), (84.3, 68.5), (28.9, 68.5), (28.9, y2 + h2)],
         label="fitur + status",
-        geser=(0, 0.7),
+        label_pos=(55.0, 68.8),
     )
-    panah(ax, [(x2[0] + w2, y2 + 5.9), (x2[1], y2 + 5.9)], label="JSON")
 
+    # serializer -> Claude, serializer -> OpenAI, template -> OpenAI
+    panah(ax, [(21.2, y2), (21.2, y3 + h3)])
+    panah(ax, [(38.0, y2), (38.0, 48.5), (52.75, 48.5), (52.75, y3 + h3)])
+    panah(ax, [(84.3, y2), (84.3, 48.5), (61.0, 48.5), (61.0, y3 + h3)])
+    ax.text(
+        55.0,
+        48.8,
+        "konteks + template",
+        fontsize=5.2,
+        color=MUTED,
+        style="italic",
+        ha="center",
+        va="bottom",
+        bbox=dict(facecolor="white", edgecolor="none", pad=0.6),
+        zorder=5,
+    )
+
+    # OpenAI -> validator -> operator
+    panah(ax, [(x[1] + w, y3 + 5.9), (x[2], y3 + 5.9)])
     panah(
         ax,
-        [(x2[1] + w2 / 2, y2), (x2[1] + w2 / 2, 48.4), (x3[0] + 13.0, 48.4), (x3[0] + 13.0, y3 + h3)],
-        label="draf + alasan",
-        geser=(0, 0.7),
-    )
-    panah(ax, [(x3[0] + w, y3 + 5.9), (x3[1], y3 + 5.9)])
-    panah(ax, [(x3[1] + w, y3 + 5.9), (x3[2], y3 + 5.9)], putus=True)
-
-    panah(ax, [(x3[1] + 15.0, y3), (x3[1] + 15.0, 22.0)], label="draf akhir", label_pos=(51.0, 25.6))
-    panah(
-        ax,
-        [(x3[2] + w / 2, y3), (x3[2] + w / 2, 27.4), (60.0, 27.4), (60.0, 22.0)],
-        putus=True,
+        [(84.3, y3), (84.3, 27.4), (58.0, 27.4), (58.0, 22.0)],
+        label="pesan tervalidasi",
+        label_pos=(71.0, 27.7),
     )
 
-    panah(ax, [(65.0, 19.5), (67.5, 19.5)])
-    panah(ax, [(65.0, 12.4), (67.5, 12.4)], putus=True)
+    # Claude -> executive brief
+    panah(ax, [(21.2, y3), (21.2, 22.0)], label="draf brief", label_pos=(22.6, 25.8))
+
+    # operator -> dashboard dan PWA
+    panah(ax, [(72.0, 19.5), (75.0, 19.5)])
+    panah(ax, [(72.0, 12.4), (75.0, 12.4)], putus=True)
 
     # --- catatan bawah
-    ax.add_patch(Rectangle((0, 0.6), 100, 6.2, facecolor=WARN_BG, edgecolor="none", zorder=0))
-    ax.add_patch(Rectangle((0, 0.6), 1.1, 6.2, facecolor=HUMAN, edgecolor="none", zorder=1))
+    ax.add_patch(Rectangle((0, 0.6), 100, 6.6, facecolor=WARN_BG, edgecolor="none", zorder=0))
+    ax.add_patch(Rectangle((0, 0.6), 1.1, 6.6, facecolor=HUMAN, edgecolor="none", zorder=1))
     ax.text(
         7.0,
-        3.7,
-        "Batas SI: debit dan waktu tiba dihitung model numerik; SI hanya mengklasifikasi, menalar, dan "
-        "menarasikan.\nTidak ada aktuasi otomatis. Publikasi ke web publik hanya setelah operator menerima "
-        "snapshot.",
+        3.9,
+        "Use case utama: BPBD/DSDA. Executive Brief untuk analis kebijakan; PWA untuk warga RW setelah "
+        "snapshot disetujui operator.\nSI tidak menghitung debit dan tidak mengaktuasi pintu air. Angka "
+        "dari model numerik; narasi dari SI.",
         fontsize=5.6,
         va="center",
         ha="left",
@@ -374,11 +391,11 @@ def gambar_pipeline():
             style="italic", va="center", ha="right")
 
     tahap = [
-        ("Data & label", "Sentinel-2, TMA historis,\nDEMNAS; label manual +\nbaseline Dynamic World"),
-        ("Pelatihan", "Random Forest (LULC),\ngradient boosting (status\nsiaga per node)"),
+        ("Data & label", "Sentinel-2, AlphaEarth\nEmbedding, TMA historis;\nlabel lapangan minim"),
+        ("Pelatihan", "Klasifikasi di atas\nembedding AlphaEarth;\ngradient boosting status"),
         ("Validasi", "Spatial split; overall\naccuracy, F1 per kelas,\nkappa, kalibrasi"),
         ("Registri model", "Versi, metrik, dan data\nlatih dicatat; hanya model\nlulus yang dipakai"),
-        ("Inferensi", "LULC per musim; status\nper node → Lapisan 1"),
+        ("Inferensi", "LULC + imperviousness;\nstatus per node →\nLapisan 1"),
     ]
     w = 16.6
     h = 26.0
