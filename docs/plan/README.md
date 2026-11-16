@@ -6,6 +6,7 @@ Dokumen rencana yang menjadi acuan pengembangan berikutnya.
 |---|---|---|
 | [`web-publik.md`](web-publik.md) | Disetujui, siap dikerjakan | Halaman masyarakat: zonasi desa, evakuasi, snapshot publikasi operator, offline |
 | [`dashboard.md`](dashboard.md) | Selesai P0–P5, sisa P6 | Dashboard operator: peta 2D/3D, simulasi, grafik, rekomendasi, draf peringatan |
+| [`diorama.md`](diorama.md) | Disetujui, mulai fase E7 | Surface edukasi 3D: mekanisme pintu air, langkah sebab-akibat, inspeksi bagian |
 
 ## Cara Memakai
 
