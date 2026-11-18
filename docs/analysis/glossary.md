@@ -17,7 +17,7 @@
 | GeoJSON | Format data geospasial berbasis JSON | Format data peta dashboard |
 | Gate | Tahapan pendampingan SI Bridges Indonesia | Gate I sampai V |
 | HITL (Human-in-the-Loop) | Manusia memutuskan sebelum aksi | Prinsip utama sistem |
-| LLM | Large Language Model | Dipakai untuk narasi rekomendasi |
+| LLM | Large Language Model | Dipakai untuk narasi rekomendasi, pesan peringatan, interpretasi, dan Executive Brief |
 | LULC | Land Use / Land Cover | Tutupan dan penggunaan lahan |
 | MapLibre GL JS | Library peta open source berbasis WebGL | Dipakai untuk prototipe |
 | Mode Latihan | Mode dengan data mock | Ditampilkan di banner |
@@ -31,3 +31,11 @@
 | TMA | Tinggi Muka Air | Diukur di pintu air |
 | WIB | Waktu Indonesia Barat | Zona waktu semua tampilan |
 | WCAG | Web Content Accessibility Guidelines | Acuan aksesibilitas |
+| EWS (Early Warning System) | Sistem peringatan dini banjir | Use case operator + warga |
+| Peringatan publik | Pesan resmi per wilayah yang disusun AI dan disiarkan operator | Hanya status `disiarkan` yang dibaca warga |
+| Siarkan (blast) | Aksi operator mempublikasikan peringatan ke feed publik | Pada prototipe bukan SMS/WA/push |
+| Tarik peringatan | Aksi operator menghentikan peringatan aktif | Hilang dari halaman warga, audit tetap |
+| Executive Brief | Ringkasan kebijakan untuk analis/perencana | Draf AI, bukan keputusan final |
+| Registry parameter | Daftar deskriptor parameter simulator | Menambah parameter tanpa ubah struktur panel |
+| Interpretasi skenario | Narasi AI atas dampak skenario vs baseline | Draf, dengan fallback template |
+| Indeks peringatan publik | Daftar peringatan aktif yang dibaca halaman warga | Per wilayah; menggantikan istilah "snapshot" lama |

@@ -1,6 +1,6 @@
 # Arsitektur SPBE — HydroTwin-AI
 
-Diagram arsitektur helicopter view untuk HydroTwin-AI, mengikuti enam domain Arsitektur SPBE. Menggantikan diagram tiga lapisan pada `05-arsitektur-si.md` yang dibuat untuk konsep HydroGraph-AI.
+Diagram arsitektur helicopter view untuk HydroTwin-AI, mengikuti enam domain Arsitektur SPBE. Melengkapi diagram tiga lapisan pada `05-arsitektur-si.md` dengan dua use case: EWS dan Simulator.
 
 ![Arsitektur SPBE HydroTwin-AI](figures/arsitektur-spbe-hydrotwin.png)
 
@@ -10,7 +10,7 @@ Diagram arsitektur helicopter view untuk HydroTwin-AI, mengikuti enam domain Ars
 
 | Domain | Isi |
 |---|---|
-| **D6 Layanan** | Use case utama: konsol operator BPBD/DSDA. Pengguna turunan: perencana (Executive Brief + simulator what-if) dan warga RW (PWA). |
+| **D6 Layanan** | Dua use case: Early Warning System (operator BPBD/DSDA + warga) dan Simulator (perencana). Warga hanya menerima peringatan yang disiarkan operator. |
 | **D1 Proses bisnis** | Sense → Simulate → Explain → Approve (HITL) → Disseminate → Evaluate |
 | **D4 Aplikasi** | Ingest/ETL, hydro engine (HEC-RAS 2D + GNN), scenario service, SI gateway, validator + fallback, web 3D/PWA |
 | **D2 Data** | DEMNAS, Sentinel-2/Landsat/AlphaEarth, hujan BMKG/GPM, TMA, amblesan/pasang, RDTR (RAG), library skenario |

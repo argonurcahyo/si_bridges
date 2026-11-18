@@ -1,4 +1,4 @@
-# User Stories — Dashboard Operasional HydroGraph-AI
+# User Stories — HydroTwin-AI (EWS & Simulator)
 
 Format: **Sebagai** [peran], **saya ingin** [tujuan], **agar** [manfaat].
 Kriteria penerimaan memakai **Given / When / Then**.
@@ -6,15 +6,16 @@ Prioritas mengikuti `requirements.md`. Estimasi memakai story point Fibonacci (1
 
 ## Epic
 
-| ID | Epic | Tujuan |
-|---|---|---|
-| E-01 | Pemantauan jaringan | Operator melihat kondisi sungai secara spasial |
-| E-02 | Simulasi skenario | Operator mencoba hujan dan konversi lahan |
-| E-03 | Beban & proyeksi | Operator membaca debit dan volume ke depan |
-| E-04 | Rekomendasi & keputusan | Operator menilai dan memutuskan rekomendasi AI |
-| E-05 | Peringatan publik | Operator meninjau draf sebelum disebarkan |
-| E-06 | Historis | Operator mempelajari kejadian banjir sebelumnya |
-| E-07 | Transparansi & status | Operator tahu sumber dan kesegaran data |
+| ID | Epic | Use case | Tujuan |
+|---|---|---|---|
+| E-01 | Pemantauan jaringan | EWS | Operator melihat kondisi sungai secara spasial |
+| E-02 | Simulasi skenario | EWS | Operator mencoba hujan dan konversi lahan |
+| E-03 | Beban & proyeksi | EWS | Operator membaca debit dan volume ke depan |
+| E-04 | Rekomendasi & keputusan | EWS | Operator menilai dan memutuskan rekomendasi AI |
+| E-05 | Peringatan publik | EWS | Operator menyunting dan menyiarkan peringatan; warga menerima yang disiarkan |
+| E-06 | Historis | EWS | Operator mempelajari kejadian banjir sebelumnya |
+| E-07 | Transparansi & status | Keduanya | Pengguna tahu sumber dan kesegaran data |
+| E-08 | Simulator kebijakan | Simulator | Perencana mengolah parameter, membaca interpretasi AI, dan menghasilkan Executive Brief |
 
 ## E-01 Pemantauan jaringan
 
@@ -104,18 +105,44 @@ Sebagai operator, saya ingin memilih Diterima, Ditolak, atau Perlu Verifikasi, a
 - Given keputusan dipilih, When sistem menyimpan, Then tidak ada perintah yang dikirim ke node atau pompa.
 
 **US-15 Melihat log keputusan** (S, 3)
-Sebagai operator, saya ingin melihat riwayat keputusan, agar saya bisa menelusuri apa yang sudah diputuskan.
+Sebagai operator, saya ingin melihat riwayat keputusan dan perubahan peringatan, agar saya bisa menelusuri apa yang sudah diputuskan.
 
 - Given ada tiga keputusan, When panel riwayat dibuka, Then ketiganya tampil dengan waktu WIB dan ID rekomendasi.
+- Given ada sunting/siarkan/tarik peringatan, When log dibuka, Then entri tersebut tampil dengan referensi peringatan.
 
 ## E-05 Peringatan publik
 
-**US-16 Meninjau draf peringatan publik** (M, 5)
-Sebagai operator, saya ingin meninjau draf peringatan per kelurahan, agar saya bisa menyalinnya setelah yakin.
+**US-16 Meninjau pesan peringatan AI** (M, 5)
+Sebagai operator, saya ingin meninjau pesan peringatan yang disusun AI per kelurahan, agar saya bisa memastikan isinya sebelum disiarkan.
 
-- Given level risiko kelurahan Bidara Cina Siaga, When draf dibuka, Then teks memuat level, estimasi waktu, dan sumber.
-- Given operator menekan salin, When berhasil, Then teks tersalin dan toast konfirmasi tampil.
-- Given draf tampil, When operator mencari tombol kirim, Then tidak ada tombol kirim ke warga.
+- Given level risiko kelurahan Bidara Cina Siaga, When sheet peringatan dibuka, Then teks memuat level, estimasi waktu, langkah tindakan, dan sumber.
+- Given AI gagal merespons, When pesan disusun, Then template tampil dengan badge sumber.
+- Given teks tampil, When operator membaca, Then teks AI asli terlihat dan dapat disunting.
+
+**US-22 Menyunting pesan peringatan** (M, 5)
+Sebagai operator, saya ingin menyunting pesan AI, agar bahasa dan konteksnya sesuai dengan kondisi lapangan.
+
+- Given pesan AI tampil, When operator mengubah teks dan menyimpan, Then teks final tersimpan terpisah dari teks AI asli.
+- Given operator menyunting, When audit dibuka, Then perubahan tercatat dengan waktu WIB.
+
+**US-23 Menyiarkan peringatan** (M, 5)
+Sebagai operator, saya ingin menyiarkan peringatan per wilayah, agar warga hanya menerima informasi resmi yang sudah saya setujui.
+
+- Given peringatan berstatus draf dan level siaga, When operator menekan Siarkan, Then status berubah menjadi disiarkan dan halaman warga menampilkan peringatan tersebut.
+- Given peringatan wilayah A disiarkan, When warga memilih wilayah B, Then peringatan A tidak tampil untuk wilayah B.
+- Given operator menyiarkan, When audit dibuka, Then entri siaran tercatat dengan operator dan waktu.
+
+**US-24 Menarik peringatan** (S, 3)
+Sebagai operator, saya ingin menarik peringatan yang sudah tidak berlaku, agar warga tidak membaca informasi kedaluwarsa.
+
+- Given peringatan berstatus disiarkan, When operator menekan Tarik, Then peringatan hilang dari halaman warga dan status berubah menjadi ditarik.
+
+**US-25 Menerima peringatan resmi** (M, 5)
+Sebagai warga, saya ingin melihat peringatan resmi untuk wilayah saya, agar saya tahu langkah yang harus dilakukan.
+
+- Given operator sudah menyiarkan peringatan, When warga membuka `/warga` dan memilih wilayahnya, Then level, estimasi tiba, puncak, langkah evakuasi, dan waktu siaran tampil; kedalaman tampil bila tersedia.
+- Given belum ada peringatan aktif, When halaman dibuka, Then pesan "Belum ada peringatan resmi untuk wilayah ini" tampil.
+- Given peringatan ditarik atau kedaluwarsa, When halaman diperbarui, Then kartu peringatan hilang.
 
 ## E-06 Historis
 
@@ -148,6 +175,29 @@ Sebagai operator, saya ingin pesan yang jelas saat data kosong atau error, agar 
 - Given data node kosong, When dashboard dimuat, Then state kosong tampil dengan tombol "Muat ulang".
 - Given simulasi gagal, When error terjadi, Then hasil sebelumnya tetap tampil dengan label "Belum diperbarui".
 
+## E-08 Simulator kebijakan
+
+**US-26 Mengatur parameter simulator** (M, 5)
+Sebagai perencana, saya ingin mengatur parameter skenario dari daftar yang tersedia, agar saya bisa menguji kebijakan sebelum diterapkan.
+
+- Given halaman simulator dibuka, When registry parameter dimuat, Then setiap parameter tampil dengan label, satuan, batas, dan nilai default.
+- Given parameter diubah, When input berhenti 300 ms, Then peta dan panel dampak diperbarui.
+- Given parameter tambahan ditambahkan ke registry, When halaman dimuat ulang, Then kontrol baru tampil tanpa mengubah struktur panel.
+
+**US-27 Melihat interpretasi AI** (M, 5)
+Sebagai perencana, saya ingin AI membantu menginterpretasikan hasil skenario, agar saya memahami trade-off kebijakan.
+
+- Given parameter berhenti berubah, When interpretasi selesai, Then teks menampilkan dampak vs baseline, sumber AI/template, model, waktu, dan batasan.
+- Given AI gagal, When interpretasi diminta, Then template tampil dengan badge sumber.
+- Given parameter berubah lagi, When interpretasi lama belum selesai, Then hasil usang dibatalkan dan tidak ditampilkan.
+
+**US-28 Menghasilkan Executive Brief** (M, 5)
+Sebagai perencana, saya ingin menghasilkan Executive Brief dari skenario aktif, agar saya punya bahan perancangan kebijakan.
+
+- Given skenario aktif tersedia, When perencana menekan Generate brief, Then brief tampil dengan ringkasan, dampak, opsi kebijakan, rekomendasi, dan batasan.
+- Given brief tampil, When perencana menekan Salin atau Unduh, Then teks tersalin atau file Markdown terunduh.
+- Given brief dihasilkan AI, When brief dibaca, Then label "draf, menunggu tinjauan analis" dan provenance tampil.
+
 ## Ringkasan
 
 | Epic | Jumlah story | Total estimasi |
@@ -156,9 +206,10 @@ Sebagai operator, saya ingin pesan yang jelas saat data kosong atau error, agar 
 | E-02 | 4 | 15 |
 | E-03 | 2 | 8 |
 | E-04 | 5 | 21 |
-| E-05 | 1 | 5 |
+| E-05 | 5 | 23 |
 | E-06 | 1 | 5 |
 | E-07 | 4 | 9 |
-| **Total** | **21** | **76** |
+| E-08 | 3 | 15 |
+| **Total** | **28** | **109** |
 
-Catatan: sebagian story diambil dari masukan tim (US-03, US-07, US-15, US-16, US-20, US-21). Estimasi perlu divalidasi saat sprint planning.
+Catatan: sebagian story diambil dari masukan tim (US-03, US-07, US-15, US-16, US-20, US-21). US-22–US-28 ditambahkan dari keputusan dua use case 18 November 2026. Estimasi perlu divalidasi saat sprint planning.

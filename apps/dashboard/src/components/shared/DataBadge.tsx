@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import type { DataStatus } from "@/schemas/hydro";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 
 export function DataBadge({ status }: { status: DataStatus }) {
   return (

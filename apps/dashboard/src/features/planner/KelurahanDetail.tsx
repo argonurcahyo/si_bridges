@@ -1,6 +1,6 @@
 import { MapPin } from "lucide-react";
 import type { HasilKelurahan } from "@/engine/planner";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 import { cn } from "@/lib/utils";
 
 export function KelurahanDetail({ item }: { item?: HasilKelurahan }) {

@@ -1,9 +1,11 @@
+import type { Bahasa } from "@/i18n/teks";
 import type { SimulationResult } from "@/services/simulationService";
 import type { Saran } from "./saran";
 
 export type NarrativeInput = {
   hasil: SimulationResult;
   saran: Saran;
+  bahasa: Bahasa;
 };
 
 export type NarrativeSource = "llm" | "rule_based";

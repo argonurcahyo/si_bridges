@@ -1,6 +1,6 @@
 import { OctagonAlert, Radio, ShieldCheck, TriangleAlert } from "lucide-react";
 import { KpiCard } from "@/components/shared/KpiCard";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 import type { RiskLevel } from "@/engine/riskLevel";
 
 type LevelSummaryProps = {

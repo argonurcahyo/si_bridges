@@ -1,8 +1,15 @@
 # HydroTwin-AI
 
-Super Intelligence (SI) untuk pemantauan, prediksi limpasan mikro, dan skenario mitigasi banjir Jakarta: model SI mengklasifikasi dan menarasikan, model numerik menghitung, operator memutuskan.
+Super Intelligence (SI) untuk pemantauan, prediksi limpasan mikro, peringatan dini, dan skenario mitigasi banjir Jakarta: model SI mengklasifikasi dan menarasikan, model numerik menghitung, operator memutuskan.
 
-Prototipe memiliki tiga tampilan: **Konsol Perencana** (`/rencana`), **Dashboard Operasional** (`/ops`), dan **PWA Warga** (`/warga`).
+HydroTwin-AI memiliki **dua use case**:
+
+- **Early Warning System (EWS)** — operator memantau, AI menyusun pesan peringatan, operator menyunting dan menyiarkan, warga hanya menerima peringatan yang disiarkan.
+- **Simulator** — perencana mengolah parameter kebijakan, melihat peta dan dampak, mendapat interpretasi AI, dan menghasilkan Executive Brief.
+
+Prototipe memiliki tiga tampilan: **Dashboard Operasional** (`/ops`) dan **PWA Warga** (`/warga`) untuk EWS, serta **Konsol Perencana** (`/rencana`) untuk Simulator.
+
+Aplikasi tersedia dalam **English dan Bahasa Indonesia**, dengan **English sebagai default** untuk demo internasional. Pilihan bahasa ada di header dan halaman warga; preferensi disimpan di browser.
 
 > **Semua data pada prototipe adalah mock.** Sistem ini alat bantu keputusan (DSS); keputusan akhir ada pada petugas berwenang.
 
@@ -12,48 +19,52 @@ Prototipe memiliki tiga tampilan: **Konsol Perencana** (`/rencana`), **Dashboard
 
 Perencana menggeser hujan 24 jam, pasang laut, RTH Depok, dan moratorium air tanah; peta menampilkan heatmap kedalaman per kelurahan, panel dampak menghitung luas genangan dan RW terdampak, lalu Executive Brief merangkumnya untuk analis.
 
-## Tiga Tampilan
+## Dua Use Case, Tiga Tampilan
 
-| Rute | Tampilan | Untuk siapa |
-|---|---|---|
-| `/rencana` | Konsol Perencana | Perencana Pemprov DKI, Kota Depok, Kabupaten Bogor |
-| `/ops` | Dashboard Operasional | Operator BPBD dan DSDA |
-| `/warga` | PWA Warga | Warga RW bantaran |
+| Rute | Tampilan | Use case | Untuk siapa |
+|---|---|---|---|
+| `/ops` | Dashboard Operasional | EWS | Operator BPBD dan DSDA |
+| `/warga` | PWA Warga | EWS | Warga RW bantaran |
+| `/rencana` | Konsol Perencana | Simulator | Perencana Pemprov DKI, Kota Depok, Kabupaten Bogor |
 
 ### PWA Warga
 
 ![PWA Warga](docs/ui-prototype/screenshots/11-warga-pwa.png)
 
-Level siaga, kisaran kedalaman, puncak, peta kelurahan dengan posisi di perangkat, langkah evakuasi, dan status persetujuan operator.
+Level siaga, estimasi air tiba, puncak, teks peringatan final, dan langkah evakuasi. Hanya peringatan per wilayah yang disiarkan operator yang tampil di sini; tanpa peringatan aktif, tampil empty state resmi.
 
 ### Dashboard Operasional
 
 ![Dashboard Operasional](docs/ui-prototype/screenshots/01-overview.png)
 
-Monitoring TMA, simulasi debit, peta 2D/3D, rekomendasi taktis, keputusan operator, log audit, dan draf peringatan publik.
+Monitoring TMA, simulasi debit, peta 2D/3D, rekomendasi taktis, keputusan operator, log audit, dan peringatan publik per wilayah.
 
 ## Fitur
 
-**Konsol Perencana**
+**Early Warning System — Dashboard Operasional**
+
+- Peta interaktif 2D/3D: centerline Ciliwung, alur simulasi, node berwarna level risiko, batas kecamatan/kabupaten/provinsi.
+- Simulasi Rational Method (mock) dengan routing DAG, proyeksi 3–6 jam, dan skor kepastian.
+- Rekomendasi dari adapter LLM (mock) dengan fallback rule-based, timeout 5 detik, dan validasi angka.
+- Keputusan operator dan log audit.
+- Peringatan per wilayah: AI composer (mock) dengan validator angka/tone, fallback template, sunting, siarkan/tarik, kedaluwarsa 6 jam, dan audit.
+
+**Early Warning System — PWA Warga**
+
+- Kartu peringatan mobile dengan level, estimasi tiba, waktu puncak, dan tiga langkah evakuasi.
+- Hanya peringatan per wilayah yang disiarkan operator yang tampil. Tanpa peringatan aktif, tampil empty state resmi.
+- Posisi GPS tidak dikirim ke server; F1 belum memakai GPS.
+- Peringatan disusun AI mock atau template fallback; sumber dan model ditampilkan.
+
+**Simulator — Konsol Perencana**
 
 - Parameter skenario: hujan 24 jam (0–300 mm), pasang laut (0–1,2 m), RTH Depok (0–30%), moratorium air tanah.
 - Heatmap kedalaman 237 kelurahan koridor Ciliwung, warna dari kedalaman simulasi; hover dan klik untuk detail.
 - Dampak skenario: luas genangan, RW terdampak, waktu puncak, keyakinan model, grafik empat opsi kebijakan.
 - Executive Brief: draf narasi untuk analis, dengan angka dari model dan catatan mock.
+- Registry parameter (F3): panel dirender dari deskriptor; parameter tambahan tidak mengubah struktur panel.
+- Interpretasi skenario AI otomatis dan Executive Brief AI on-demand, dengan validator, fallback template, provenance, dan ekspor Markdown (F4).
 - Detail pintu air tetap tersedia lewat klik node di peta.
-
-**Dashboard Operasional**
-
-- Peta interaktif 2D/3D: centerline Ciliwung, alur simulasi, node berwarna level risiko, batas kecamatan/kabupaten/provinsi.
-- Simulasi Rational Method (mock) dengan routing DAG, proyeksi 3–6 jam, dan skor kepastian.
-- Rekomendasi dari adapter LLM (mock) dengan fallback rule-based, timeout 5 detik, dan validasi angka.
-- Keputusan operator dan log audit; draf peringatan publik tanpa pengiriman otomatis.
-
-**PWA Warga**
-
-- Kartu peringatan mobile dengan level, kedalaman, waktu puncak, dan tiga langkah evakuasi.
-- Posisi GPS diproses di perangkat, tidak dikirim ke server.
-- Status "Disetujui operator BPBD" muncul setelah ada keputusan operator yang diterima.
 
 ## Menjalankan Prototipe
 
@@ -78,8 +89,19 @@ Perintah lain:
 pnpm lint
 pnpm typecheck
 pnpm test
+pnpm test:e2e
+pnpm audit:a11y
 pnpm build
 ```
+
+`test:e2e` menjalankan dev server sendiri dan Chrome headless. `audit:a11y` menulis laporan ke `docs/ui-prototype/a11y-report.md`.
+
+## Kualitas
+
+- **Unit test:** 102 test Vitest untuk engine, publikasi, AI validator, registry, store, dan parsing angka ID/EN.
+- **E2E:** `pnpm test:e2e` menjalankan EWS (AI → sunting → tolak → siarkan → tarik → fallback) dan Simulator (interpretasi, brief, unduh Markdown, brief usang).
+- **Aksesibilitas:** `pnpm audit:a11y` memeriksa 5 target termasuk tema gelap; 0 pelanggaran serious/critical. Laporan: [`docs/ui-prototype/a11y-report.md`](docs/ui-prototype/a11y-report.md).
+- **Build:** `pnpm build` lulus; peringatan ukuran chunk masih ada dan bukan blocker prototipe.
 
 ## Struktur Repositori
 
@@ -88,13 +110,14 @@ apps/dashboard/        Prototipe React (Vite, Tailwind, shadcn/ui, MapLibre, Rec
   public/geo/          GeoJSON: kelurahan, kecamatan, kabupaten, provinsi, Ciliwung, alur
   public/terrain/      Tile terrain-RGB dari DEMNAS
   src/engine/          Simulasi debit dan model kedalaman perencana (mock)
-  src/features/        Map, simulasi, rekomendasi, planner, monitoring
+  src/features/        Map, simulasi, rekomendasi, alerts, planner, monitoring
   src/pages/           OpsDashboardPage, PlannerPage, WargaPage
   scripts/             Skrip pembangunan data dan screenshot
-docs/                  Artefak analisis, arsitektur, dan UI
+docs/                  Artefak analisis, arsitektur, UI, dan rencana
   analysis/            Requirement, use case, user story, DFD, state, ERD
   architecture/        C4, SPBE 6 domain, deployment, sequence, ADR
-  diagrams/            Diagram .drawio
+  plan/                Rencana EWS & Simulator, web publik, dashboard, diorama
+  diagrams/            Diagram .drawio (sebagian masih versi lama)
   ui-prototype/        Wireframe, design token, interaksi, screenshot
 data/                  Data sumber lokal (SHP, DEMNAS) — tidak masuk repo
 ```
@@ -126,7 +149,11 @@ Catatan:
 
 - Model kedalaman perencana masih mock (`engine/planner.ts`), bukan HEC-RAS/GNN.
 - PWA warga belum memakai service worker atau cache offline.
-- Status persetujuan membaca log keputusan operator di store, belum snapshot publik.
+- Peringatan memakai AI mock dengan validator angka/tone dan fallback template; provider produksi belum dipasang.
+- Payload peringatan belum mengisi kedalaman karena simulasi operator berbasis debit; `kedalamanM` masih `null`.
+- Interpretasi dan Executive Brief memakai AI mock dengan validator dan fallback template; provider produksi belum dipasang.
+- Terjemahan EN mencakup UI dan narasi mock; nama tempat/instansi dan istilah lokal seperti kelurahan/RW tetap dipertahankan.
+- “Siarkan” pada prototipe berarti publikasi ke feed lokal, bukan SMS/WhatsApp/push notification.
 - Dashboard operasional dan konsol perencana memakai store simulasi terpisah agar satuan mm/jam dan mm/24 jam tidak saling mengganggu.
 
 ## Dokumentasi
@@ -135,6 +162,7 @@ Catatan:
 - [UI prototipe & screenshot](docs/ui-prototype/README.md)
 - [Arsitektur SPBE 6 domain](docs/architecture/06-arsitektur-spbe.md)
 - [Rencana pengembangan](docs/plan/README.md)
+- [Rencana EWS & Simulator](docs/plan/ews-simulator.md)
 - [Requirement](docs/analysis/requirements.md)
 
 ## Tim

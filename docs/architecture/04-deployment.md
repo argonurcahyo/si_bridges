@@ -10,7 +10,7 @@ flowchart LR
     REPO["Git repo<br/>si_bridges"]
     CI["CI (GitHub Actions)<br/>lint, typecheck, test"]
     HOST["Static hosting<br/>(Vercel / Netlify / GitHub Pages)"]
-    BR["Browser operator"]
+    BR["Browser operator / perencana / warga"]
 
     DEV --> REPO
     REPO --> CI
@@ -18,7 +18,7 @@ flowchart LR
     BR -->|HTTPS| HOST
 ```
 
-Catatan: semua data dan layanan (simulasi, LLM) berjalan di browser dengan mock. Tidak ada backend.
+Catatan: semua data dan layanan (simulasi, LLM) berjalan di browser dengan mock. Tidak ada backend. Peringatan publik disinkronkan antartab pada browser yang sama lewat localStorage + BroadcastChannel.
 
 ## 2. Staging (Demo Gate)
 
@@ -33,7 +33,7 @@ flowchart TB
         PGC[("PostgreSQL + PostGIS")]
         OBJ[("Object storage / volume")]
     end
-    LLMEXT["Gemini API"]
+    LLMEXT["Layanan AI/LLM<br/>pesan peringatan, interpretasi, brief"]
 
     BR -->|HTTPS| NGINX
     NGINX --> API
@@ -45,13 +45,15 @@ flowchart TB
     API --> OBJ
 ```
 
+Catatan: provider per task dapat berbeda (model bahasa awam untuk peringatan, model penalaran untuk interpretasi/brief), tetapi tetap lewat adapter yang sama. Pada prototipe keduanya mock.
+
 ## 3. Produksi (Target)
 
 ```mermaid
 flowchart TB
     subgraph NET_DMZ["Zona publik"]
         WAF["WAF & TLS"]
-        PUBFE["Web publik<br/>(tahap berikutnya)"]
+        PUBFE["Halaman warga / web publik<br/>(peringatan tersiar)"]
     end
     subgraph NET_INT["Zona internal BPBD/DSDA"]
         OPFE["Dashboard operator"]
@@ -67,7 +69,7 @@ flowchart TB
         VAULT["Secret store<br/>API key LLM"]
         LOG["Log & monitoring"]
     end
-    LLMEXT["Gemini API"]
+    LLMEXT["Layanan AI/LLM"]
 
     OPFE -->|HTTPS, SSO (tahap lanjut)| WAF
     WAF --> GW
@@ -88,7 +90,7 @@ flowchart TB
 ## 4. Catatan Keamanan
 
 - API key LLM hanya ada di secret store atau environment server (FR-R7, NFR-05).
-- Dashboard operator berada di zona internal. Akses publik hanya ke web publik (tahap berikutnya).
+- Dashboard operator dan simulator berada di zona internal. Halaman warga hanya menerima feed peringatan yang disiarkan operator; akses publik ke dashboard operator tidak dibuka.
 - Log tidak memuat isi prompt yang berisi data sensitif. Hanya ID dan metadata.
 - Lokasi pengguna tidak disimpan (NFR-06).
 

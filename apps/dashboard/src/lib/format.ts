@@ -1,5 +1,9 @@
+import { bahasaAktif } from "@/i18n/teks";
+
+const locale = bahasaAktif === "id" ? "id-ID" : "en-US";
+
 const angkaFormatter = (fractionDigits: number) =>
-  new Intl.NumberFormat("id-ID", {
+  new Intl.NumberFormat(locale, {
     minimumFractionDigits: fractionDigits,
     maximumFractionDigits: fractionDigits,
   });

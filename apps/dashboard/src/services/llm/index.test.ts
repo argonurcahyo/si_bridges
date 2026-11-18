@@ -9,7 +9,7 @@ import type { NarrativeProvider } from "@/services/llm/types";
 const network = loadNetwork();
 const catchments = loadCatchments(network);
 const hasil = runSimulation({ intensitasMmJam: 80, konversiLahanPersen: 20 }, network, catchments);
-const input = { hasil, saran: susunSaran(hasil, network) };
+const input = { hasil, saran: susunSaran(hasil, network), bahasa: "id" as const };
 
 const berhasil: NarrativeProvider = {
   nama: "uji",

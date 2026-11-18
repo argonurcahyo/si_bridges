@@ -23,6 +23,12 @@ describe("parseAngkaIndonesia", () => {
   it("membaca desimal koma", () => {
     expect(parseAngkaIndonesia("12,5")).toBe(12.5);
   });
+
+  it("membaca format Inggris", () => {
+    expect(parseAngkaIndonesia("4,385")).toBe(4385);
+    expect(parseAngkaIndonesia("12.5")).toBe(12.5);
+    expect(parseAngkaIndonesia("1,234.5")).toBe(1234.5);
+  });
 });
 
 describe("ekstrakAngka", () => {
@@ -33,7 +39,7 @@ describe("ekstrakAngka", () => {
 
 describe("validateNarrative", () => {
   it("meloloskan narasi rule-based karena angkanya berasal dari hasil simulasi", async () => {
-    const draft = await ruleBasedProvider.generate({ hasil, saran });
+    const draft = await ruleBasedProvider.generate({ hasil, saran, bahasa: "id" });
     expect(validateNarrative(draft.teks, hasil, saran)).toEqual([]);
   });
 

@@ -1,5 +1,8 @@
 import type { Feature, FeatureCollection, MultiPolygon, Polygon } from "geojson";
+import { BATAS_PLANNER, PLANNER_BASELINE } from "@/engine/plannerParams";
 import type { RiskLevel } from "@/engine/riskLevel";
+
+export { BATAS_PLANNER, PLANNER_BASELINE };
 
 export type KelurahanProperties = {
   kode: string;
@@ -25,19 +28,6 @@ export type PlannerInput = {
   rthPersen: number;
   moratorium: boolean;
 };
-
-export const PLANNER_BASELINE: PlannerInput = {
-  hujan24JamMm: 180,
-  pasangMeter: 0.4,
-  rthPersen: 15,
-  moratorium: true,
-};
-
-export const BATAS_PLANNER = {
-  hujan: { min: 0, max: 300, step: 10 },
-  pasang: { min: 0, max: 1.2, step: 0.1 },
-  rth: { min: 0, max: 30, step: 5 },
-} as const;
 
 export const AMBANG_KEDALAMAN = { waspada: 0.5, siaga: 0.9 } as const;
 
@@ -146,10 +136,7 @@ export function runPlanner(features: KelurahanFeature[], input: PlannerInput): P
   return { input, perKelurahan, ringkasan: ringkas(perKelurahan, input) };
 }
 
-export function bandingkanOpsi(
-  features: KelurahanFeature[],
-  input: PlannerInput,
-): OpsiSkenario[] {
+export function bandingkanOpsi(features: KelurahanFeature[], input: PlannerInput): OpsiSkenario[] {
   const opsi: Array<{ nama: string; input: PlannerInput; aktif: boolean }> = [
     { nama: "Dasar", input: { ...input, rthPersen: 0, moratorium: false }, aktif: false },
     { nama: "RTH", input: { ...input, moratorium: false }, aktif: false },
@@ -187,42 +174,5 @@ export function kelurahanToFeatureCollection(
 }
 
 export function kelurahanTerdalam(hasil: PlannerResult, jumlah = 3): HasilKelurahan[] {
-  return [...hasil.perKelurahan]
-    .sort((a, b) => b.kedalamanM - a.kedalamanM)
-    .slice(0, jumlah);
-}
-
-export function susunBrief(
-  input: PlannerInput,
-  hasil: PlannerResult,
-  dasar: PlannerResult,
-): string {
-  const delta =
-    dasar.ringkasan.luasGenanganHa > 0
-      ? Math.round(
-          ((dasar.ringkasan.luasGenanganHa - hasil.ringkasan.luasGenanganHa) /
-            dasar.ringkasan.luasGenanganHa) *
-            100,
-        )
-      : 0;
-  const teratas = hasil.perKelurahan
-    .filter((item) => item.kedalamanM >= AMBANG_KEDALAMAN.waspada)
-    .sort((a, b) => b.kedalamanM - a.kedalamanM)
-    .slice(0, 2)
-    .map((item) => item.kelurahan);
-
-  const arah = delta > 0 ? "menurunkan" : delta < 0 ? "menaikkan" : "tidak mengubah";
-  const fokus =
-    teratas.length > 0 ? `terutama di ${teratas.join(" dan ")}` : "tanpa kelurahan berstatus siaga";
-
-  return (
-    `Pada hujan ${input.hujan24JamMm} mm/24 jam dan pasang ${input.pasangMeter.toFixed(1)} m, ` +
-    `skenario ini ${arah} luas genangan sekitar ${Math.abs(delta)}% dibanding dasar ` +
-    `(${dasar.ringkasan.luasGenanganHa} → ${hasil.ringkasan.luasGenanganHa} ha), ` +
-    `dengan ${hasil.ringkasan.rwTerdampak} RW terdampak, ${fokus}. ` +
-    `Puncak diperkirakan ${hasil.ringkasan.puncakJam} jam setelah hujan mulai; ` +
-    `keyakinan model ${hasil.ringkasan.keyakinan}%. ` +
-    `Moratorium air tanah ${input.moratorium ? "diaktifkan" : "tidak diaktifkan"}; efeknya kecil dalam horizon 2027. ` +
-    `Angka berasal dari model mock, bukan HEC-RAS; narasi ini template dan belum ditinjau analis.`
-  );
+  return [...hasil.perKelurahan].sort((a, b) => b.kedalamanM - a.kedalamanM).slice(0, jumlah);
 }

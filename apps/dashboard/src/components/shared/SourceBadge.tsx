@@ -2,11 +2,15 @@ import { Sparkles, Wrench } from "lucide-react";
 import type { NarrativeSource } from "@/services/llm/types";
 import { cn } from "@/lib/utils";
 
+type SumberBadge = NarrativeSource | "template";
+
 export function SourceBadge({
   sumber,
+  label,
   className,
 }: {
-  sumber: NarrativeSource;
+  sumber: SumberBadge;
+  label?: string;
   className?: string;
 }) {
   if (sumber === "llm") {
@@ -18,7 +22,7 @@ export function SourceBadge({
         )}
       >
         <Sparkles className="size-3.5" aria-hidden="true" />
-        AI · Gemini (mock)
+        {label ?? "AI · Gemini (mock)"}
       </span>
     );
   }
@@ -31,7 +35,7 @@ export function SourceBadge({
       )}
     >
       <Wrench className="size-3.5" aria-hidden="true" />
-      Rule-based
+      {label ?? (sumber === "template" ? "Template" : "Rule-based")}
     </span>
   );
 }

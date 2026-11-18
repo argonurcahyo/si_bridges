@@ -1,6 +1,6 @@
 import { Droplets } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 import { formatAngka } from "@/lib/format";
 import { BATAS_INTENSITAS } from "@/services/simulationService";
 
@@ -37,7 +37,7 @@ export function RainfallSlider({ value, onChange }: RainfallSliderProps) {
           if (typeof nilai === "number") onChange(nilai);
         }}
         aria-label={teks.simulasi.intensitas}
-        aria-valuetext={`${value} milimeter per jam`}
+        aria-valuetext={`${value} ${teks.simulasi.ariaIntensitas}`}
       />
 
       <div className="text-muted-foreground flex justify-between text-xs tabular-nums">

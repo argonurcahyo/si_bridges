@@ -80,7 +80,7 @@ Setiap kontrol dijelaskan dengan perilaku, status, dan kriteria keyboard. Acuan 
 | Aspek | Perilaku |
 |---|---|
 | Narasi | Tampil setelah simulasi selesai. Skeleton saat menunggu |
-| Sumber | Badge "AI · Gemini (mock)" atau "Rule-based" |
+| Sumber | Badge "AI · (mock)" atau "Template" |
 | Confidence | Selalu tampil. Jika < 85%, label konfirmasi di atas narasi dan tidak bisa disembunyikan |
 | Timeout | Setelah 5 detik, fallback otomatis dengan pesan singkat |
 | Tombol keputusan | Diterima, Ditolak, Perlu Verifikasi. Hanya satu aktif |
@@ -98,16 +98,36 @@ Setiap kontrol dijelaskan dengan perilaku, status, dan kriteria keyboard. Acuan 
 | Tidak ada efek fisik | Tidak ada tombol "Jalankan" atau "Kirim ke pintu air" |
 | Requirement | FR-24, FR-25, FR-R1 |
 
-## 9. Draf Peringatan Publik (O-06)
+## 9. Peringatan Publik (O-06, W-01)
+
+### O-06 — Tinjau, sunting, siarkan
 
 | Aspek | Perilaku |
 |---|---|
-| Pilih kelurahan | Dropdown, urut dari level tertinggi |
-| Teks | Read-only, dapat diseleksi |
-| Salin | Menyalin ke clipboard, toast konfirmasi |
-| Kirim | Tidak ada. Sengaja tidak disediakan |
-| Sumber | Ditampilkan di bawah teks |
-| Requirement | FR-26, FR-R6 |
+| Pilih wilayah | Dropdown, urut dari level tertinggi; hanya waspada/siaga |
+| Teks awal | Teks AI atau template fallback, dapat disunting |
+| Teks final | Disimpan terpisah dari teks awal |
+| Sumber | Badge AI/template, model, waktu generasi |
+| Siarkan | Mengubah status menjadi `disiarkan`; peringatan muncul di warga wilayah tersebut |
+| Tolak | Mengubah status menjadi `ditolak`; tidak ada publikasi |
+| Tarik | Mengubah status menjadi `ditarik`; peringatan hilang dari warga |
+| Generate ulang | Meminta AI menyusun ulang pesan; hasil lama tetap di audit |
+| Fallback | Timeout/error/validasi angka atau tone → template + alasan tampil |
+| Empty state | Bila tidak ada wilayah waspada/siaga, tidak ada tombol siarkan |
+| Keyboard | Sheet menjebak fokus; Esc menutup tanpa menyiarkan |
+| Requirement | FR-26, FR-34–FR-37, FR-R6, FR-R9 |
+
+### W-01 — Menerima peringatan
+
+| Aspek | Perilaku |
+|---|---|
+| Sumber data | Hanya peringatan berstatus `disiarkan` dan belum kedaluwarsa |
+| Wilayah | Pemilih wilayah dari peringatan aktif; bukan simulasi langsung |
+| Isi | Level, estimasi tiba, puncak, teks final, langkah evakuasi, waktu siaran, sumber |
+| Tanpa peringatan | Pesan "Belum ada peringatan resmi untuk wilayah ini" |
+| Perubahan | Siarkan/tarik/kedaluwarsa diperbarui lewat channel; kartu hilang atau muncul |
+| Aksesibilitas | Status tidak hanya warna; target sentuh 44 px; `aria-live` untuk perubahan |
+| Requirement | FR-34, FR-38, FR-R10 |
 
 ## 10. Playback Historis (O-05)
 
@@ -141,3 +161,48 @@ Setiap kontrol dijelaskan dengan perilaku, status, dan kriteria keyboard. Acuan 
 | Data kosong | O-08b |
 | Koneksi hilang | Banner "Koneksi terputus, menampilkan data terakhir" |
 | Fallback aktif | Badge rule-based dan pesan singkat |
+
+## 13. Parameter Simulator (P-01)
+
+| Aspek | Perilaku |
+|---|---|
+| Sumber kontrol | Registry parameter: label, satuan, batas, langkah, default, tipe |
+| Perubahan | Setelah input berhenti 300 ms, peta, dampak, dan interpretasi diperbarui |
+| Batas | Nilai di luar batas ditolak; kontrol kembali ke nilai valid terakhir |
+| Reset | Kembali ke baseline tanpa menghapus riwayat interpretasi |
+| Keyboard | Slider: panah, Shift+panah, Home, End; switch: Spasi |
+| Requirement | FR-39, FR-40 |
+
+## 14. Peta & Dampak Simulator (P-02, P-03)
+
+| Aspek | Perilaku |
+|---|---|
+| Peta | Heatmap kedalaman per kelurahan; klik membuka detail |
+| Dampak | Luas genangan, RW terdampak, puncak, keyakinan vs baseline |
+| Grafik opsi | Empat opsi kebijakan; opsi aktif disorot |
+| Loading | Skeleton tipis; hasil lama tetap terlihat dengan label |
+| Requirement | FR-40 |
+
+## 15. Pemilih Bahasa (Header dan Warga)
+
+| Aspek | Perilaku |
+|---|---|
+| Pilihan | `ID` dan `EN` |
+| Default | English |
+| Penyimpanan | `localStorage` kunci `hydrotwin-bahasa` |
+| Perubahan | Memuat ulang aplikasi agar UI, angka, dan narasi konsisten |
+| Aksesibilitas | `role="group"`, `aria-label`, dan `aria-pressed` per tombol |
+| Cakupan | UI, label peta, level risiko, status data, template/AI peringatan, rekomendasi, interpretasi, dan brief |
+| Requirement | FR-31 |
+
+## 16. Interpretasi & Executive Brief (P-04)
+
+| Aspek | Perilaku |
+|---|---|
+| Interpretasi | Otomatis setelah parameter berhenti berubah; hasil usang dibatalkan |
+| Sumber | Badge AI/template, model, waktu generasi, dan batasan model |
+| Brief | Di-generate on-demand; label "draf, menunggu tinjauan analis" |
+| Brief usang | Bila parameter berubah, brief ditandai usang dan perlu generate ulang |
+| Ekspor | Salin ke clipboard atau unduh Markdown |
+| Fallback | LLM gagal → template deterministik, tetap dapat dibaca dan diekspor |
+| Requirement | FR-41–FR-43, FR-R11 |

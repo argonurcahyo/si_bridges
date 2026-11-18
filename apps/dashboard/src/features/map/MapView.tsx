@@ -10,6 +10,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useRef, useState } from "react";
 import type { FeatureCollection, MultiPolygon, Point, Polygon } from "geojson";
 import type { KelurahanPropertiesPeta } from "@/engine/planner";
+import { teks } from "@/i18n/teks";
 import type { NodeProperties } from "@/services/geoService";
 import type { MapLayers } from "./mapLayers";
 
@@ -377,10 +378,10 @@ export default function MapView({
         } | null;
         if (!fitur?.properties) return;
         const p = fitur.properties;
-        const teks = p.kecamatan
+        const label = p.kecamatan
           ? `${p.kecamatan} · ${p.kotaKab ?? ""}`
           : `${p.kabupaten ?? p.provinsi ?? ""} · ${p.provinsi ?? ""}`;
-        popup.setLngLat(event.lngLat).setText(teks).addTo(map);
+        popup.setLngLat(event.lngLat).setText(label).addTo(map);
       };
 
       map.on("mousemove", "kecamatan-fill", (event) => {
@@ -393,8 +394,7 @@ export default function MapView({
       map.on("mousemove", "kelurahan-fill", (event) => {
         const fitur = event.features?.[0];
         const p = fitur?.properties as
-          | { kelurahan?: string; kecamatan?: string; kedalamanM?: number; rw?: number }
-          | undefined;
+          { kelurahan?: string; kecamatan?: string; kedalamanM?: number; rw?: number } | undefined;
         if (!p) return;
         map.getCanvas().style.cursor = "pointer";
         popup
@@ -554,7 +554,7 @@ export default function MapView({
     <div
       ref={containerRef}
       role="region"
-      aria-label="Peta jaringan pemantauan koridor Ciliwung"
+      aria-label={teks.peta.aria}
       className="border-border/60 h-[420px] w-full overflow-hidden rounded-xl border"
     />
   );

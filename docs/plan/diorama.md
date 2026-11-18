@@ -33,7 +33,7 @@ Nilai yang didapat:
 | D-07 | Perangkat | Desktop dan tablet. Tidak dimuat di `/warga` |
 | D-08 | Pemuatan | `React.lazy` per rute; three.js tidak boleh masuk chunk awal |
 | D-09 | Sumber kode | Template copy-in dari `sloemo01/diorama`, dipin ke satu commit, dicatat di `UPSTREAM.md` |
-| D-10 | Bahasa | Seluruh teks DOM Bahasa Indonesia (FR-31), angka format Indonesia, waktu WIB |
+| D-10 | Bahasa | Mengikuti bahasa aktif aplikasi (English default / Bahasa Indonesia), angka mengikuti locale, waktu WIB |
 | D-11 | Label | Badge permanen "Ilustrasi mekanisme, bukan keluaran hidraulik" (FR-32) |
 | D-12 | Aksi fisik | Scene tidak pernah memerintah pintu atau pompa (FR-R1); animasi hanya visual |
 | D-13 | Urutan kerja | **E7 lebih dulu** (aset deck ± 1 hari), lalu E0 → E6 |

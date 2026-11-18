@@ -86,4 +86,24 @@ describe("operatorStore", () => {
     expect(useOperatorStore.getState().log).toHaveLength(0);
     expect(useOperatorStore.getState().keputusan).toEqual({});
   });
+
+  it("mencatat audit peringatan", () => {
+    useOperatorStore.getState().reset();
+    const waktu = new Date("2026-11-18T08:00:00.000Z");
+
+    useOperatorStore.getState().catatAudit(
+      {
+        jenis: "peringatan_disiarkan",
+        referensiId: "PRG-kampung_melayu-1",
+        aktor: "Operator demo",
+        ringkasan: "Kampung Melayu · Siaga",
+      },
+      waktu,
+    );
+
+    const entri = useOperatorStore.getState().log[0];
+    expect(entri?.jenis).toBe("peringatan_disiarkan");
+    expect(entri?.referensiId).toBe("PRG-kampung_melayu-1");
+    expect(entri?.waktu).toBe(waktu.toISOString());
+  });
 });

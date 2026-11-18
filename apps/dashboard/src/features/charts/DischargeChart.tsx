@@ -7,7 +7,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 import { formatAngka } from "@/lib/format";
 import type { HydroNetwork } from "@/schemas/hydro";
 import type { SimulationResult } from "@/services/simulationService";

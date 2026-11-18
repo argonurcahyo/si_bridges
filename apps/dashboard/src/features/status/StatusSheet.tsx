@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 import { cn } from "@/lib/utils";
 import type { DataStatus } from "@/schemas/hydro";
 import { useDemoStore } from "@/store/operatorStore";
@@ -30,17 +30,27 @@ type Sumber = {
 };
 
 const SUMBER: Sumber[] = [
-  { layer: "TMA Katulampa", sumber: "DSDA (mock)", status: "mock", diperbarui: "14:28 WIB" },
-  { layer: "Hujan", sumber: "BMKG / CHIRPS (mock)", status: "mock", diperbarui: "14:00 WIB" },
   {
-    layer: "Batas kecamatan",
+    layer: teks.statusSistem.layerTma,
+    sumber: "DSDA (mock)",
+    status: "mock",
+    diperbarui: "14:28 WIB",
+  },
+  {
+    layer: teks.statusSistem.layerHujan,
+    sumber: "BMKG / CHIRPS (mock)",
+    status: "mock",
+    diperbarui: "14:00 WIB",
+  },
+  {
+    layer: teks.statusSistem.layerBatasKecamatan,
     sumber: "Peta Kita (SHP)",
     status: "open_data",
     diperbarui: "01-11-2026",
   },
   { layer: "DEM", sumber: "DEMNAS", status: "open_data", diperbarui: "—" },
   {
-    layer: "Tutupan lahan",
+    layer: teks.statusSistem.layerTutupanLahan,
     sumber: "Sentinel-2 (GEE)",
     status: "sintetis",
     diperbarui: "10-11-2026",
@@ -97,7 +107,7 @@ export function StatusSheet() {
               <TableHeader>
                 <TableRow>
                   <TableHead scope="col">{teks.tabel.nama}</TableHead>
-                  <TableHead scope="col">Sumber</TableHead>
+                  <TableHead scope="col">{teks.statusSistem.kolomSumber}</TableHead>
                   <TableHead scope="col">{teks.tabel.sumber}</TableHead>
                   <TableHead scope="col">{teks.statusSistem.diperbarui}</TableHead>
                 </TableRow>
@@ -122,9 +132,9 @@ export function StatusSheet() {
           <section className="space-y-2">
             <h3 className="text-sm font-semibold">{teks.statusSistem.layanan}</h3>
             <ul className="space-y-2">
-              <StatusBaris nama="Simulasi debit" sehat />
-              <StatusBaris nama="Layanan narasi (LLM)" sehat={!paksaGagal} />
-              <StatusBaris nama="Data geospasial" sehat />
+              <StatusBaris nama={teks.statusSistem.layananSimulasi} sehat />
+              <StatusBaris nama={teks.statusSistem.layananNarasi} sehat={!paksaGagal} />
+              <StatusBaris nama={teks.statusSistem.layananGeospasial} sehat />
             </ul>
             {paksaGagal ? (
               <p className="rounded-lg bg-amber-500/10 p-2 text-xs text-amber-700 dark:text-amber-300">

@@ -32,3 +32,10 @@ Proposal menetapkan Gemini sebagai mesin narasi, dengan risiko halusinasi, laten
 - Adapter menjadi komponen kritis. Perlu uji fallback otomatis (US-12).
 - Validasi angka sederhana belum menangkap semua kesalahan logika. Review manusia tetap diperlukan (FR-R1).
 - Log pemanggilan LLM disimpan di audit (NFR-11).
+
+## Revisi 2026-11-18
+
+- Adapter melayani empat task: `rekomendasi_operator`, `peringatan_publik`, `interpretasi_skenario`, dan `executive_brief`.
+- Provider dapat berbeda per task: model bahasa awam untuk pesan peringatan, model penalaran untuk interpretasi dan brief. Keduanya tetap di balik adapter yang sama.
+- Validator diperluas dengan pemeriksaan tone untuk pesan publik (FR-R6) dan label draf untuk interpretasi/brief (FR-R11).
+- Publikasi peringatan tetap memerlukan aksi operator; tidak ada jalur otomatis dari LLM ke warga (FR-R10).

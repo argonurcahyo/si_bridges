@@ -22,6 +22,7 @@ stateDiagram-v2
 Catatan:
 - Status `Kedaluwarsa` dipicu saat input simulasi berubah dan rekomendasi baru dibuat. Riwayat tetap ada di log audit.
 - Keputusan hanya mengubah status. Tidak ada efek ke node atau pompa (FR-R1).
+- Status rekomendasi taktis **tidak** otomatis menjadi status peringatan publik. Persetujuan peringatan diatur di bagian 6.
 
 ## 2. Status Sumber Narasi
 
@@ -73,3 +74,42 @@ stateDiagram-v2
 ```
 
 Pada prototipe, mode selalu `Latihan`.
+
+## 6. Status Peringatan Publik
+
+Per wilayah, hanya satu peringatan yang boleh aktif.
+
+```mermaid
+stateDiagram-v2
+    [*] --> Draf: AI menyusun pesan
+    Draf --> Disiarkan: operator menyetujui dan menyiarkan
+    Draf --> Ditolak: operator menolak
+    Disiarkan --> Ditarik: operator menarik
+    Disiarkan --> Kedaluwarsa: TTL 6 jam atau digantikan siaran baru
+    Ditarik --> [*]
+    Ditolak --> [*]
+    Kedaluwarsa --> [*]
+```
+
+Catatan:
+- `Disiarkan` adalah satu-satunya status yang dapat dibaca halaman warga (FR-34, FR-R10).
+- Teks AI asli (`teksAi`) dan teks final (`teksFinal`) disimpan terpisah; suntingan operator tercatat (FR-R9).
+- Setiap transisi menambah entri log audit (FR-37).
+- Peringatan wilayah A tidak boleh muncul di wilayah B (NFR-13).
+
+## 7. Status Interpretasi & Executive Brief
+
+```mermaid
+stateDiagram-v2
+    [*] --> Memuat: parameter berubah / generate ditekan
+    Memuat --> AI: LLM merespons dan validasi lolos
+    Memuat --> Template: timeout, error, atau validasi gagal
+    AI --> Usang: parameter berubah
+    Template --> Usang: parameter berubah
+    Usang --> Memuat: interpretasi diminta ulang
+```
+
+Catatan:
+- Interpretasi skenario diperbarui otomatis setelah input berhenti berubah; hasil usang dibatalkan.
+- Executive Brief di-generate on-demand dan ditandai usang bila parameter berubah.
+- Baik interpretasi maupun brief adalah draf AI, bukan keputusan kebijakan (FR-R11).

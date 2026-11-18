@@ -8,8 +8,26 @@ import type { NarrativeDraft, NarrativeInput, NarrativeProvider } from "./types"
 export const ruleBasedProvider: NarrativeProvider = {
   nama: "rule-based",
   modelLabel: "Aturan standar v1",
-  generate({ saran }: NarrativeInput): Promise<NarrativeDraft> {
+  generate({ saran, bahasa }: NarrativeInput): Promise<NarrativeDraft> {
     const debit = formatAngka(saran.debitM3s, 0);
+
+    if (bahasa === "en") {
+      if (saran.level === "aman") {
+        return Promise.resolve({
+          teks: `Monitor ${saran.namaNode} every ${saran.menit} minutes. Simulated discharge ${debit} m³/s is below the threshold; no gate opening is needed yet.`,
+        });
+      }
+
+      if (saran.level === "waspada") {
+        return Promise.resolve({
+          teks: `Prepare to open ${saran.namaNode} by ${saran.persenBukaan}% within ${saran.menit} minutes. Simulated discharge ${debit} m³/s is approaching the alert threshold; monitor the water level every 15 minutes.`,
+        });
+      }
+
+      return Promise.resolve({
+        teks: `Open ${saran.namaNode} by ${saran.persenBukaan}% within ${saran.menit} minutes to prevent flooding in ${saran.hilirNama}. Simulated discharge ${debit} m³/s has crossed the alert threshold.`,
+      });
+    }
 
     if (saran.level === "aman") {
       return Promise.resolve({

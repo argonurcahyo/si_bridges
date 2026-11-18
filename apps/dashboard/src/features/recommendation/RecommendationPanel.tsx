@@ -7,13 +7,13 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRecommendation } from "@/hooks/useRecommendation";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 import { formatWaktuWib } from "@/lib/format";
 import type { HydroNetwork } from "@/schemas/hydro";
 import type { Catchment } from "@/schemas/catchment";
 import type { SimulationResult } from "@/services/simulationService";
 import { useDemoStore, useOperatorStore, type PilihanOperator } from "@/store/operatorStore";
-import { AlertDraftSheet } from "@/features/alerts/AlertDraftSheet";
+import { AlertReviewSheet } from "@/features/alerts/AlertReviewSheet";
 import { AuditLogPanel } from "./AuditLogPanel";
 
 type RecommendationPanelProps = {
@@ -149,7 +149,7 @@ export function RecommendationPanel({ hasil, network, catchments }: Recommendati
           />
         </div>
 
-        <AlertDraftSheet hasil={hasil} network={network} catchments={catchments} />
+        <AlertReviewSheet hasil={hasil} network={network} catchments={catchments} />
       </TabsContent>
 
       <TabsContent value="log">

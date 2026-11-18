@@ -1,5 +1,5 @@
 import { AlertTriangle, BadgeCheck } from "lucide-react";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 import { AMBANG_KEYAKINAN_RENDAH } from "@/engine/confidence";
 import { cn } from "@/lib/utils";
 

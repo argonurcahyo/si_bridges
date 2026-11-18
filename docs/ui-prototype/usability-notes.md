@@ -6,7 +6,7 @@ Template untuk uji pengguna prototipe. Dilakukan setelah prototipe bisa dijalank
 
 | Item | Isi |
 |---|---|
-| Tujuan | Memastikan operator memahami alur simulasi, rekomendasi, dan keputusan |
+| Tujuan | Memastikan operator memahami alur peringatan dan perencana memahami alur simulator |
 | Jumlah peserta | 3–5 orang |
 | Komposisi | Mahasiswa atau dosen dengan latar informatika, dan jika memungkinkan petugas atau pihak yang memahami operasional banjir |
 | Durasi | 30 menit per peserta |
@@ -22,8 +22,11 @@ Template untuk uji pengguna prototipe. Dilakukan setelah prototipe bisa dijalank
 | T-3 | Pilih konversi lahan 30% di Depok dan lihat dampaknya pada grafik | Menyebut segmen yang berubah | 1 menit |
 | T-4 | Baca rekomendasi dan beri keputusan "Perlu Verifikasi" | Keputusan tercatat di log | 1 menit |
 | T-5 | Jelaskan arti label "Memerlukan Konfirmasi Petugas Lapangan" | Menjelaskan bahwa perlu cek lapangan | 30 detik |
-| T-6 | Temukan draf peringatan untuk Bidara Cina dan salin teksnya | Teks tersalin | 1 menit |
-| T-7 | Jelaskan apakah data di layar nyata atau mock | Menyebut "Mode Latihan" atau status mock | 30 detik |
+| T-6 | Temukan peringatan untuk Bidara Cina, sunting satu kalimat, lalu siarkan | Peringatan berstatus disiarkan dan muncul di `/warga` | 1,5 menit |
+| T-7 | Tarik peringatan dan pastikan hilang dari halaman warga | Halaman warga menampilkan empty state | 1 menit |
+| T-8 | Ubah parameter simulator dan jelaskan interpretasi yang muncul | Menyebut dampak vs baseline dan batasan model | 1,5 menit |
+| T-9 | Generate Executive Brief dan unduh Markdown | File brief terunduh | 1 menit |
+| T-10 | Jelaskan apakah data di layar nyata atau mock | Menyebut "Mode Latihan" atau status mock | 30 detik |
 
 ## 3. Pertanyaan Setelah Uji
 

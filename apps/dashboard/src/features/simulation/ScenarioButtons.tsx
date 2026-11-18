@@ -1,6 +1,6 @@
 import { CloudRain, RotateCcw, Trees } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 import { BASELINE } from "@/services/simulationService";
 
 type Skenario = {

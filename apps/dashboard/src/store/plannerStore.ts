@@ -1,19 +1,16 @@
 import { create } from "zustand";
 import { PLANNER_BASELINE, type PlannerInput } from "@/engine/planner";
+import type { PlannerParameterId } from "@/engine/plannerParams";
 
 type PlannerStore = PlannerInput & {
-  setHujan: (nilai: number) => void;
-  setPasang: (nilai: number) => void;
-  setRth: (nilai: number) => void;
-  setMoratorium: (aktif: boolean) => void;
+  setParameter: (id: PlannerParameterId, nilai: number | boolean) => void;
+  terapkan: (nilai: Partial<PlannerInput>) => void;
   reset: () => void;
 };
 
 export const usePlannerStore = create<PlannerStore>((set) => ({
   ...PLANNER_BASELINE,
-  setHujan: (hujan24JamMm) => set({ hujan24JamMm }),
-  setPasang: (pasangMeter) => set({ pasangMeter }),
-  setRth: (rthPersen) => set({ rthPersen }),
-  setMoratorium: (moratorium) => set({ moratorium }),
+  setParameter: (id, nilai) => set({ [id]: nilai } as Partial<PlannerStore>),
+  terapkan: (nilai) => set(nilai),
   reset: () => set(PLANNER_BASELINE),
 }));

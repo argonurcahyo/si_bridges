@@ -1,87 +1,97 @@
-# C4 Level 3 — Component Diagram (Frontend Dashboard)
+# C4 Level 3 — Component Diagram (Frontend)
 
-Komponen di dalam Dashboard SPA. Prototipe mengimplementasikan layanan dengan mock, tetapi kontraknya sama dengan layanan produksi.
+Komponen di dalam SPA HydroTwin-AI. Prototipe mengimplementasikan layanan dengan mock, tetapi kontraknya sama dengan layanan produksi. Ada tiga surface: `/ops` dan `/warga` untuk EWS, `/rencana` untuk Simulator.
 
 ```mermaid
 flowchart TB
     subgraph APP["App Shell"]
-        ROUTER["Router<br/>/ops"]
+        ROUTER["Router<br/>/ops · /warga · /rencana"]
         LAYOUT["OpsLayout<br/>header, ModeBanner,<br/>DisclaimerBanner"]
     end
 
-    subgraph FEAT["Feature Modules"]
-        MAPF["map/<br/>MapView, NodeLayer,<br/>EdgeLayer, HeatmapLayer,<br/>MapLegend, LayerToggle"]
-        SIMF["simulation/<br/>RainfallSlider,<br/>LandUseControl,<br/>ScenarioButtons, ScenarioCompare"]
+    subgraph EWSF["EWS Features"]
+        MAPF["map/<br/>MapView, NodeLayer,<br/>EdgeLayer, KelurahanLayer"]
+        SIMF["simulation/<br/>RainfallSlider,<br/>LandUseControl,<br/>ScenarioButtons"]
         CHARTF["charts/<br/>DischargeChart,<br/>ProjectionChart"]
-        RECF["recommendation/<br/>RecommendationCard,<br/>ConfidenceBadge, SourceBadge,<br/>OperatorDecision, AuditLogPanel"]
-        ALERTF["alerts/<br/>AlertDraftPanel"]
-        HISTF["history/<br/>TimelinePlayer"]
-        STATUSF["status/<br/>DataStatusPage,<br/>ServiceStatusList"]
+        RECF["recommendation/<br/>RecommendationCard,<br/>OperatorDecision, AuditLogPanel"]
+        ALERTF["alerts/<br/>AlertReviewSheet"]
+        WARGA["public/<br/>PublicAlertCard,<br/>WilayahPicker"]
+        STATUSF["status/<br/>StatusSheet"]
+    end
+
+    subgraph SIMFEAT["Simulator Features"]
+        PARAM["planner/<br/>ScenarioPanel,<br/>PlannerParameter"]
+        IMPACT["planner/<br/>ImpactPanel,<br/>KelurahanDetail"]
+        INTERP["planner/<br/>InterpretationPanel"]
+        BRIEF["planner/<br/>ExecutiveBrief"]
     end
 
     subgraph STATE["State"]
-        SIMSTORE["simulationStore<br/>Zustand: input, skenario aktif"]
-        OPSTORE["operatorStore<br/>Zustand: keputusan, log"]
-        QUERY["TanStack Query<br/>hasil simulasi, narasi"]
+        SIMSTORE["simulationStore<br/>input operator"]
+        OPSTORE["operatorStore<br/>keputusan, peringatan, log"]
+        PLANSTORE["plannerStore<br/>parameter simulator"]
+        PUBSTORE["publicationService<br/>localStorage + BroadcastChannel"]
+        QUERY["TanStack Query<br/>simulasi, narasi"]
     end
 
-    subgraph SVC["Service Layer (services/)"]
-        SIMSVC["simulationService<br/>interface: run(scenario)"]
-        NARR["narrativeService<br/>provider: llm → timeout → rule-based"]
-        DATASVC["dataService<br/>GeoJSON, node, edge, status"]
-        DRAFT["draftService<br/>susun teks peringatan"]
+    subgraph SVC["Service Layer"]
+        SIMSVC["simulationService<br/>run(scenario)"]
+        ALERTSVC["alertService<br/>kandidat peringatan per wilayah"]
+        PUBSVC["publicationService<br/>siarkan / tarik / kedaluwarsa"]
+        PLANNERSVC["planner engine<br/>runPlanner, registry parameter"]
+        NARR["llm pipeline<br/>timeout → validasi → fallback"]
+        TASKS["llm/tasks<br/>rekomendasi, peringatan,<br/>interpretasi, brief"]
     end
 
     subgraph ADAPT["Adapter"]
-        MOCKSIM["mockSimulation<br/>(prototipe)"]
-        MOCKLLM["mockLlm<br/>delay & gagal acak"]
-        RULE["ruleBasedNarrative<br/>template"]
-        VALID["validateNarrative<br/>cek angka (FR-R5)"]
+        MOCKSIM["mockSimulation"]
+        MOCKLLM["mockLlm<br/>delay & gagal terkontrol"]
+        TEMPLATE["template fallback"]
+        VALID["validator angka + tone"]
     end
 
     subgraph SHARED["Shared"]
         SCHEMA["schemas/ (Zod)"]
-        I18N["i18n/id.ts"]
-        FMT["lib/format.ts<br/>angka, WIB"]
-        RISK["lib/risk.ts<br/>warna & label level"]
-        UI["components/ui/<br/>shadcn"]
+        I18N["i18n/ (id, en, teks)<br/>default EN, toggle ID/EN"]
+        FMT["lib/format.ts<br/>locale-aware numbers"]
+        UI["components/ui/"]
     end
 
     ROUTER --> LAYOUT
-    LAYOUT --> MAPF
-    LAYOUT --> SIMF
-    LAYOUT --> CHARTF
-    LAYOUT --> RECF
-    LAYOUT --> ALERTF
-    LAYOUT --> HISTF
-    LAYOUT --> STATUSF
+    LAYOUT --> EWSF
+    LAYOUT --> SIMFEAT
 
     SIMF --> SIMSTORE
     RECF --> OPSTORE
+    ALERTF --> OPSTORE
+    WARGA --> PUBSTORE
+    PARAM --> PLANSTORE
     MAPF --> QUERY
     CHARTF --> QUERY
-    RECF --> QUERY
+    IMPACT --> PLANNERSVC
 
     QUERY --> SIMSVC
     QUERY --> NARR
-    MAPF --> DATASVC
-    ALERTF --> DRAFT
-    STATUSF --> DATASVC
+    ALERTF --> ALERTSVC
+    ALERTF --> PUBSVC
+    WARGA --> PUBSVC
+    INTERP --> TASKS
+    BRIEF --> TASKS
+    TASKS --> NARR
 
     SIMSVC --> MOCKSIM
     NARR --> MOCKLLM
-    NARR --> RULE
+    NARR --> TEMPLATE
     NARR --> VALID
-    DATASVC --> SCHEMA
-    MOCKSIM --> SCHEMA
-    DRAFT --> RISK
+    ALERTSVC --> MOCKSIM
 
-    MAPF --> UI
-    SIMF --> UI
-    RECF --> UI
-    CHARTF --> UI
+    EWSF --> UI
+    SIMFEAT --> UI
+    EWSF --> I18N
+    SIMFEAT --> I18N
     RECF --> FMT
-    RECF --> I18N
+    EWSF --> SCHEMA
+    SIMFEAT --> SCHEMA
 ```
 
 ## Aturan Dependensi
@@ -90,6 +100,7 @@ flowchart TB
 - Komponen tidak memanggil adapter langsung. Selalu lewat service.
 - `services/` tidak mengimpor React.
 - Adapter mock dan adapter produksi memiliki interface yang sama. Berganti implementasi cukup mengubah binding di satu tempat.
+- Halaman warga hanya boleh mengimpor `publicationService`, bukan `simulationService` atau `planner` engine.
 - Tidak ada `fetch` di komponen (sesuai `01-rules.md`).
 
 ## Kontrak Layanan (ringkas)
@@ -97,8 +108,14 @@ flowchart TB
 | Layanan | Input | Output |
 |---|---|---|
 | `simulationService.run` | `{ intensitasMmJam, konversiLahanPersen, scenarioId? }` | `{ hasilId, debitPerNode, debitPerSegmen, proyeksi[], confidence, dihitungPada }` |
-| `narrativeService.generate` | `hasil` | `{ teks, sumber: 'llm' \| 'rule_based', confidence, modelLabel, dibuatPada }` |
-| `dataService.getNodes` | — | `Node[]` + `status` |
-| `draftService.build` | `rekomendasi, segmen` | `{ level, teksPublik, estimasiTibaMenit }` |
+| `alertService.buildKandidatPeringatan` | `hasil simulasi, network, catchments` | `Peringatan[]` kandidat per wilayah |
+| `publicationService.siarkan` | `Peringatan` | `Peringatan` berstatus `disiarkan` + event channel |
+| `publicationService.tarik` | `peringatanId` | `Peringatan` berstatus `ditarik` + event channel |
+| `publicationService.daftarAktif` | `indeks?` | `Peringatan[]` berstatus disiarkan dan belum kedaluwarsa |
+| `llm.generate` | `task, konteks terhitung` | `{ teks, sumber: 'llm' \| 'template', modelLabel, dibuatPada }` |
+| `llm.generatePeringatanPublik` | `PeringatanContext` | `{ teks, sumber, modelLabel, dibuatPada, alasanFallback? }` |
+| `llm.generatePlannerNarrative` | `PlannerNarrativeContext, jenis` | `{ teks, sumber, modelLabel, dibuatPada, versi, alasanFallback? }` |
+| `plannerRegistry` | — | `PlannerParameter[]` (id, kind, label, satuan, batas, default, sumber) |
+| `planner.run` | `parameter` | `{ perKelurahan, ringkasan }` |
 
 Detail lengkap ada di Zod schema (`schemas/`).

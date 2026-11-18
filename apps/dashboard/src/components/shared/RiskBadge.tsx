@@ -1,7 +1,7 @@
 import { OctagonAlert, ShieldCheck, TriangleAlert } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { RiskLevel } from "@/engine/riskLevel";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 
 const konfigurasi = {
   aman: { Icon: ShieldCheck, className: "border-risk-aman/50 text-risk-aman" },

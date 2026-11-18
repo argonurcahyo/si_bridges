@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { riskLevel } from "@/engine/riskLevel";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 import { formatAngka } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { HydroNode } from "@/schemas/hydro";

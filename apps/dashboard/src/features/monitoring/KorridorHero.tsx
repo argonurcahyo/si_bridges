@@ -1,6 +1,6 @@
 import { Route } from "lucide-react";
 import { KorridorIllustration } from "@/components/illustrations/KorridorIllustration";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 
 export function KorridorHero() {
   return (

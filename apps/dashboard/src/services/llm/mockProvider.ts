@@ -16,6 +16,23 @@ function pilihTemplate(input: NarrativeInput, varian: number): string {
   const debit = formatAngka(saran.debitM3s, 0);
   const keyakinan = hasil.keyakinan;
 
+  if (input.bahasa === "en") {
+    const siaga = [
+      `Open ${saran.namaNode} by ${saran.persenBukaan}% within ${saran.menit} minutes to prevent flooding in ${saran.hilirNama}. Simulated discharge ${debit} m³/s, confidence ${keyakinan}%.`,
+      `Tactical recommendation: lower the water level at ${saran.namaNode} by opening ${saran.persenBukaan}% within ${saran.menit} minutes. Discharge ${debit} m³/s is at alert level.`,
+      `Because discharge at ${saran.namaNode} reached ${debit} m³/s, open the gate ${saran.persenBukaan}% within ${saran.menit} minutes and alert staff in ${saran.hilirNama}.`,
+    ];
+    const waspada = [
+      `Prepare to open ${saran.namaNode} by ${saran.persenBukaan}% within ${saran.menit} minutes. Simulated discharge ${debit} m³/s is approaching the alert threshold.`,
+      `Monitor ${saran.namaNode} and prepare a ${saran.persenBukaan}% opening within ${saran.menit} minutes. Discharge ${debit} m³/s is at watch level.`,
+    ];
+    const aman = [
+      `No immediate action at ${saran.namaNode}. Simulated discharge ${debit} m³/s is below the threshold; continue monitoring every ${saran.menit} minutes.`,
+    ];
+    const daftar = saran.level === "siaga" ? siaga : saran.level === "waspada" ? waspada : aman;
+    return daftar[varian % daftar.length]!;
+  }
+
   const siaga = [
     `Buka ${saran.namaNode} sebesar ${saran.persenBukaan}% dalam ${saran.menit} menit untuk mencegah limpasan di ${saran.hilirNama}. Debit simulasi ${debit} m³/s, keyakinan ${keyakinan}%.`,
     `Rekomendasi taktis: turunkan muka air di ${saran.namaNode} dengan membuka ${saran.persenBukaan}% dalam ${saran.menit} menit. Debit ${debit} m³/s berada pada level siaga.`,

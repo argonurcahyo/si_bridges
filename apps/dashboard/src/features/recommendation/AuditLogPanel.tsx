@@ -1,14 +1,22 @@
 import { History, Trash2 } from "lucide-react";
 import { SourceBadge } from "@/components/shared/SourceBadge";
 import { Button } from "@/components/ui/button";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 import { formatWaktuWib } from "@/lib/format";
-import { useOperatorStore } from "@/store/operatorStore";
+import { useOperatorStore, type LogAudit } from "@/store/operatorStore";
 
 const labelPilihan: Record<string, string> = {
   diterima: teks.rekomendasi.diterima,
   ditolak: teks.rekomendasi.ditolak,
   perlu_verifikasi: teks.rekomendasi.verifikasi,
+};
+
+const labelJenis: Record<Exclude<LogAudit["jenis"], "keputusan">, string> = {
+  peringatan_disunting: teks.audit.peringatanDisunting,
+  peringatan_disiarkan: teks.audit.peringatanDisiarkan,
+  peringatan_ditolak: teks.audit.peringatanDitolak,
+  peringatan_ditarik: teks.audit.peringatanDitarik,
+  peringatan_kedaluwarsa: teks.audit.peringatanKedaluwarsa,
 };
 
 export function AuditLogPanel() {
@@ -38,16 +46,25 @@ export function AuditLogPanel() {
         {log.map((entri) => (
           <li key={entri.id} className="bg-muted/20 rounded-xl border p-3 text-xs">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="font-medium">{labelPilihan[entri.pilihan] ?? entri.pilihan}</span>
+              <span className="font-medium">
+                {entri.jenis === "keputusan"
+                  ? (labelPilihan[entri.pilihan ?? ""] ?? teks.audit.keputusan)
+                  : labelJenis[entri.jenis]}
+              </span>
               <span className="text-muted-foreground tabular-nums">
                 {formatWaktuWib(new Date(entri.waktu))}
               </span>
             </div>
-            <p className="text-muted-foreground mt-1 font-mono">{entri.rekomendasiId}</p>
+            <p className="text-muted-foreground mt-1 font-mono">{entri.referensiId}</p>
             <p className="text-muted-foreground mt-0.5">{entri.ringkasan}</p>
-            <div className="mt-1.5">
-              <SourceBadge sumber={entri.sumber} />
-            </div>
+            <p className="text-muted-foreground mt-0.5">
+              {teks.audit.oleh} {entri.aktor}
+            </p>
+            {entri.sumber ? (
+              <div className="mt-1.5">
+                <SourceBadge sumber={entri.sumber} />
+              </div>
+            ) : null}
           </li>
         ))}
       </ol>

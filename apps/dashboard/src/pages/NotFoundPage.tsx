@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 
 export function NotFoundPage() {
   return (

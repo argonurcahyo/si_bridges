@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
+import { bahasaAktif } from "@/i18n/teks";
 import { generateNarrative, susunSaran } from "@/services/llm";
 import { idRekomendasi } from "@/services/llm/types";
 import type { HydroNetwork } from "@/schemas/hydro";
@@ -14,11 +15,11 @@ export function useRecommendation(
 
   const input = useMemo(() => {
     if (!hasil || !network) return null;
-    return { hasil, saran: susunSaran(hasil, network) };
+    return { hasil, saran: susunSaran(hasil, network), bahasa: bahasaAktif };
   }, [hasil, network]);
 
   const query = useQuery({
-    queryKey: ["narrative", input ? idRekomendasi(input.hasil) : "kosong", paksaGagal],
+    queryKey: ["narrative", input ? idRekomendasi(input.hasil) : "kosong", paksaGagal, bahasaAktif],
     queryFn: () =>
       generateNarrative(input!, {
         paksaGagal: () => useDemoStore.getState().paksaGagalLlm,

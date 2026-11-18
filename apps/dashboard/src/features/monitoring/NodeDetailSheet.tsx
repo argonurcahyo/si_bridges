@@ -13,7 +13,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { riskLevel } from "@/engine/riskLevel";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 import { formatAngka } from "@/lib/format";
 import type { HydroNode } from "@/schemas/hydro";
 import type { NodeHasil, SimulationResult } from "@/services/simulationService";

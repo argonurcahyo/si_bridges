@@ -1,9 +1,10 @@
 import { Droplets, LayoutDashboard, SlidersHorizontal, Smartphone } from "lucide-react";
 import { NavLink } from "react-router";
 import { StatusSheet } from "@/features/status/StatusSheet";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 import { cn } from "@/lib/utils";
 import { ClockWib } from "./ClockWib";
+import { LanguageToggle } from "./LanguageToggle";
 import { ModeBanner } from "./ModeBanner";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -28,7 +29,7 @@ export function AppHeader() {
         </div>
 
         <nav
-          aria-label="Navigasi utama"
+          aria-label={teks.nav.aria}
           className="bg-muted/60 flex shrink-0 items-center gap-1 rounded-full border p-1"
         >
           {NAV.map(({ to, label, icon: Icon }) => (
@@ -54,6 +55,7 @@ export function AppHeader() {
           <span className="bg-card/70 hidden rounded-full border px-3 py-1 text-xs font-medium md:inline">
             <ClockWib />
           </span>
+          <LanguageToggle />
           <StatusSheet />
           <ThemeToggle />
         </div>

@@ -1,4 +1,4 @@
-# Design Tokens — Dashboard Operasional
+# Design Tokens — HydroTwin-AI (EWS & Simulator)
 
 Sumber: `docs/analysis/requirements.md` (NFR-04, NFR-12) dan `02-style.md` dari rencana awal. Nilai di bawah adalah titik awal dan harus diverifikasi kontrasnya sebelum finalisasi.
 
@@ -37,7 +37,7 @@ Catatan: di tema terang, gunakan varian yang lebih gelap (emerald-700, amber-600
 
 | Elemen | Gaya | Teks contoh |
 |---|---|---|
-| Sumber AI | Outline sky | "AI · Gemini (mock)" |
+| Sumber AI | Outline sky | "AI · (mock)" atau "Template" |
 | Sumber rule-based | Solid slate | "Rule-based" |
 | Confidence ≥ 85% | Teks emerald | "Kepastian 92%" |
 | Confidence < 85% | Background amber tipis + ikon | "Memerlukan Konfirmasi Petugas Lapangan" |

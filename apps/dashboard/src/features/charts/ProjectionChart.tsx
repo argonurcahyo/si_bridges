@@ -9,7 +9,7 @@ import {
   type TooltipContentProps,
 } from "recharts";
 import { ChartContainer, type ChartConfig } from "@/components/ui/chart";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 import { formatAngka } from "@/lib/format";
 import type { SimulationResult } from "@/services/simulationService";
 

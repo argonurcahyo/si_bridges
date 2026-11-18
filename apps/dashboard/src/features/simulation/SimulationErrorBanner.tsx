@@ -1,5 +1,5 @@
 import { AlertTriangle } from "lucide-react";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 
 export function SimulationErrorBanner({ waktu }: { waktu?: string }) {
   return (

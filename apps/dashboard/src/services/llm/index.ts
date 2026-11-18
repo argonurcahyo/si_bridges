@@ -1,4 +1,5 @@
 import { buatMockProvider, type MockLlmOptions } from "./mockProvider";
+import { alasanKegagalan, denganTimeout } from "./pipeline";
 import { ruleBasedProvider } from "./ruleBasedProvider";
 import { susunSaran } from "./saran";
 import {
@@ -18,22 +19,6 @@ export type GenerateOptions = MockLlmOptions & {
   sekarang?: Date;
   timeoutMs?: number;
 };
-
-function denganTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
-  return new Promise((resolve, reject) => {
-    const id = setTimeout(() => reject(new Error("timeout")), timeoutMs);
-    promise.then(
-      (nilai) => {
-        clearTimeout(id);
-        resolve(nilai);
-      },
-      (galat: unknown) => {
-        clearTimeout(id);
-        reject(galat);
-      },
-    );
-  });
-}
 
 /**
  * Strategi narasi (ADR-004): coba LLM, validasi angka, lalu fallback rule-based.
@@ -77,9 +62,7 @@ export async function generateNarrative(
       modelLabel: llm.modelLabel,
     };
   } catch (galat) {
-    const alasan: AlasanFallback =
-      galat instanceof Error && galat.message === "timeout" ? "timeout" : "error";
-    return fallback(alasan);
+    return fallback(alasanKegagalan(galat));
   }
 }
 

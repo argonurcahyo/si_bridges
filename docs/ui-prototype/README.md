@@ -4,12 +4,12 @@ Dokumen ini mendeskripsikan prototipe frontend HydroTwin-AI. Kode ada di `apps/d
 
 | Item | Isi |
 |---|---|
-| Lingkup | Dashboard Operasional (`/ops`), Konsol Perencana (`/rencana`), PWA Warga (`/warga`) |
+| Use case | **Early Warning System** (`/ops` operator + `/warga`) dan **Simulator** (`/rencana` perencana) |
 | Tim | Tim SWE: Yovi Maulana Nugraha (UI/UX & mockup), Argo Nurcahyo (arsitektur & review) |
 | Fidelity | Mockup visual lengkap, prototipe React interaktif |
 | Stack | React 19, Vite, TypeScript, Tailwind CSS v4, shadcn/ui, MapLibre GL JS, Recharts |
 | Data | Mock dari SHP dan DEMNAS; 237 poligon kelurahan dari BPS 2020 |
-| Bahasa | Indonesia |
+| Bahasa | English (default) dan Bahasa Indonesia; pilihan ID/EN di header dan halaman warga |
 
 ![Konsol Perencana](screenshots/12-konsol-perencana.png)
 
@@ -19,25 +19,33 @@ Dokumen ini mendeskripsikan prototipe frontend HydroTwin-AI. Kode ada di `apps/d
 
 ```mermaid
 flowchart TB
-    ROOT["/ops<br/>Dashboard Operasional"]
-    PLAN["/rencana<br/>Konsol Perencana"]
-    WARGA["/warga<br/>PWA Warga"]
-    ROOT --> O01["O-01 Dashboard utama<br/>(default)"]
-    O01 -->|klik node atau segmen| O02["O-02 Detail node/segmen<br/>(sheet samping)"]
-    O01 -->|mode perbandingan| O03["O-03 Perbandingan skenario"]
-    O01 -->|panel rekomendasi| O04["O-04 Rekomendasi & keputusan"]
-    O04 -->|tombol Draf| O06["O-06 Draf peringatan publik"]
-    O01 -->|menu Historis| O05["O-05 Playback historis"]
-    O01 -->|menu Status| O07["O-07 Status data & layanan"]
-    O01 -.->|kondisi khusus| O08["O-08 Kosong, loading, error"]
-    O04 -->|riwayat| LOG["Log audit<br/>(panel di O-04)"]
-    PLAN --> P01["P-01 Parameter skenario"]
-    PLAN --> P02["P-02 Heatmap kelurahan"]
-    PLAN --> P03["P-03 Dampak & Executive Brief"]
-    WARGA --> W01["W-01 Kartu peringatan RW"]
+    subgraph EWS[Early Warning System]
+        ROOT["/ops<br/>Dashboard operator"]
+        WARGA["/warga<br/>PWA warga"]
+        ROOT --> O01["O-01 Dashboard utama<br/>(default)"]
+        O01 -->|klik node atau segmen| O02["O-02 Detail node/segmen<br/>(sheet samping)"]
+        O01 -->|mode perbandingan| O03["O-03 Perbandingan skenario"]
+        O01 -->|panel rekomendasi| O04["O-04 Rekomendasi & keputusan"]
+        O04 -->|tombol peringatan| O06["O-06 Tinjau & siarkan peringatan"]
+        O01 -->|menu Historis| O05["O-05 Playback historis"]
+        O01 -->|menu Status| O07["O-07 Status data & layanan"]
+        O01 -.->|kondisi khusus| O08["O-08 Kosong, loading, error"]
+        O04 -->|riwayat| LOG["Log audit<br/>(panel di O-04)"]
+        O06 -->|siarkan| WARGA
+        WARGA --> W01["W-01 Kartu peringatan warga"]
+        WARGA --> W02["W-02 Belum ada peringatan"]
+    end
+
+    subgraph SIM[Simulator]
+        PLAN["/rencana<br/>Konsol perencana"]
+        PLAN --> P01["P-01 Parameter skenario"]
+        PLAN --> P02["P-02 Heatmap kelurahan"]
+        PLAN --> P03["P-03 Dampak skenario"]
+        PLAN --> P04["P-04 Interpretasi & Executive Brief"]
+    end
 ```
 
-Navigasi utama berada di header: **Operator**, **Perencana**, dan **Warga**. O-02 dan O-03 terbuka sebagai panel di atas O-01.
+Navigasi utama berada di header dengan dua kelompok: **Peringatan Dini** (Operator + Warga) dan **Simulator** (Perencana). O-02 dan O-03 terbuka sebagai panel di atas O-01.
 
 ## 2. Struktur Layar
 
@@ -112,11 +120,11 @@ Setiap keputusan tercatat dengan waktu WIB, ID rekomendasi, sumber narasi, dan r
 
 Panel samping berisi TMA, level risiko, debit simulasi, C-value, ambang, koordinat, dan status data.
 
-### Draf peringatan publik
+### Panel peringatan publik
 
-![Draf peringatan](screenshots/08-draf-peringatan.png)
+![Panel peringatan publik](screenshots/08-panel-peringatan.png)
 
-Draf per wilayah dengan level, estimasi waktu tiba, instruksi evakuasi, dan tombol salin. Tidak ada tombol kirim otomatis.
+Panel peringatan F1–F2: kandidat per wilayah, pesan AI/fallback, sumber dan waktu generate, teks yang dapat disunting, aksi siarkan/tolak, dan daftar peringatan aktif yang dapat ditarik.
 
 ### Status data dan layanan
 
@@ -130,23 +138,23 @@ Sumber tiap layer, label open data/sintetis/mock, waktu pembaruan, status layana
 
 Terrain DEMNAS dengan skala vertikal yang dapat diatur (2× sampai 8×), hillshade dari DEM, dan alur Ciliwung yang mengikuti lembah.
 
-## 5. Konsol Perencana dan PWA Warga
+## 5. Simulator dan PWA Warga
 
-Dua tampilan baru mengikuti konsep HydroTwin-AI dan memakai data yang sama dengan dashboard operator.
+Dua surface ini melengkapi EWS. Status implementasi berbeda dari target rencana; lihat [`../plan/ews-simulator.md`](../plan/ews-simulator.md).
 
-### Konsol perencana (`/rencana`)
+### Konsol perencana (`/rencana`) — Simulator
 
 ![Konsol perencana](screenshots/12-konsol-perencana.png)
 
-Parameter skenario (hujan 24 jam, pasang laut, RTH Depok, moratorium), heatmap kedalaman per kelurahan dari 237 poligon BPS, dampak skenario (luas genangan, RW terdampak, puncak, keyakinan), grafik perbandingan opsi, dan Executive Brief. Angka dari model mock, bukan HEC-RAS.
+Status sekarang: parameter skenario dari registry, heatmap kedalaman per kelurahan dari 237 poligon BPS, dampak skenario (luas genangan, RW terdampak, puncak, keyakinan), grafik perbandingan opsi, interpretasi AI otomatis, dan Executive Brief on-demand dengan fallback serta ekspor Markdown. Angka dari model mock, bukan HEC-RAS.
 
 Diambil dengan `apps/dashboard/scripts/screenshots-hydrotwin.mjs` (Puppeteer, 1440 px, mode terang).
 
-### PWA warga (`/warga`)
+### PWA warga (`/warga`) — EWS
 
 ![PWA warga](screenshots/11-warga-pwa.png)
 
-Tampilan mobile berisi level siaga, kisaran kedalaman, puncak, peta kelurahan dengan posisi di perangkat, langkah evakuasi, dan status persetujuan operator. GPS tidak dikirim ke server.
+Status sekarang: tampilan mobile hanya membaca peringatan berstatus `disiarkan` per wilayah, dengan level, estimasi tiba, puncak, teks final hasil suntingan operator, langkah evakuasi, provenance AI/template, dan empty state resmi. GPS belum dipakai dan tidak dikirim ke server.
 
 ## 6. Dokumen Terkait
 

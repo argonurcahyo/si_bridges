@@ -1,7 +1,7 @@
 import { TreePine } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 import { BATAS_KONVERSI } from "@/services/simulationService";
 
 type LandUseControlProps = {

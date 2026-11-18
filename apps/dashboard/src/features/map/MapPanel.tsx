@@ -1,4 +1,4 @@
-﻿import type { FeatureCollection, MultiPolygon, Point, Polygon } from "geojson";
+import type { FeatureCollection, MultiPolygon, Point, Polygon } from "geojson";
 import { Layers } from "lucide-react";
 import { lazy, Suspense, useState } from "react";
 import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import type { KelurahanPropertiesPeta } from "@/engine/planner";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 import type { NodeProperties } from "@/services/geoService";
 import { layerAwal, type MapLayers } from "./mapLayers";
 import type { MapViewMode } from "./MapView";
@@ -115,7 +115,7 @@ export function MapPanel({
           onValueChange={(nilai) => {
             if (nilai === "2d" || nilai === "3d") setMode(nilai);
           }}
-          aria-label="Mode peta"
+          aria-label={teks.peta.modeAria}
         >
           <ToggleGroupItem value="2d">{teks.peta.mode2d}</ToggleGroupItem>
           <ToggleGroupItem value="3d">{teks.peta.mode3d}</ToggleGroupItem>
@@ -141,7 +141,7 @@ export function MapPanel({
             >
               {[2, 4, 6, 8].map((nilai) => (
                 <ToggleGroupItem key={nilai} value={String(nilai)}>
-                  {nilai}×
+                  {nilai}�
                 </ToggleGroupItem>
               ))}
             </ToggleGroup>
@@ -215,15 +215,15 @@ export function MapPanel({
             className="h-0.5 w-4 border-t-2 border-dashed border-violet-400"
             aria-hidden="true"
           />
-          Batas provinsi
+          {teks.peta.legendaProvinsi}
         </span>
         <span className="inline-flex items-center gap-1.5">
           <span className="h-0.5 w-4 bg-slate-300" aria-hidden="true" />
-          Batas kabupaten/kota
+          {teks.peta.legendaKabupaten}
         </span>
         <span className="inline-flex items-center gap-1.5">
           <span className="h-1 w-4 rounded-full bg-cyan-400" aria-hidden="true" />
-          Sungai Ciliwung
+          {teks.peta.legendaSungai}
         </span>
       </div>
 

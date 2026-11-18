@@ -1,23 +1,28 @@
-import { BarChart3, FileText, Map as MapIcon, SlidersHorizontal } from "lucide-react";
+import { BarChart3, FileText, Map as MapIcon, SlidersHorizontal, Sparkles } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Panel } from "@/components/shared/Panel";
 import { ImpactPanel } from "@/features/planner/ImpactPanel";
 import { ExecutiveBrief } from "@/features/planner/ExecutiveBrief";
+import { InterpretationPanel } from "@/features/planner/InterpretationPanel";
 import { KelurahanDetail } from "@/features/planner/KelurahanDetail";
 import { ScenarioPanel } from "@/features/planner/ScenarioPanel";
 import { MapPanel } from "@/features/map/MapPanel";
 import { NodeDetailSheet } from "@/features/monitoring/NodeDetailSheet";
+import { useExecutiveBrief } from "@/hooks/useExecutiveBrief";
+import { useInterpretasiSkenario } from "@/hooks/useInterpretasiSkenario";
 import { usePlanner } from "@/hooks/usePlanner";
 import { useSimulation } from "@/hooks/useSimulation";
 import { useTheme } from "@/hooks/useTheme";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 import { nodesToFeatureCollection } from "@/services/geoService";
 
 export function PlannerPage() {
   const { theme } = useTheme();
-  const { hasil, dasar, opsi, fitur, brief, memuat, galat } = usePlanner();
+  const { hasil, dasar, opsi, fitur, narasiContext, memuat, galat } = usePlanner();
   const [kodeTerpilih, setKodeTerpilih] = useState<string | null>(null);
   const [idNode, setIdNode] = useState<string | null>(null);
+  const interpretasi = useInterpretasiSkenario(narasiContext);
+  const brief = useExecutiveBrief(narasiContext);
 
   const { network, hasil: hasilOperator } = useSimulation();
   const nodes = useMemo(
@@ -96,12 +101,26 @@ export function PlannerPage() {
       </div>
 
       <Panel
+        title={teks.planner.interpretasi}
+        description={teks.planner.interpretasiDeskripsi}
+        icon={Sparkles}
+        tone="sky"
+      >
+        <InterpretationPanel hasil={interpretasi.data} memuat={interpretasi.isFetching} />
+      </Panel>
+
+      <Panel
         title={teks.planner.brief}
-        description="Ringkasan untuk analis kebijakan"
+        description={teks.planner.briefDeskripsi}
         icon={FileText}
         tone="amber"
       >
-        <ExecutiveBrief brief={brief} />
+        <ExecutiveBrief
+          hasil={brief.hasil ?? undefined}
+          memuat={brief.memuat}
+          usang={brief.usang}
+          onGenerate={brief.generate}
+        />
       </Panel>
 
       <NodeDetailSheet

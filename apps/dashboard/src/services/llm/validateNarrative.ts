@@ -29,12 +29,29 @@ export function angkaDiizinkan(hasil: SimulationResult, saran: Saran): Set<numbe
   return izin;
 }
 
-/** Mengubah angka berformat Indonesia ("4.385", "12,5") menjadi number. */
+/** Mengubah angka berformat Indonesia ("4.385", "12,5") atau Inggris ("4,385", "12.5"). */
 export function parseAngkaIndonesia(token: string): number {
-  if (/^\d{1,3}(\.\d{3})+$/.test(token)) {
-    return Number(token.replace(/\./g, ""));
+  const nilai = token.trim();
+  const adaKoma = nilai.includes(",");
+  const adaTitik = nilai.includes(".");
+
+  if (adaKoma && adaTitik) {
+    return nilai.lastIndexOf(",") > nilai.lastIndexOf(".")
+      ? Number(nilai.replace(/\./g, "").replace(",", "."))
+      : Number(nilai.replace(/,/g, ""));
   }
-  return Number(token.replace(",", "."));
+
+  if (adaKoma) {
+    if (/^\d{1,3}(,\d{3})+$/.test(nilai)) return Number(nilai.replace(/,/g, ""));
+    return Number(nilai.replace(",", "."));
+  }
+
+  if (adaTitik) {
+    if (/^\d{1,3}(\.\d{3})+$/.test(nilai)) return Number(nilai.replace(/\./g, ""));
+    return Number(nilai);
+  }
+
+  return Number(nilai);
 }
 
 export function ekstrakAngka(teks: string): number[] {

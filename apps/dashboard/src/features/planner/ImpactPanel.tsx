@@ -1,7 +1,12 @@
 import { Bar, BarChart, Cell, CartesianGrid, XAxis, YAxis } from "recharts";
-import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/chart";
 import type { OpsiSkenario, PlannerResult } from "@/engine/planner";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 import { cn } from "@/lib/utils";
 import { formatAngka } from "@/lib/format";
 
@@ -46,7 +51,7 @@ function Metrik({
           )}
         >
           {selisih > 0 ? "+" : ""}
-          {selisih}% vs dasar
+          {selisih}% {teks.planner.vsDasar}
         </p>
       ) : null}
       {catatan ? <p className="text-muted-foreground mt-0.5 text-[11px]">{catatan}</p> : null}
@@ -72,6 +77,10 @@ export function ImpactPanel({
   const ringkasan = hasil.ringkasan;
   const total = hasil.perKelurahan.length;
   const persen = (nilai: number) => Math.round((nilai / Math.max(1, total)) * 100);
+  const opsiTampil = opsi.map((item) => ({
+    ...item,
+    nama: (teks.planner.opsiNama as Record<string, string>)[item.nama] ?? item.nama,
+  }));
 
   return (
     <div className="flex h-full flex-col gap-4">
@@ -113,25 +122,25 @@ export function ImpactPanel({
           label={teks.planner.puncak}
           nilai={formatAngka(ringkasan.puncakJam, 1)}
           satuan={teks.planner.jam}
-          catatan="sejak hujan mulai"
+          catatan={teks.planner.sejakHujan}
         />
         <Metrik
           label={teks.planner.keyakinan}
           nilai={`${ringkasan.keyakinan}%`}
-          catatan="model mock"
+          catatan={teks.planner.modelMock}
         />
       </div>
 
       <div className="space-y-2 pt-1">
         <p className="text-muted-foreground text-xs font-medium">{teks.planner.opsi}</p>
         <ChartContainer config={config} className="aspect-auto h-[220px] w-full">
-          <BarChart data={opsi} margin={{ top: 8, right: 4, bottom: 0, left: 0 }}>
+          <BarChart data={opsiTampil} margin={{ top: 8, right: 4, bottom: 0, left: 0 }}>
             <CartesianGrid vertical={false} strokeDasharray="3 3" />
             <XAxis dataKey="nama" tickLine={false} axisLine={false} tick={{ fontSize: 10 }} />
             <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 10 }} width={48} />
             <ChartTooltip content={<ChartTooltipContent />} />
             <Bar dataKey="luasGenanganHa" radius={[4, 4, 0, 0]}>
-              {opsi.map((item) => (
+              {opsiTampil.map((item) => (
                 <Cell
                   key={item.nama}
                   fill={item.aktif ? "var(--color-chart-1)" : "var(--color-chart-3)"}
@@ -150,9 +159,15 @@ export function ImpactPanel({
           <span className="flex-1 bg-emerald-500" />
         </div>
         <div className="text-muted-foreground flex justify-between text-[11px] tabular-nums">
-          <span>Siaga {ringkasan.jumlahSiaga}</span>
-          <span>Waspada {ringkasan.jumlahWaspada}</span>
-          <span>Aman {ringkasan.jumlahAman}</span>
+          <span>
+            {teks.level.siaga} {ringkasan.jumlahSiaga}
+          </span>
+          <span>
+            {teks.level.waspada} {ringkasan.jumlahWaspada}
+          </span>
+          <span>
+            {teks.level.aman} {ringkasan.jumlahAman}
+          </span>
         </div>
       </div>
 

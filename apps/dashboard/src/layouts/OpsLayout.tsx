@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 import { AppHeader } from "@/components/shared/AppHeader";
 import { DisclaimerBanner } from "@/components/shared/DisclaimerBanner";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 
 export function OpsLayout() {
   return (

@@ -8,10 +8,10 @@ Keterangan simbol: `[ ]` tombol, `( )` pilihan, `[=====o==]` slider, `{ }` input
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────────┐
-│ HydroGraph-AI  │ ◉ MODE LATIHAN │ Pantau  Historis  Status  Log │ ● Layanan OK │ 14:30 WIB │ ☾ │
+│ HydroTwin-AI   │ ◉ MODE LATIHAN │ Pantau  Historis  Status  Log │ ● Layanan OK │ 14:30 WIB │ ☾ │
 ├────────────────┬───────────────────────────────────────────────┬────────────────────────┤
 │ SIMULASI       │                                               │ REKOMENDASI TAKTIS     │
-│                │                                               │ [AI · Gemini (mock)]   │
+│                │                                               │ [AI · (mock)]          │
 │ Intensitas     │                 PETA                          │ Kepastian 92%          │
 │ hujan          │          (2D/3D · node · edge)                │                        │
 │ 80 mm/jam      │                                               │ "Buka Pintu Air        │
@@ -25,7 +25,7 @@ Keterangan simbol: `[ ]` tombol, `( )` pilihan, `[=====o==]` slider, `{ }` input
 │ (•) 20%        │                                               │ [Ditolak]              │
 │ ( ) 30%        │                                               │ [Perlu Verifikasi]     │
 │                │                                               │                        │
-│ Skenario cepat │                                               │ Draf peringatan  ▸     │
+│ Skenario cepat │                                               │ Peringatan       ▸     │
 │ [Hujan +20]    │                                               │ Log keputusan    ▸     │
 │ [Baseline]     │                                               │                        │
 ├────────────────┴───────────────────────────────────────────────┴────────────────────────┤
@@ -92,7 +92,7 @@ Catatan layout:
 │ ⚠ Memerlukan Konfirmasi Petugas Lapangan                           │
 │ Kepastian 78%                                                       │
 │                                                                     │
-│ Sumber: AI · Gemini (mock) · dibuat 14:30 WIB · ID REK-0042         │
+│ Sumber: AI · (mock) · dibuat 14:30 WIB · ID REK-0042                │
 │                                                                     │
 │ "Buka Pintu Air Manggarai 15% dalam 45 menit untuk mencegah         │
 │  limpasan di Kampung Melayu. Pantau TMA Katulampa setiap 15 menit." │
@@ -113,25 +113,86 @@ Varian O-04a (LLM gagal):
 │ ℹ Narasi AI tidak tersedia, menggunakan aturan standar.             │
 ```
 
-## O-06 — Draf Peringatan Publik
+## O-06 — Tinjau & Siarkan Peringatan Publik
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│ DRAF PERINGATAN PUBLIK                                      [Tutup ✕]  │
-│ Draf tidak dikirim otomatis. Tinjau sebelum disalin.                   │
+│ TINJAU PERINGATAN PUBLIK                                    [Tutup ✕]  │
+│ Pesan disusun dari hasil model. Anda dapat menyunting sebelum siarkan. │
 ├────────────────────────────────────────────────────────────────────────┤
-│ Kelurahan: [ Bidara Cina ▾ ]          Level: ● SIAGA                   │
+│ Wilayah: [ Bidara Cina ▾ ]            Level: ● SIAGA                   │
+│ Sumber: AI · OpenAI (mock) · dibuat 14:30 WIB                         │
 │                                                                        │
 │ ┌────────────────────────────────────────────────────────────────────┐ │
 │ │ SIAGA — Kelurahan Bidara Cina                                      │ │
 │ │ Estimasi air tiba ± 60 menit. Segera naik ke lantai dua atau       │ │
 │ │ lokasi aman terdekat. Ikuti informasi resmi BPBD DKI Jakarta.      │ │
-│ │ Sumber: simulasi HydroGraph-AI (mock) · 14:30 WIB                  │ │
+│ │ [ teks dapat disunting ]                                           │ │
 │ └────────────────────────────────────────────────────────────────────┘ │
 │                                                                        │
-│ Dibuat dari rekomendasi REK-0042 (status: Diterima)                    │
-│                                                    [ Salin teks ]      │
+│ Teks AI asli disimpan di audit. Status: ◌ Draf                         │
+│                                                                        │
+│ [ Generate ulang ]  [ Tolak ]  [ Siarkan ke warga ]                    │
 └────────────────────────────────────────────────────────────────────────┘
+```
+
+Varian O-06a (AI gagal): badge `■ Template`, pesan "AI tidak tersedia, memakai template".
+
+Varian O-06b (tidak ada wilayah waspada/siaga): "Belum ada peringatan yang perlu disiarkan."
+
+## W-01 — Kartu Peringatan Warga (Mobile)
+
+```
+┌──────────────────────────────────────┐
+│ HydroTwin Siaga        [Pilih wilayah]│
+│ Peringatan resmi · 14:32 WIB          │
+├──────────────────────────────────────┤
+│            SIAGA                     │
+│   Estimasi air tiba ± 60 menit       │
+│   Puncak sekitar 3 jam lagi          │
+│                                      │
+│ Teks peringatan final                │
+│ (hasil suntingan operator)           │
+│                                      │
+│ Langkah cepat                        │
+│ 1. Naikkan dokumen ke lantai atas    │
+│ 2. Siapkan tas siaga dan obat        │
+│ 3. Menuju posko terdekat             │
+│                                      │
+│ Peringatan resmi operator BPBD       │
+└──────────────────────────────────────┘
+```
+
+Varian W-01a (belum ada peringatan): "Belum ada peringatan resmi untuk wilayah ini."
+
+## P-01 — Parameter Simulator
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│ PARAMETER SKENARIO                                               │
+├──────────────────────────────────────────────────────────────────┤
+│ Hujan 24 jam       [====o====] 180 mm                            │
+│ Pasang laut        [==o======] 0,4 m                             │
+│ RTH Depok          [===o=====] 15%                               │
+│ Moratorium air     [ on ]                                       │
+│ (parameter tambahan mengikuti registry)                          │
+│ [ Reset skenario ]                                               │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+## P-04 — Interpretasi & Executive Brief
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│ INTERPRETASI SKENARIO              [AI · Claude (mock) · 14:35]  │
+│ Skenario ini menurunkan luas genangan 12% dibanding dasar...     │
+│ Batasan: model mock, bukan HEC-RAS.                              │
+├──────────────────────────────────────────────────────────────────┤
+│ EXECUTIVE BRIEF                    [Generate brief]              │
+│ Draf · menunggu tinjauan analis                                  │
+│ Ringkasan | Dampak | Opsi kebijakan | Rekomendasi | Batasan      │
+│ [ Salin ] [ Unduh Markdown ]                                     │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
 ## O-07 — Status Data & Layanan
@@ -191,7 +252,7 @@ Hasil lama tetap tampil dengan label di atas grafik:
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│ HydroGraph-AI · MODE LATIHAN            14:30 WIB  ☾ ☰   │
+│ HydroTwin-AI · MODE LATIHAN             14:30 WIB  ☾ ☰   │
 ├──────────────────────────────────────────────────────────┤
 │                    PETA                                  │
 │                                                          │

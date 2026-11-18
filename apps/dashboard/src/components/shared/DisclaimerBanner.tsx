@@ -1,5 +1,5 @@
 import { ShieldAlert } from "lucide-react";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 
 export function DisclaimerBanner() {
   return (

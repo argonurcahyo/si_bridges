@@ -1,4 +1,4 @@
-﻿import { Activity, Map as MapIcon, Sparkles, SlidersHorizontal } from "lucide-react";
+import { Activity, Map as MapIcon, Sparkles, SlidersHorizontal } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Panel } from "@/components/shared/Panel";
 import { DischargeChart } from "@/features/charts/DischargeChart";
@@ -13,7 +13,7 @@ import { RecommendationPanel } from "@/features/recommendation/RecommendationPan
 import { riskLevel, type RiskLevel } from "@/engine/riskLevel";
 import { useSimulation } from "@/hooks/useSimulation";
 import { useTheme } from "@/hooks/useTheme";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 import { nodesToFeatureCollection } from "@/services/geoService";
 import type { HydroNetwork } from "@/schemas/hydro";
 

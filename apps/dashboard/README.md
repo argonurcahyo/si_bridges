@@ -1,16 +1,18 @@
 # HydroTwin-AI · Prototipe Frontend
 
-Prototipe frontend HydroTwin-AI dengan tiga tampilan:
+Prototipe frontend HydroTwin-AI dengan dua use case dan tiga tampilan:
 
-| Rute | Tampilan | Isi |
-|---|---|---|
-| `/ops` | Dashboard Operasional | Monitoring TMA, simulasi debit, peta 2D/3D, rekomendasi, keputusan operator, log audit |
-| `/rencana` | Konsol Perencana | Parameter skenario, heatmap kedalaman per kelurahan, dampak skenario, Executive Brief |
-| `/warga` | PWA Warga | Kartu peringatan mobile: level siaga, kedalaman, langkah evakuasi, status persetujuan |
+| Rute | Tampilan | Use case | Isi |
+|---|---|---|---|
+| `/ops` | Dashboard Operasional | EWS | Monitoring TMA, simulasi debit, peta 2D/3D, rekomendasi, keputusan operator, log audit |
+| `/warga` | PWA Warga | EWS | Kartu peringatan mobile: level, estimasi tiba, puncak, teks final, langkah evakuasi |
+| `/rencana` | Konsol Perencana | Simulator | Parameter skenario, heatmap kedalaman per kelurahan, dampak skenario, Executive Brief |
 
 Data dan simulasi masih mock (mode latihan). Semua angka diberi label mock atau ilustratif.
 
-Dokumen acuan ada di `docs/` (requirements, ui-prototype, architecture).
+Bahasa default adalah **English**; tombol ID/EN di header dan halaman warga menyimpan preferensi di `localStorage` (`hydrotwin-bahasa`) lalu memuat ulang aplikasi.
+
+Dokumen acuan ada di `docs/` (requirements, ui-prototype, architecture, plan). Rencana dua use case: `docs/plan/ews-simulator.md`.
 
 ## Menjalankan
 
@@ -29,6 +31,8 @@ pnpm dev
 | `pnpm lint`         | oxlint                                    |
 | `pnpm typecheck`    | `tsc -b`                                  |
 | `pnpm test`         | Vitest                                    |
+| `pnpm test:e2e`     | E2E EWS + Simulator (Puppeteer, Chrome)   |
+| `pnpm audit:a11y`   | Audit axe-core, laporan Markdown          |
 | `pnpm format`       | Prettier (termasuk urutan class Tailwind) |
 | `pnpm format:check` | Cek format tanpa mengubah file            |
 
@@ -56,7 +60,14 @@ Properti: `kelurahan`, `kecamatan`, `kota`, `luasHa`, `jarakSungaiM`, dan `rw` (
 - [x] P5 Draf & status
 - [x] P6 Konsol perencana & heatmap kelurahan
 - [x] P7 PWA warga
-- [ ] P8 Kualitas (E2E, a11y, performa)
+- [~] P8 Kualitas (E2E & a11y selesai; performa tersisa)
+- [x] F0 Dokumen EWS & Simulator (18 November 2026)
+- [x] F1 Publikasi peringatan per wilayah (18 November 2026)
+- [x] F2 AI composer peringatan (18 November 2026)
+- [x] F3 Registry parameter simulator (18 November 2026)
+- [x] F4 AI interpretasi & Executive Brief (18 November 2026)
+- [x] F5 E2E, audit aksesibilitas, screenshot, demo (19 November 2026)
+- [x] F6 Bilingual UI English/Indonesia (19 November 2026)
 
 ## Tangkapan layar
 

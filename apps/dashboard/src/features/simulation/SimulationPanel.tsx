@@ -1,6 +1,6 @@
 import { Gauge, Info, Loader2, TrendingUp } from "lucide-react";
 import { ConfidenceBadge } from "@/components/shared/ConfidenceBadge";
-import { teks } from "@/i18n/id";
+import { teks } from "@/i18n/teks";
 import { formatAngka } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { SimulationResult } from "@/services/simulationService";

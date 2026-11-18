@@ -1,11 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import {
-  bandingkanOpsi,
-  kelurahanToFeatureCollection,
-  runPlanner,
-  susunBrief,
-} from "@/engine/planner";
+import { bandingkanOpsi, kelurahanToFeatureCollection, runPlanner } from "@/engine/planner";
+import { bahasaAktif } from "@/i18n/teks";
+import { buildPlannerNarrativeContext } from "@/services/llm/tasks/plannerNarrative";
 import { loadKelurahan } from "@/services/kelurahanService";
 import { usePlannerStore } from "@/store/plannerStore";
 
@@ -50,9 +47,10 @@ export function usePlanner() {
     [kelurahan.data, hasil],
   );
 
-  const brief = useMemo(
-    () => (hasil && dasar ? susunBrief(input, hasil, dasar) : ""),
-    [input, hasil, dasar],
+  const narasiContext = useMemo(
+    () =>
+      hasil && dasar ? buildPlannerNarrativeContext(input, hasil, dasar, opsi, bahasaAktif) : null,
+    [input, hasil, dasar, opsi],
   );
 
   return {
@@ -61,7 +59,7 @@ export function usePlanner() {
     dasar,
     opsi,
     fitur,
-    brief,
+    narasiContext,
     kelurahan: kelurahan.data,
     memuat: kelurahan.isLoading,
     galat: kelurahan.isError,
